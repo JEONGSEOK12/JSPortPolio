@@ -1,32 +1,38 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyPawn.h"
+#include "MyCharacter.h"
 
-// Sets default values
-AMyPawn::AMyPawn()
+AMyCharacter::AMyCharacter()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseTurnRate = 45.f;
+	BaseLookUpRate = 45.f;
+
+	JumpMaxHoldTime = 0.0f;
+
+	// JumpMaxCount = 2;
 }
 
 // Called when the game starts or when spawned
-void AMyPawn::BeginPlay()
+void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// JumpMaxCount = 2;
 }
 
 // Called every frame
-void AMyPawn::Tick(float DeltaTime)
+void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -59,24 +65,19 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	// 키와 함수를 연결합니다.
 	// 이 키가 눌리면 이 함수를 실행시켜줘인데.
 	// 축일때는 일단 계속 실행시켜줘.
-	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AMyPawn::MoveForward);
-	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AMyPawn::MoveRight);
-	PlayerInputComponent->BindAxis("PlayerTurn", this, &AMyPawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AMyPawn::TurnAtRate);
-	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AMyPawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AMyPawn::LookUpAtRate);
-	PlayerInputComponent->BindAxis("PlayerJumpAxis", this, &AMyPawn::JumpAxis);
+	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AMyCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AMyCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("PlayerTurn", this, &AMyCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AMyCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AMyCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AMyCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("PlayerJumpAxis", this, &AMyCharacter::JumpAxis);
 
-	PlayerInputComponent->BindAction("PlayerJumpAction", EInputEvent::IE_Pressed, this, &AMyPawn::JumpAction);
-
-
-
-	
-
+	PlayerInputComponent->BindAction("PlayerJumpAction", EInputEvent::IE_Pressed, this, &AMyCharacter::JumpAction);
 }
 
 
-void AMyPawn::MoveRight(float Val)
+void AMyCharacter::MoveRight(float Val)
 {
 	if (Val != 0.f)
 	{
@@ -90,7 +91,7 @@ void AMyPawn::MoveRight(float Val)
 	}
 }
 
-void AMyPawn::MoveForward(float Val)
+void AMyCharacter::MoveForward(float Val)
 {
 	if (Val != 0.f)
 	{
@@ -111,18 +112,38 @@ void AMyPawn::MoveForward(float Val)
 }
 
 
-void AMyPawn::TurnAtRate(float Rate)
+void AMyCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
 }
 
-void AMyPawn::LookUpAtRate(float Rate)
+void AMyCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
 }
 
 
+void AMyCharacter::JumpAxis(float Rate)
+{
+	if (0.0f == Rate)
+	{
+		if (true == AxisJump)
+		{
+			StopJumping();
+			AxisJump = false;
+		}
+		return;
+	}
 
+	AxisJump = true;
+	Jump();
+}
 
+void AMyCharacter::JumpAction()
+{
+	// JumpCurrentCount
+	UE_LOG(LogTemp, Log, TEXT("%S(%u)> %d"), __FUNCTION__, __LINE__, JumpCurrentCount);
+	Jump();
+}
