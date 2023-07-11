@@ -5,6 +5,15 @@
 
 UMyGameInstance::UMyGameInstance()
 {
+	{
+		FString DataPath = TEXT("/Script/Engine.Blueprint'/Game/Stage_Select_Map/BP_Cha.BP_Cha''");
+		ConstructorHelpers::FObjectFinder<UDataTable> DataTable(*DataPath);
+
+		if (DataTable.Succeeded())
+		{
+			MyDatas = DataTable.Object;
+		}
+	}
 
 }
 

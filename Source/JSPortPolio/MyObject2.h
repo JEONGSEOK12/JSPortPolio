@@ -19,5 +19,5 @@ struct JSPORTPOLIO_API FMyObject2 : public FTableRowBase
 	~FMyObject2() {}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-		TSubclassOf<AActor> Test1;
+		AActor* Test1;
 };

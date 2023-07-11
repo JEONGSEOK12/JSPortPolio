@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Engine/DataTable.h"
 #include "MyGameInstance.generated.h"
 
 /**
@@ -18,5 +19,8 @@ public:
 	UMyGameInstance();
 	~UMyGameInstance();
 
-	
+private:
+	UPROPERTY()
+	UDataTable* MyDatas;
+
 };
