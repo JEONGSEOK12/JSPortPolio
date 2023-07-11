@@ -3,42 +3,32 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "MyCharacter.generated.h"
+#include "GameFramework/Pawn.h"
+#include "Stage_Select_Pawn.generated.h"
 
 UCLASS()
-class JSPORTPOLIO_API AMyCharacter : public ACharacter
+class JSPORTPOLIO_API AStage_Select_Pawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AMyCharacter();
+	// Sets default values for this pawn's properties
+	AStage_Select_Pawn();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void JumpAction();
-	void JumpAxis(float Rate);
 
 	void MoveRight(float Val);
 	void MoveForward(float Val);
 
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn")
-		float BaseTurnRate;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn")
-		float BaseLookUpRate;
-
-	bool AxisJump = false;
 
 };
