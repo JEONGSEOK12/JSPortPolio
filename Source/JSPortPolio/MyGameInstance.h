@@ -14,7 +14,9 @@ class JSPORTPOLIO_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-
+public:
+	UMyGameInstance();
+	~UMyGameInstance();
 
 	
 };

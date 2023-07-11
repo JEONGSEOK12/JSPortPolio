@@ -3,3 +3,16 @@
 
 #include "MyGameInstance.h"
 
+UMyGameInstance::UMyGameInstance()
+{
+
+}
+
+
+
+
+
+UMyGameInstance::~UMyGameInstance()
+{
+
+}
