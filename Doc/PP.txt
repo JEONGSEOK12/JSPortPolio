@@ -74,4 +74,6 @@ component hit 이벤트 -> break hit point -> nomal vector
 6. 보스전
 
 
+https://docs.google.com/spreadsheets/d/1xCH7BP0XNvlspFzesJUouLhrCK2IUEYOAGGA6l9yvRM/edit?usp=sharing
+
 
