@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/CapsuleComponent.h"
 #include "Stage_Plane.generated.h"
 
 UCLASS()
@@ -24,5 +23,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void On_Plane();
+	
 
 };

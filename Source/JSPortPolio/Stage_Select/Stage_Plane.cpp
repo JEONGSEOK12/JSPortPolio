@@ -2,6 +2,8 @@
 
 
 #include "Stage_Plane.h"
+#include "Components/CapsuleComponent.h"
+
 
 // Sets default values
 AStage_Plane::AStage_Plane()
