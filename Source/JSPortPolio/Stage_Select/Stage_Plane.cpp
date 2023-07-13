@@ -25,3 +25,7 @@ void AStage_Plane::Tick(float DeltaTime)
 
 }
 
+void AStage_Plane::On_Plane()
+{
+	
+}
