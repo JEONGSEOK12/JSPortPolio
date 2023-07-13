@@ -6,7 +6,7 @@
 UMyGameInstance::UMyGameInstance()
 {
 	{
-		FString DataPath = TEXT("/Script/Engine.Blueprint'/Game/Stage_Select_Map/BP_Cha.BP_Cha''");
+		FString DataPath = TEXT("/Script/Engine.DataTable'/Game/Data/DT_MyData2.DT_MyData2'");
 		ConstructorHelpers::FObjectFinder<UDataTable> DataTable(*DataPath);
 
 		if (DataTable.Succeeded())
