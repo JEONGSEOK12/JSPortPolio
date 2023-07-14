@@ -85,6 +85,10 @@ void AStage_Player::MoveRight(float Val)
 			AddMovementInput(FRotationMatrix(ControlSpaceRot).GetScaledAxis(EAxis::Y), Val);
 
 			
+			FRotator RotateRight;
+			RotateRight.Add(10,0,0);
+			
+			AddActorLocalRotation(RotateRight);
 			
 			return;
 		}
