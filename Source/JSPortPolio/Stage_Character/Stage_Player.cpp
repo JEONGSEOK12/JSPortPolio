@@ -80,14 +80,16 @@ void AStage_Player::MoveRight(float Val)
 	{
 		if (Controller)
 		{
-			FRotator const ControlSpaceRot = Controller->GetControlRotation();
-
-			AddMovementInput(FRotationMatrix(ControlSpaceRot).GetScaledAxis(EAxis::Y), Val);
-
-			
+						
 			FRotator RotateRight;
-			RotateRight.Add(10,0,0);
-			
+			if(Val < 0 )
+			{
+				RotateRight.Add(0, 0, -6);
+			}
+			if (Val > 0)
+			{
+				RotateRight.Add(0, 0, 6);
+			}
 			AddActorLocalRotation(RotateRight);
 			
 			return;
@@ -105,9 +107,18 @@ void AStage_Player::MoveForward(float Val)
 	{
 		if (Controller)
 		{
-			FRotator const ControlSpaceRot = Controller->GetControlRotation();
+			
 
-			AddMovementInput(FRotationMatrix(ControlSpaceRot).GetScaledAxis(EAxis::X), Val);
+			FRotator RotateForward;
+			if (Val < 0)
+			{
+				RotateForward.Add(-6, 0, 0);
+			}
+			if (Val > 0)
+			{
+				RotateForward.Add(6, 0, 0);
+			}
+			AddActorLocalRotation(RotateForward);
 		
 			return;
 		}
