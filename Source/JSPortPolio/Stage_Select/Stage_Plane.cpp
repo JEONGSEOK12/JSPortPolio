@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Stage_Plane.h"
+#include "Stage_Select/Stage_Plane.h"
 #include "Components/CapsuleComponent.h"
 
 
@@ -25,9 +25,6 @@ void AStage_Plane::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-void AStage_Plane::On_Plane()
-{
 	
 }
+
