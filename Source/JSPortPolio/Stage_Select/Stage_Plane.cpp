@@ -2,7 +2,6 @@
 
 
 #include "Stage_Select/Stage_Plane.h"
-#include "Components/CapsuleComponent.h"
 
 
 // Sets default values

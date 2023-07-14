@@ -35,7 +35,7 @@ public:
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	void JumpAction(float Rate);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
