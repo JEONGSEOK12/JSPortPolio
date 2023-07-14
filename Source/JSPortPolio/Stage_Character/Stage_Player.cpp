@@ -54,7 +54,8 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 
-	
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerJump", EKeys::SpaceBar, 1.f));
+
 
 		
 	}
@@ -68,6 +69,7 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AStage_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AStage_Player::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
+	PlayerInputComponent->BindAxis("PlayerJump", this, &AStage_Player::PlayerJump);
 
 	
 }
@@ -86,6 +88,7 @@ void AStage_Player::MoveRight(float Val)
 			{
 				RotateRight.Add(0, 0, -6);
 			}
+		
 			if (Val > 0)
 			{
 				RotateRight.Add(0, 0, 6);
@@ -112,11 +115,11 @@ void AStage_Player::MoveForward(float Val)
 			FRotator RotateForward;
 			if (Val < 0)
 			{
-				RotateForward.Add(-6, 0, 0);
+				RotateForward.Add(6, 0, 0);
 			}
 			if (Val > 0)
 			{
-				RotateForward.Add(6, 0, 0);
+				RotateForward.Add(-6, 0, 0);
 			}
 			AddActorLocalRotation(RotateForward);
 		
@@ -126,6 +129,16 @@ void AStage_Player::MoveForward(float Val)
 	
 
 }
+
+void AStage_Player::PlayerJump(float Val)
+{
+	if (Val != 0.f)
+	{
+		AddMovementInput(GetActorUpVector(),10000);
+	}
+	
+}
+
 
 
 void AStage_Player::TurnAtRate(float Rate)
