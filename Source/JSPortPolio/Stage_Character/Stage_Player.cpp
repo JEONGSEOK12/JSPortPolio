@@ -3,6 +3,7 @@
 
 #include "Stage_Character/Stage_Player.h"
 
+
 // Sets default values
 AStage_Player::AStage_Player()
 {
@@ -80,10 +81,10 @@ void AStage_Player::MoveRight(float Val)
 		if (Controller)
 		{
 			FRotator const ControlSpaceRot = Controller->GetControlRotation();
-			// transform to world space and add it
-			// 현재 내 회전을 가져와서 y축에 해당하는 축벡터를 얻어오는 겁니다.
+
 			AddMovementInput(FRotationMatrix(ControlSpaceRot).GetScaledAxis(EAxis::Y), Val);
 
+			
 			
 			return;
 		}
@@ -100,25 +101,15 @@ void AStage_Player::MoveForward(float Val)
 	{
 		if (Controller)
 		{
-			// 컨트롤러는 기본적으로
-			// charcter 하나씩 붙어 있습니다.
 			FRotator const ControlSpaceRot = Controller->GetControlRotation();
 
-			// 이건 방향일 뿐입니다.
-			// transform to world space and add it
 			AddMovementInput(FRotationMatrix(ControlSpaceRot).GetScaledAxis(EAxis::X), Val);
-			// 탑뷰게임이면 다르게 나오게 되는데.
-			// 지금은 TPS를 하고 있기 때문에 컨트롤러의 회전이나 액터의 회전이나 같아요.
-			// AddMovementInput(GetActorForwardVector(), Val);
-
 		
 			return;
 		}
 	}
 	
 
-	// 이런 느낌의 함수 즉 static함수를 의미한다.
-	// AEGLOBAL::DebugPrint("AAAAAAA");
 }
 
 
