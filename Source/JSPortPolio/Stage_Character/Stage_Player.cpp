@@ -2,6 +2,7 @@
 
 
 #include "Stage_Character/Stage_Player.h"
+#include "Components/CapsuleComponent.h"
 
 
 // Sets default values
@@ -26,6 +27,8 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	Gravity.Set(0, 0, -1);
+	AddMovementInput(Gravity, 1000);
 
 }
 
@@ -82,22 +85,34 @@ void AStage_Player::MoveRight(float Val)
 	{
 		if (Controller)
 		{
-						
-			FRotator RotateRight;
-			if(Val < 0 )
-			{
-				RotateRight.Add(0, 0, -6);
-			}
+
+
+
+			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("BODY_X"));
 		
-			if (Val > 0)
+						
+			if (0 != Findid.Num())
 			{
-				RotateRight.Add(0, 0, 6);
+				USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
+
+				FRotator RotateRight;
+				if (Val < 0)
+				{
+					RotateRight.Add(0, 0, -6);
+				}
+
+				if (Val > 0)
+				{
+					RotateRight.Add(0, 0, 6);
+				}
+				FindScene->AddLocalRotation(RotateRight);
 			}
-			AddActorLocalRotation(RotateRight);
-			
 			return;
+			
+			
 		}
 	}
+	
 	
 	
 }
@@ -112,17 +127,25 @@ void AStage_Player::MoveForward(float Val)
 		{
 			
 
-			FRotator RotateForward;
-			if (Val < 0)
+			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("BODY_X"));
+
+
+			if (0 != Findid.Num())
 			{
-				RotateForward.Add(6, 0, 0);
+				USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
+
+				FRotator RotateFoward;
+				if (Val < 0)
+				{
+					RotateFoward.Add(6, 0, 0);
+				}
+
+				if (Val > 0)
+				{
+					RotateFoward.Add(-6, 0, 0);
+				}
+				FindScene->AddLocalRotation(RotateFoward);
 			}
-			if (Val > 0)
-			{
-				RotateForward.Add(-6, 0, 0);
-			}
-			AddActorLocalRotation(RotateForward);
-		
 			return;
 		}
 	}
@@ -134,7 +157,11 @@ void AStage_Player::PlayerJump(float Val)
 {
 	if (Val != 0.f)
 	{
-		AddMovementInput(GetActorUpVector(),10000);
+		
+		TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
+		USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
+
+		AddMovementInput(-FindScene->GetUpVector(),100000);
 	}
 	
 }
