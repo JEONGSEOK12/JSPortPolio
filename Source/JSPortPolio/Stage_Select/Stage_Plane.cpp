@@ -22,7 +22,7 @@ void AStage_Plane::BeginPlay()
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 
 
-	FindScene->OnComponentBeginOverlap.AddDynamic(this, &AStage_Plane::BeginOverlap);
+	//FindScene->OnComponentBeginOverlap.AddDynamic(this, &AStage_Plane::BeginOverlap);
 
 	
 }
