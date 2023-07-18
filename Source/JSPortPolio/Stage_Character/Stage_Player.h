@@ -37,6 +37,7 @@ public:
 	void LookUpAtRate(float Rate);
 	void PlayerJump(float Rate);
 
+
 	FVector Gravity;
 
 	// Called to bind functionality to input

@@ -60,7 +60,6 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerJump", EKeys::SpaceBar, 1.f));
 		//UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 
-
 		
 	}
 
@@ -74,8 +73,7 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AStage_Player::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
 	PlayerInputComponent->BindAxis("PlayerJump", this, &AStage_Player::PlayerJump);
-	//PlayerInputComponent->BindAction("PlayerJump",IE_Pressed,this, &AStage_Player::PlayerJump)  함수의 인스턴스가 없다는게 무슨뜻?
-	
+	//PlayerInputComponent->BindAction("PlayerJump" , IE_Pressed , this, &AStage_Player::PlayerJump) // 함수의 인스턴스가 없다는게 무슨뜻?
 	
 }
 
@@ -159,7 +157,7 @@ void AStage_Player::PlayerJump(float Val)
 {
 	if (Val != 0.f)
 	{
-		
+		Jump();
 		TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
 		USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
 
@@ -167,6 +165,9 @@ void AStage_Player::PlayerJump(float Val)
 	}
 	
 }
+
+
+
 
 
 

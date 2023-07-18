@@ -20,8 +20,8 @@ void AStage_Plane::BeginPlay()
 	Super::BeginPlay();
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Stage_Plane_1"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
-
 	
+	//FindScene->OnComponentBeginOverlap.
 	
 
 	
