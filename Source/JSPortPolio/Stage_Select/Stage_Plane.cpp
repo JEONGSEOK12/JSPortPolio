@@ -21,7 +21,7 @@ void AStage_Plane::BeginPlay()
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Stage_Plane_1"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
-	FindScene->OnComponentBeginOverlap.AddDynamic(this, &BeginOverlap);
+	//FindScene->OnComponentBeginOverlap.AddDynamic(this, &BeginOverlap); ¿À·ù
 	
 
 	
