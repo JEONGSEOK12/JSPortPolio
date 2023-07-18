@@ -163,6 +163,9 @@ void AStage_Player::PlayerJump(float Val)
 
 		AddMovementInput(-FindScene->GetUpVector(),100000);
 	}
+
+
+	
 	
 }
 
