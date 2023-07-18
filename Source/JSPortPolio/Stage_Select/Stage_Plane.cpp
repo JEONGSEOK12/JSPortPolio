@@ -21,7 +21,7 @@ void AStage_Plane::BeginPlay()
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Stage_Plane_1"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
-	//FindScene->OnComponentBeginOverlap.
+	//FindScene->OnComponentBeginOverlap.AddDynamic 함수 호출이 안돼는 이유?
 	
 
 	
