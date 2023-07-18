@@ -21,7 +21,7 @@ void AStage_Plane::BeginPlay()
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Stage_Plane_1"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
-	//FindScene->OnComponentBeginOverlap.AddDynamic(this, &BeginOverlap); ¿À·ù
+	FindScene->OnComponentBeginOverlap.AddDynamic(this, &AStage_Plane::BeginOverlap);
 	
 
 	
@@ -35,9 +35,19 @@ void AStage_Plane::Tick(float DeltaTime)
 	
 }
 
-void AStage_Plane::BeginOverlap()
+void AStage_Plane::BeginOverlap(
+	UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult
+)
 {
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Stage_1_Test"));
+	if(OtherActor->ActorHasTag(TEXT("Player")))
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), TEXT("Stage_1_Test"));
+	}
 
 }
 
