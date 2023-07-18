@@ -28,7 +28,7 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Gravity.Set(0, 0, -1);
-	AddMovementInput(Gravity, 1000);
+	AddMovementInput(Gravity, 0.1);
 
 }
 
@@ -157,11 +157,10 @@ void AStage_Player::PlayerJump(float Val)
 {
 	if (Val != 0.f)
 	{
-		Jump();
 		TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
 		USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
-
-		AddMovementInput(-FindScene->GetUpVector(),100000);
+		
+		AddMovementInput(-FindScene->GetUpVector(),1000);
 	}
 
 
