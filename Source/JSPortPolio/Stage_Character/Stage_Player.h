@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Stage_PlayerController.h"
 #include "Stage_Player.generated.h"
 
 UCLASS()
@@ -35,10 +36,23 @@ public:
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	void PlayerJump(float Rate);
-
+	void PlayerJumpStart();
+	void PlayerJumpEnd();
+	AStage_PlayerController* MyController;
 
 	FVector Gravity;
+
+	bool bJumpPressed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float fJumpTime;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec;
+
+	
+	
+	
+
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

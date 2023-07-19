@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Stage_Plane.generated.h"
 
+
 UCLASS()
 class JSPORTPOLIO_API AStage_Plane : public AActor
 {
@@ -26,6 +27,8 @@ protected:
 		bool bFromSweep,
 		const FHitResult& SweepResult);
 	void Hit_Ground();
+
+	
 
 public:	
 	// Called every frame

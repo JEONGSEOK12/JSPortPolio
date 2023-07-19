@@ -3,6 +3,8 @@
 
 #include "Stage_Character/Stage_Player.h"
 #include "Components/CapsuleComponent.h"
+#include "Stage_PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -20,6 +22,18 @@ AStage_Player::AStage_Player()
 void AStage_Player::BeginPlay()
 {
 	Super::BeginPlay();
+	StopJumping();
+	JumpMaxHoldTime = 200;
+	Gravity.Set(0, 0, -1);
+	
+
+
+
+	GetMovementComponent()->Velocity = GetMovementComponent()->Velocity + Gravity;
+
+
+	MyController = Cast<AStage_PlayerController>(Controller);
+
 	
 }
 
@@ -27,10 +41,15 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Gravity.Set(0, 0, -1);
-	AddMovementInput(Gravity, 0.1);
+	
 
+	if (bJumpPressed)
+	{
+		fJumpTime += DeltaTime;
+	}
 }
+
+
 
 // Called to bind functionality to input
 void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -57,8 +76,8 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerJump", EKeys::SpaceBar, 1.f));
-		//UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
+		
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 
 		
 	}
@@ -72,8 +91,10 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AStage_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AStage_Player::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
-	PlayerInputComponent->BindAxis("PlayerJump", this, &AStage_Player::PlayerJump);
-	//PlayerInputComponent->BindAction("PlayerJump" , IE_Pressed , this, &AStage_Player::PlayerJump) // 함수의 인스턴스가 없다는게 무슨뜻?
+	
+	PlayerInputComponent->BindAction("PlayerJump" , IE_Pressed , this, &AStage_Player::PlayerJumpStart);
+	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &AStage_Player::PlayerJumpEnd);
+
 	
 }
 
@@ -153,21 +174,38 @@ void AStage_Player::MoveForward(float Val)
 
 }
 
-void AStage_Player::PlayerJump(float Val)
+void AStage_Player::PlayerJumpStart()
 {
-	if (Val != 0.f)
-	{
-		TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
-		USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
-		
-		AddMovementInput(-FindScene->GetUpVector(),1000);
-	}
-
-
+	bJumpPressed = true;
 	
+	
+	//AddMovementInput()
 	
 }
 
+
+void AStage_Player::PlayerJumpEnd()
+{
+
+	//TArray<UActorComponent*> Findid = GetComponentsByTag(UCharacterMovementComponent::StaticClass(), TEXT("Player_MoveCom"));
+	//UCharacterMovementComponent* FindScene = Cast<UCharacterMovementComponent>(Findid[0]);
+	
+
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
+	USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
+
+
+	FVector JumpVec;
+
+	JumpVec = FindScene2->GetUpVector() * fJumpTime * 100.0f;
+
+	GetMovementComponent()->Velocity = JumpVec;
+	bJumpPressed = false;
+
+	TestVec = GetMovementComponent()->Velocity;
+
+	fJumpTime = 0.f;
+}
 
 
 
