@@ -22,19 +22,13 @@ AStage_Player::AStage_Player()
 void AStage_Player::BeginPlay()
 {
 	Super::BeginPlay();
-	StopJumping();
-	JumpMaxHoldTime = 200;
-	Gravity.Set(0, 0, -1);
+	Gravity.Set(0, 0, -1000);
+
+	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
+	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
 
-
-
-	GetMovementComponent()->Velocity = GetMovementComponent()->Velocity + Gravity;
-
-
-	MyController = Cast<AStage_PlayerController>(Controller);
-
-	
+	FindScene->OnComponentHit.AddDynamic(this, &AStage_Player::HitGround);
 }
 
 // Called every frame
@@ -42,7 +36,9 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-
+	
+	GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	TestVec = GetMovementComponent()->Velocity;
 	if (bJumpPressed)
 	{
 		fJumpTime += DeltaTime;
@@ -99,6 +95,18 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 
+void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+		FVector ZeroVec;
+		ZeroVec.Set(0, 0, 0);
+		GetMovementComponent()->Velocity = ZeroVec;
+		bisGround = true;
+	}
+}
+
+
 void AStage_Player::MoveRight(float Val)
 {
 	
@@ -107,12 +115,29 @@ void AStage_Player::MoveRight(float Val)
 		if (Controller)
 		{
 
+			
 
-
-			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("BODY_X"));
+			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Player_Collision"));
+			TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Ground_X"));
 		
-						
-			if (0 != Findid.Num())
+			if (bisGround)
+			{
+				USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
+
+				FRotator RotateRight;
+				if (Val < 0)
+				{
+					RotateRight.Add(0, 0, -3);
+				}
+
+				if (Val > 0)
+				{
+					RotateRight.Add(0, 0, 3);
+				}
+				FindScene2->AddLocalRotation(RotateRight);
+
+			}
+			else
 			{
 				USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
 
@@ -148,10 +173,27 @@ void AStage_Player::MoveForward(float Val)
 		{
 			
 
-			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("BODY_X"));
+			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Player_Collision"));
+			TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Ground_X"));
 
+			if (bisGround)
+			{
+				USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
 
-			if (0 != Findid.Num())
+				FRotator RotateForward;
+				if (Val < 0)
+				{
+					RotateForward.Add(3, 0, 0);
+				}
+
+				if (Val > 0)
+				{
+					RotateForward.Add(-3, 0, 0);
+				}
+				FindScene2->AddLocalRotation(RotateForward);
+
+			}
+			else
 			{
 				USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
 
@@ -197,13 +239,12 @@ void AStage_Player::PlayerJumpEnd()
 
 	FVector JumpVec;
 
-	JumpVec = FindScene2->GetUpVector() * fJumpTime * 100.0f;
+	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
 
 	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
 
-	TestVec = GetMovementComponent()->Velocity;
-
+	bisGround = false;
 	fJumpTime = 0.f;
 }
 
@@ -222,3 +263,4 @@ void AStage_Player::LookUpAtRate(float Rate)
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
 }
+

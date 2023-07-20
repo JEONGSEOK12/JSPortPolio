@@ -38,7 +38,12 @@ public:
 	void LookUpAtRate(float Rate);
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
-	AStage_PlayerController* MyController;
+
+	UFUNCTION()
+	void HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+
+	bool bisGround;
 
 	FVector Gravity;
 
