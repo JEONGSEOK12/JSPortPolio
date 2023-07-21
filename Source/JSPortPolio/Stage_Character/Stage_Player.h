@@ -46,9 +46,9 @@ public:
 	bool bisGround;
 
 	FVector Gravity;
-
+	FVector GroundPoint;
 	bool bJumpPressed;
-
+	double Mydeg;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
