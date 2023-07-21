@@ -139,8 +139,12 @@ void AStage_Player::MoveRight(float Val)
 
 				SetActorLocation(NewLocation);
 
-				FVector Dir = GroundPoint - GetActorLocation();
-				FRotator Rot = Dir.Rotation();
+				// FVector Dir = GroundPoint - GetActorLocation();
+				// FRotator Rot = Dir.Rotation();
+
+				FRotator Rot;
+				Rot.Add(0.0f, 0.0f, 45.0f);
+
 				SetActorRotation(Rot);
 			}
 			//else
