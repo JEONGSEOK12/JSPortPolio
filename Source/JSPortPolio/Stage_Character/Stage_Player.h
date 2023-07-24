@@ -49,6 +49,11 @@ public:
 	FVector GroundPoint;
 	bool bJumpPressed;
 	double Mydeg;
+	double Mydeg2;
+	FVector RotateValue;
+
+	FVector RadiusX;
+	FVector RadiusY;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
