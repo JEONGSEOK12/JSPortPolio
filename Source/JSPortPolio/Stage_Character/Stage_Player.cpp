@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Stage_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include <Kismet/KismetMathLibrary.h>
 
 
 // Sets default values
@@ -24,6 +25,8 @@ void AStage_Player::BeginPlay()
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
 	GroundPoint.Set(0, 0, 300);
+	RadiusX = FVector(0, 0, 100);
+	RadiusY = FVector(100, 0, 0);
 
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
@@ -116,22 +119,13 @@ void AStage_Player::MoveRight(float Val)
 		if (Controller)
 		{
 
-
-
-			//TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Player_Collision"));
-			//TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Ground_X"));
-			//
-			//if (bisGround)
 			if (Val > 0.f)
 			{
 				FVector NewLocation = GroundPoint;
 
-				// declare size of radius to move around
-				FVector Radius = FVector(0, 100, 0);
+				Mydeg -= 3;
 
-				Mydeg += 1;
-
-				FVector RotateValue = Radius.RotateAngleAxis(Mydeg, FVector(-1, 0, 0));
+				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
 
 				NewLocation.X += RotateValue.X;
 				NewLocation.Y += RotateValue.Y;
@@ -139,32 +133,41 @@ void AStage_Player::MoveRight(float Val)
 
 				SetActorLocation(NewLocation);
 
-				FVector Dir = GroundPoint - GetActorLocation();
-				FRotator Rot = Dir.Rotation();
-				Dir.Normalize();
-				
-				MyQuat = FQuat(Dir,1);
-				MyQuat.Normalize();
-				
+
+				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
+
+				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
+				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
+				MyQuat = MyQuat * MyQuat2;
+
 
 				SetActorRotation(MyQuat);
 			}
-			//else
-			//{
-			//	USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
-			//
-			//	FRotator RotateRight;
-			//	if (Val < 0)
-			//	{
-			//		RotateRight.Add(0, 0, -6);
-			//	}
-			//
-			//	if (Val > 0)
-			//	{
-			//		RotateRight.Add(0, 0, 6);
-			//	}
-			//	FindScene->AddLocalRotation(RotateRight);
-			//}
+			if (Val < 0.f)
+			{
+				FVector NewLocation = GroundPoint;
+
+				Mydeg += 3;
+
+				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
+
+				NewLocation.X += RotateValue.X;
+				NewLocation.Y += RotateValue.Y;
+				NewLocation.Z += RotateValue.Z;
+
+				SetActorLocation(NewLocation);
+
+
+				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
+
+				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
+				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
+				MyQuat = MyQuat * MyQuat2;
+
+
+				SetActorRotation(MyQuat);
+			}
+
 			return;
 
 
@@ -177,56 +180,66 @@ void AStage_Player::MoveRight(float Val)
 
 void AStage_Player::MoveForward(float Val)
 {
-	
 
 	if (Val != 0.f)
 	{
 		if (Controller)
 		{
-			
 
-			TArray<UActorComponent*> Findid = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Player_Collision"));
-			TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Ground_X"));
-
-			if (bisGround)
+			if (Val > 0.f)
 			{
-				USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
+				FVector NewLocation = GroundPoint;
 
-				FRotator RotateForward;
-				if (Val < 0)
-				{
-					RotateForward.Add(3, 0, 0);
-				}
+				Mydeg += 3;
 
-				if (Val > 0)
-				{
-					RotateForward.Add(-3, 0, 0);
-				}
-				FindScene2->AddLocalRotation(RotateForward);
+				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
 
+				NewLocation.X += RotateValue.X;
+				NewLocation.Y += RotateValue.Y;
+				NewLocation.Z += RotateValue.Z;
+
+				SetActorLocation(NewLocation);
+
+
+				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
+
+				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
+				
+
+
+				SetActorRotation(MyQuat);
 			}
-			else
+			if (Val < 0.f)
 			{
-				USceneComponent* FindScene = Cast<USceneComponent>(Findid[0]);
+				FVector NewLocation = GroundPoint;
 
-				FRotator RotateFoward;
-				if (Val < 0)
-				{
-					RotateFoward.Add(6, 0, 0);
-				}
+				Mydeg -= 3;
 
-				if (Val > 0)
-				{
-					RotateFoward.Add(-6, 0, 0);
-				}
-				FindScene->AddLocalRotation(RotateFoward);
+				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
+
+				NewLocation.X += RotateValue.X;
+				NewLocation.Y += RotateValue.Y;
+				NewLocation.Z += RotateValue.Z;
+
+				SetActorLocation(NewLocation);
+
+
+				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
+
+				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
+
+
+				SetActorRotation(MyQuat);
 			}
 			return;
+
 		}
 	}
-	
+
+
 
 }
+
 
 void AStage_Player::PlayerJumpStart()
 {
