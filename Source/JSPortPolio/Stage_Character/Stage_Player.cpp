@@ -119,9 +119,6 @@ void AStage_Player::MoveRight(float Val)
 		if (Controller)
 		{
 
-
-
-
 			if (Val > 0.f)
 			{
 				FVector NewLocation = GroundPoint;
@@ -189,15 +186,9 @@ void AStage_Player::MoveForward(float Val)
 		if (Controller)
 		{
 
-
-
-	
 			if (Val > 0.f)
 			{
 				FVector NewLocation = GroundPoint;
-
-	
-
 
 				Mydeg += 3;
 
@@ -222,8 +213,6 @@ void AStage_Player::MoveForward(float Val)
 			{
 				FVector NewLocation = GroundPoint;
 
-
-
 				Mydeg -= 3;
 
 				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
@@ -242,9 +231,7 @@ void AStage_Player::MoveForward(float Val)
 
 				SetActorRotation(MyQuat);
 			}
-
 			return;
-
 
 		}
 	}
