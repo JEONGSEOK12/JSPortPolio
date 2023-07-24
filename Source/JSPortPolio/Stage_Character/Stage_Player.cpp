@@ -129,7 +129,7 @@ void AStage_Player::MoveRight(float Val)
 				// declare size of radius to move around
 				FVector Radius = FVector(0, 100, 0);
 
-				Mydeg += 3;
+				Mydeg += 1;
 
 				FVector RotateValue = Radius.RotateAngleAxis(Mydeg, FVector(-1, 0, 0));
 
@@ -139,13 +139,15 @@ void AStage_Player::MoveRight(float Val)
 
 				SetActorLocation(NewLocation);
 
-				// FVector Dir = GroundPoint - GetActorLocation();
-				// FRotator Rot = Dir.Rotation();
+				FVector Dir = GroundPoint - GetActorLocation();
+				FRotator Rot = Dir.Rotation();
+				Dir.Normalize();
+				
+				MyQuat = FQuat(Dir,1);
+				MyQuat.Normalize();
+				
 
-				FRotator Rot;
-				Rot.Add(0.0f, 0.0f, 45.0f);
-
-				SetActorRotation(Rot);
+				SetActorRotation(MyQuat);
 			}
 			//else
 			//{

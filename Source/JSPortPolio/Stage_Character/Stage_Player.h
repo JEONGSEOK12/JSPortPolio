@@ -31,7 +31,7 @@ public:
 		float BaseLookUpRate = 45.0f;
 
 
-
+	FQuat MyQuat;
 	void MoveRight(float Val);
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
