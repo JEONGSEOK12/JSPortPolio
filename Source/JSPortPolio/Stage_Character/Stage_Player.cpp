@@ -126,12 +126,9 @@ void AStage_Player::MoveRight(float Val)
 			{
 				FVector NewLocation = GroundPoint;
 
+				Mydeg -= 3;
 
-
-
-				Mydeg += 3;
-
-				RotateValue = RadiusX.RotateAngleAxis(Mydeg, FVector(-1, 0, 0));
+				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
 
 				NewLocation.X += RotateValue.X;
 				NewLocation.Y += RotateValue.Y;
@@ -142,8 +139,8 @@ void AStage_Player::MoveRight(float Val)
 
 				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
 
-				FQuat MyQuat = FQuat(FVector(-1, 0, 0), Mydeg2 + PI / 2);
-				FQuat MyQuat2 = FQuat(FVector(-1, 0, 0), -PI / 2);
+				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
+				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
 				MyQuat = MyQuat * MyQuat2;
 
 
@@ -153,11 +150,9 @@ void AStage_Player::MoveRight(float Val)
 			{
 				FVector NewLocation = GroundPoint;
 
+				Mydeg += 3;
 
-
-				Mydeg -= 3;
-
-				RotateValue = RadiusX.RotateAngleAxis(Mydeg, FVector(-1, 0, 0));
+				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
 
 				NewLocation.X += RotateValue.X;
 				NewLocation.Y += RotateValue.Y;
@@ -168,8 +163,8 @@ void AStage_Player::MoveRight(float Val)
 
 				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
 
-				FQuat MyQuat = FQuat(FVector(-1, 0, 0), Mydeg2 + PI / 2);
-				FQuat MyQuat2 = FQuat(FVector(-1, 0, 0), -PI / 2);
+				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
+				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
 				MyQuat = MyQuat * MyQuat2;
 
 
@@ -206,7 +201,7 @@ void AStage_Player::MoveForward(float Val)
 
 				Mydeg += 3;
 
-				RotateValue = RadiusY.RotateAngleAxis(Mydeg, FVector(0, -1, 0));
+				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
 
 				NewLocation.X += RotateValue.X;
 				NewLocation.Y += RotateValue.Y;
@@ -217,7 +212,7 @@ void AStage_Player::MoveForward(float Val)
 
 				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
 
-				FQuat MyQuat = FQuat(FVector(0, -1, 0), Mydeg2 - PI / 2);
+				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
 				
 
 
@@ -231,7 +226,7 @@ void AStage_Player::MoveForward(float Val)
 
 				Mydeg -= 3;
 
-				RotateValue = RadiusY.RotateAngleAxis(Mydeg, FVector(0, -1, 0));
+				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
 
 				NewLocation.X += RotateValue.X;
 				NewLocation.Y += RotateValue.Y;
@@ -242,7 +237,7 @@ void AStage_Player::MoveForward(float Val)
 
 				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
 
-				FQuat MyQuat = FQuat(FVector(0, -1, 0), Mydeg2 - PI / 2);
+				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
 
 
 				SetActorRotation(MyQuat);
