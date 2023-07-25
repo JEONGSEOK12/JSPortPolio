@@ -1,17 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Stage_Character/Stage_Player.h"
+#include "MyPawn.h"
 #include "Components/CapsuleComponent.h"
-#include "Stage_PlayerController.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/KismetMathLibrary.h>
 
 
 // Sets default values
-AStage_Player::AStage_Player()
+AMyPawn::AMyPawn()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 
@@ -20,7 +18,7 @@ AStage_Player::AStage_Player()
 }
 
 // Called when the game starts or when spawned
-void AStage_Player::BeginPlay()
+void AMyPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
@@ -30,19 +28,19 @@ void AStage_Player::BeginPlay()
 
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
-	
 
-	FindScene->OnComponentHit.AddDynamic(this, &AStage_Player::HitGround);
+
+	FindScene->OnComponentHit.AddDynamic(this, &AMyPawn::HitGround);
 }
 
 // Called every frame
-void AStage_Player::Tick(float DeltaTime)
+void AMyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	
+
+
 	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	
+
 	if (bJumpPressed)
 	{
 		fJumpTime += DeltaTime;
@@ -52,7 +50,7 @@ void AStage_Player::Tick(float DeltaTime)
 
 
 // Called to bind functionality to input
-void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -76,42 +74,41 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 
-		
+
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 
-		
+
 	}
 
 	// 키와 함수를 연결합니다.
 	// 이 키가 눌리면 이 함수를 실행시켜줘인데.
 	// 축일때는 일단 계속 실행시켜줘.
-	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AStage_Player::MoveForward);
-	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AStage_Player::MoveRight);
-	PlayerInputComponent->BindAxis("PlayerTurn", this, &AStage_Player::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AStage_Player::TurnAtRate);
-	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AStage_Player::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
-	
-	PlayerInputComponent->BindAction("PlayerJump" , IE_Pressed , this, &AStage_Player::PlayerJumpStart);
-	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &AStage_Player::PlayerJumpEnd);
+	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AMyPawn::MoveForward);
+	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AMyPawn::MoveRight);
+	PlayerInputComponent->BindAxis("PlayerTurn", this, &AMyPawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &AMyPawn::TurnAtRate);
+	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AMyPawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AMyPawn::LookUpAtRate);
 
-	
+	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &AMyPawn::PlayerJumpStart);
+	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &AMyPawn::PlayerJumpEnd);
+
+
 }
 
 
-void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AMyPawn::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
-		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 	}
 }
 
 
-void AStage_Player::MoveRight(float Val)
+void AMyPawn::MoveRight(float Val)
 {
 
 	if (Val != 0.f)
@@ -121,18 +118,27 @@ void AStage_Player::MoveRight(float Val)
 
 			if (Val > 0.f)
 			{
-				
-				FVector ForVec;
-				ForVec.Set(1, 0, 0);
-				
-				PlayerMove(ForVec, 4);
+
+				FVector ForVec = GetActorForwardVector();
+				TestVec1 = GetActorForwardVector();
+
+				FQuat AddQuat = FQuat(ForVec, 0.01);
+				MyCurQuat = GetActorQuat();
+				MyCurQuat = MyCurQuat * AddQuat;
+
+				SetActorRotation(MyCurQuat);
 			}
 			if (Val < 0.f)
 			{
-				FVector ForVec;
-				ForVec.Set(1, 0, 0);
-				
-				PlayerMove(ForVec, -4);
+
+				FVector ForVec = GetActorForwardVector();
+				TestVec1 = GetActorForwardVector();
+
+				FQuat AddQuat = FQuat(ForVec, -0.01);
+				MyCurQuat = GetActorQuat();
+				MyCurQuat = MyCurQuat * AddQuat;
+
+				SetActorRotation(MyCurQuat);
 
 			}
 
@@ -146,7 +152,7 @@ void AStage_Player::MoveRight(float Val)
 
 }
 
-void AStage_Player::MoveForward(float Val)
+void AMyPawn::MoveForward(float Val)
 {
 
 	if (Val != 0.f)
@@ -156,17 +162,27 @@ void AStage_Player::MoveForward(float Val)
 
 			if (Val > 0.f)
 			{
-				FVector RitVec;
-				RitVec.Set(0, 1, 0);
-				PlayerMove(RitVec, -4);
-	
+				FVector ForVec = GetActorRightVector();
+				ForVec.Normalize();
+				TestVec1 = GetActorForwardVector();
+
+				FQuat AddQuat = FQuat(ForVec, 0.01);
+				MyCurQuat = GetActorQuat();
+				MyCurQuat = MyCurQuat * AddQuat;
+
+				SetActorRotation(MyCurQuat);
 			}
 			if (Val < 0.f)
 			{
-				FVector RitVec;
-				RitVec.Set(0, 1, 0);
-				PlayerMove(RitVec,4);
+				FVector ForVec = GetActorRightVector();
+				ForVec.Normalize();
+				TestVec1 = GetActorForwardVector();
 
+				FQuat AddQuat = FQuat(ForVec, 0.01);
+				MyCurQuat = GetActorQuat();
+				MyCurQuat = MyCurQuat * AddQuat;
+
+				SetActorRotation(MyCurQuat);
 			}
 			return;
 
@@ -178,36 +194,22 @@ void AStage_Player::MoveForward(float Val)
 }
 
 
-void AStage_Player::PlayerMove(FVector Dir,double Speed)
-{
-	
-	Dir.Normalize();
-
-	FQuat AddQuat = FQuat(Dir, Speed*0.01f);
-	MyCurQuat = GetActorQuat();
-	MyCurQuat = MyCurQuat * AddQuat;
-
-	SetActorRotation(MyCurQuat);
-
-
-}
-
-void AStage_Player::PlayerJumpStart()
+void AMyPawn::PlayerJumpStart()
 {
 	bJumpPressed = true;
-	
-	
+
+
 	//AddMovementInput()
-	
+
 }
 
 
-void AStage_Player::PlayerJumpEnd()
+void AMyPawn::PlayerJumpEnd()
 {
 
 	//TArray<UActorComponent*> Findid = GetComponentsByTag(UCharacterMovementComponent::StaticClass(), TEXT("Player_MoveCom"));
 	//UCharacterMovementComponent* FindScene = Cast<UCharacterMovementComponent>(Findid[0]);
-	
+
 
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
 	USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
@@ -217,7 +219,6 @@ void AStage_Player::PlayerJumpEnd()
 
 	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
 
-	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
 
 	bisGround = false;
@@ -228,13 +229,13 @@ void AStage_Player::PlayerJumpEnd()
 
 
 
-void AStage_Player::TurnAtRate(float Rate)
+void AMyPawn::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
 }
 
-void AStage_Player::LookUpAtRate(float Rate)
+void AMyPawn::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
