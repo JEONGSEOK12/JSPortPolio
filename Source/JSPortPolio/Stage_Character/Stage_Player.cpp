@@ -24,7 +24,7 @@ void AStage_Player::BeginPlay()
 {
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
-	GroundPoint.Set(0, 0, 300);
+	GroundPoint.Set(0,0,300);
 	RadiusX = FVector(0, 0, 100);
 	RadiusY = FVector(100, 0, 0);
 
@@ -44,7 +44,7 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if(bisGround)
+	if(!bisGround)
 	{
 		GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	}
@@ -113,6 +113,8 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
+		GroundPoint = Hit.Location-87;
+		int a = 0;
 		
 	}
 }
@@ -125,26 +127,11 @@ void AStage_Player::MoveRight(float Val)
 	{
 		if (Controller)
 		{
-
-			if (Val > 0.f)
-			{
-				
-				FVector ForVec;
-				ForVec.Set(1, 0, 0);
-				
-				GroundRotation(ForVec, -4);
-			}
-			if (Val < 0.f)
-			{
-				FVector ForVec;
-				ForVec.Set(1, 0, 0);
-				
-				GroundRotation(ForVec, 4);
-
-			}
-
-			return;
-
+		
+		FVector ForVec;
+		ForVec.Set(1, 0, 0);
+		GroundRotation(ForVec, -4*Val);
+			
 
 		}
 	}
@@ -161,21 +148,9 @@ void AStage_Player::MoveForward(float Val)
 		if (Controller)
 		{
 
-			if (Val > 0.f)
-			{
-				FVector RitVec;
-				RitVec.Set(0, 1, 0);
-				GroundRotation(RitVec, 4);
-	
-			}
-			if (Val < 0.f)
-			{
-				FVector RitVec;
-				RitVec.Set(0, 1, 0);
-				GroundRotation(RitVec,-4);
-
-			}
-			return;
+		FVector RitVec;
+		RitVec.Set(0, 1, 0);
+		GroundRotation(RitVec, 4*Val);	
 
 		}
 	}

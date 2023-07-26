@@ -48,6 +48,7 @@ public:
 
 	bool bisGround;
 
+
 	FVector Gravity;
 	FVector GroundPoint;
 	bool bJumpPressed;
