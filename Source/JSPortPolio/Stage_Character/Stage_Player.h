@@ -43,6 +43,7 @@ public:
 	void HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void GroundRotation(FVector Dir,double Speed);
+	void BodyRotation(FVector Dir, double Speed);
 
 
 

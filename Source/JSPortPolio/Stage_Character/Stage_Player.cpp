@@ -113,7 +113,7 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
-		GroundPoint = Hit.Location-87;
+		GroundPoint = Hit.Location - (87 * GetActorUpVector());
 		int a = 0;
 		
 	}
@@ -122,84 +122,79 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 void AStage_Player::MoveRight(float Val)
 {
+	FVector ForVec;
+	ForVec.Set(1, 0, 0);
 
-	if (Val != 0.f)
+	if (bisGround)
 	{
-		if (Controller)
+		if (Val != 0.f)
 		{
-		
-		FVector ForVec;
-		ForVec.Set(1, 0, 0);
-		GroundRotation(ForVec, -4*Val);
-			
-
+			if (Controller)
+			{
+				GroundRotation(ForVec, -4 * Val);
+			}
 		}
 	}
-
-
-
+	else
+	{
+		BodyRotation(ForVec, -4 * Val);
+	}
 }
 
 void AStage_Player::MoveForward(float Val)
 {
+	FVector RitVec;
+	RitVec.Set(0, 1, 0);
 
-	if (Val != 0.f)
+	if(bisGround)
 	{
-		if (Controller)
+		if (Val != 0.f)
 		{
-
-		FVector RitVec;
-		RitVec.Set(0, 1, 0);
-		GroundRotation(RitVec, 4*Val);	
-
+			if (Controller)
+			{
+				GroundRotation(RitVec, 4 * Val);
+			}
 		}
 	}
-
-
+	else
+	{
+		BodyRotation(RitVec, 4 * Val);
+	}
 
 }
 
-
-void AStage_Player::GroundRotation(FVector Dir,double Speed)
+void AStage_Player::BodyRotation(FVector Dir, double Speed)
 {
-	
 	Dir.Normalize();
-
-	FQuat AddQuat = FQuat(Dir, Speed*0.01f);
+	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
-
 	SetActorRotation(MyCurQuat);
+}
+
+void AStage_Player::GroundRotation(FVector Dir,double Speed)
+{	
+	BodyRotation(Dir, Speed);
+
 	FVector UpVec = MyCurQuat.GetUpVector();
 	UpVec.Normalize();
-	UpVec = UpVec * 100;
-	FVector CurLocation =GroundPoint + UpVec;
+	UpVec = UpVec * 87;
+	FVector CurLocation = GroundPoint + UpVec;
 	SetActorLocation(CurLocation);
 }
 
 void AStage_Player::PlayerJumpStart()
 {
 	bJumpPressed = true;
-	
-	
-	//AddMovementInput()
-	
 }
 
 
 void AStage_Player::PlayerJumpEnd()
-{
-
-	//TArray<UActorComponent*> Findid = GetComponentsByTag(UCharacterMovementComponent::StaticClass(), TEXT("Player_MoveCom"));
-	//UCharacterMovementComponent* FindScene = Cast<UCharacterMovementComponent>(Findid[0]);
-	
-
+{	
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
 	USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
 
-
 	FVector JumpVec;
-
 	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
 
 	GetMovementComponent()->Velocity = JumpVec;
