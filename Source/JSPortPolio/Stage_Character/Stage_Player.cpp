@@ -33,6 +33,10 @@ void AStage_Player::BeginPlay()
 	
 
 	FindScene->OnComponentHit.AddDynamic(this, &AStage_Player::HitGround);
+
+	//UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit);
+
+
 }
 
 // Called every frame
@@ -40,8 +44,10 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	
-	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	if(bisGround)
+	{
+		GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	}
 	
 	if (bJumpPressed)
 	{
@@ -107,6 +113,7 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
+		
 	}
 }
 
@@ -125,14 +132,14 @@ void AStage_Player::MoveRight(float Val)
 				FVector ForVec;
 				ForVec.Set(1, 0, 0);
 				
-				PlayerMove(ForVec, 4);
+				GroundRotation(ForVec, -4);
 			}
 			if (Val < 0.f)
 			{
 				FVector ForVec;
 				ForVec.Set(1, 0, 0);
 				
-				PlayerMove(ForVec, -4);
+				GroundRotation(ForVec, 4);
 
 			}
 
@@ -158,14 +165,14 @@ void AStage_Player::MoveForward(float Val)
 			{
 				FVector RitVec;
 				RitVec.Set(0, 1, 0);
-				PlayerMove(RitVec, -4);
+				GroundRotation(RitVec, 4);
 	
 			}
 			if (Val < 0.f)
 			{
 				FVector RitVec;
 				RitVec.Set(0, 1, 0);
-				PlayerMove(RitVec,4);
+				GroundRotation(RitVec,-4);
 
 			}
 			return;
@@ -178,7 +185,7 @@ void AStage_Player::MoveForward(float Val)
 }
 
 
-void AStage_Player::PlayerMove(FVector Dir,double Speed)
+void AStage_Player::GroundRotation(FVector Dir,double Speed)
 {
 	
 	Dir.Normalize();
@@ -188,8 +195,11 @@ void AStage_Player::PlayerMove(FVector Dir,double Speed)
 	MyCurQuat = MyCurQuat * AddQuat;
 
 	SetActorRotation(MyCurQuat);
-
-
+	FVector UpVec = MyCurQuat.GetUpVector();
+	UpVec.Normalize();
+	UpVec = UpVec * 100;
+	FVector CurLocation =GroundPoint + UpVec;
+	SetActorLocation(CurLocation);
 }
 
 void AStage_Player::PlayerJumpStart()

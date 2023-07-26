@@ -42,7 +42,7 @@ public:
 	UFUNCTION()
 	void HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	void PlayerMove(FVector Dir,double Speed);
+	void GroundRotation(FVector Dir,double Speed);
 
 
 

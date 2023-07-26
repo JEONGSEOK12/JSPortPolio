@@ -104,6 +104,9 @@ void AMyPawn::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
 		bisGround = true;
+
+		//FComponentHitSignature safd;
+
 	}
 }
 
