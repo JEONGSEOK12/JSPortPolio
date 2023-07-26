@@ -46,10 +46,34 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if(!bisGround)
+	if(bisGround)
+	{
+		float Angle0 = GetController()->GetControlRotation().Yaw;
+		float Angle1 = GetActorRotation().Yaw;
+
+		GetController()->GetControlRotation().Vector();
+
+		FVector OtherForward =GetActorForwardVector();
+		OtherForward.Normalize();
+
+		FVector Cross = FVector::CrossProduct(OtherForward, GetController()->GetControlRotation().Vector());
+
+
+
+		if (FMath::Abs(Angle0 - Angle1) >= 10.0f)
+		{
+			FRotator Rot = FRotator::MakeFromEuler({ 0, 0,Cross.Z * 1.0f * DeltaTime });
+			AddActorWorldRotation(Rot);
+		}
+	}
+	else
 	{
 		GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	}
+
+	
+
+
 	
 	if (bJumpPressed)
 	{
@@ -116,8 +140,12 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 		GroundPoint = Hit.Location - (87 * GetActorUpVector());
-		bUseControllerRotationYaw = true;
-		int a = 0;
+		//bUseControllerRotationYaw = true;
+
+
+		//GetController()->GetControlRotation().Yaw
+
+		
 		
 	}
 }
