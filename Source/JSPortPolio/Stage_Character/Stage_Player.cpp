@@ -28,6 +28,8 @@ void AStage_Player::BeginPlay()
 	RadiusX = FVector(0, 0, 100);
 	RadiusY = FVector(100, 0, 0);
 
+
+
 	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
@@ -114,6 +116,7 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 		GroundPoint = Hit.Location - (87 * GetActorUpVector());
+		bUseControllerRotationYaw = true;
 		int a = 0;
 		
 	}
@@ -199,7 +202,7 @@ void AStage_Player::PlayerJumpEnd()
 
 	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
-
+	bUseControllerRotationYaw = false;
 	bisGround = false;
 	fJumpTime = 0.f;
 }
