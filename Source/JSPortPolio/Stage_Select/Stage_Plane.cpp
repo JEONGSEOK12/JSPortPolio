@@ -47,10 +47,10 @@ void AStage_Plane::BeginOverlap(
 	if(OtherActor->ActorHasTag(TEXT("Player")))
 	{
 		
-		UObject* cls = StaticLoadObject(UObject::StaticClass(), nullptr, TEXT("/Game/Stage_Select_Map/BP_Enter_Text.BP_Enter_Text"));
-		UBlueprint* bp = Cast<UBlueprint>(cls);
-		TSubclassOf<class UObject> blockBP = (UClass*)bp->GeneratedClass;
-		GetWorld()->SpawnActor<AActor>(blockBP, FVector::ZeroVector, FRotator::ZeroRotator);
+		//UObject* cls = StaticLoadObject(UObject::StaticClass(), nullptr, TEXT("/Game/Stage_Select_Map/BP_Enter_Text.BP_Enter_Text"));
+		//UBlueprint* bp = Cast<UBlueprint>(cls);
+		//TSubclassOf<class UObject> blockBP = (UClass*)bp->GeneratedClass;
+		//GetWorld()->SpawnActor<AActor>(blockBP, FVector::ZeroVector, FRotator::ZeroRotator);
 
 
 
