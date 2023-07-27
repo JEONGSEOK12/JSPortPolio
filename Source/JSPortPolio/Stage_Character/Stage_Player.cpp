@@ -128,13 +128,7 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 		GroundPoint = Hit.Location - (87 * GetActorUpVector());
-		//bUseControllerRotationYaw = true;
-
-
-		//GetController()->GetControlRotation().Yaw
-
-		
-		
+		bUseControllerRotationYaw = true;
 	}
 }
 

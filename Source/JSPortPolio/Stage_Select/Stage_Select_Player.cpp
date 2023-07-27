@@ -1,32 +1,38 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Stage_Select_Pawn.h"
+#include "Stage_Select/Stage_Select_Player.h"
 
-// Sets default values
-AStage_Select_Pawn::AStage_Select_Pawn()
+AStage_Select_Player::AStage_Select_Player()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseTurnRate = 45.f;
+	BaseLookUpRate = 45.f;
+
+	JumpMaxHoldTime = 0.0f;
+
+	// JumpMaxCount = 2;
 }
 
 // Called when the game starts or when spawned
-void AStage_Select_Pawn::BeginPlay()
+void AStage_Select_Player::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// JumpMaxCount = 2;
 }
 
 // Called every frame
-void AStage_Select_Pawn::Tick(float DeltaTime)
+void AStage_Select_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AStage_Select_Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AStage_Select_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -44,14 +50,26 @@ void AStage_Select_Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::A, -1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::D, 1.f));
 
+
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerJumpAxis", EKeys::E, -1.f));
+
+
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJumpAction"), EKeys::SpaceBar));
 	}
 
-	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AStage_Select_Pawn::MoveForward);
-	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AStage_Select_Pawn::MoveRight);
+	// 키와 함수를 연결합니다.
+	// 이 키가 눌리면 이 함수를 실행시켜줘인데.
+	// 축일때는 일단 계속 실행시켜줘.
+	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AStage_Select_Player::MoveForward);
+	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AStage_Select_Player::MoveRight);
 
+	PlayerInputComponent->BindAxis("PlayerJumpAxis", this, &AStage_Select_Player::JumpAxis);
+
+	PlayerInputComponent->BindAction("PlayerJumpAction", EInputEvent::IE_Pressed, this, &AStage_Select_Player::JumpAction);
 }
 
-void AStage_Select_Pawn::MoveRight(float Val)
+
+void AStage_Select_Player::MoveRight(float Val)
 {
 	if (Val != 0.f)
 	{
@@ -65,7 +83,7 @@ void AStage_Select_Pawn::MoveRight(float Val)
 	}
 }
 
-void AStage_Select_Pawn::MoveForward(float Val)
+void AStage_Select_Player::MoveForward(float Val)
 {
 	if (Val != 0.f)
 	{
@@ -83,4 +101,29 @@ void AStage_Select_Pawn::MoveForward(float Val)
 			// AddMovementInput(GetActorForwardVector(), Val);
 		}
 	}
+}
+
+
+
+void AStage_Select_Player::JumpAxis(float Rate)
+{
+	if (0.0f == Rate)
+	{
+		if (true == AxisJump)
+		{
+			StopJumping();
+			AxisJump = false;
+		}
+		return;
+	}
+
+	AxisJump = true;
+	Jump();
+}
+
+void AStage_Select_Player::JumpAction()
+{
+	// JumpCurrentCount
+	UE_LOG(LogTemp, Log, TEXT("%S(%u)> %d"), __FUNCTION__, __LINE__, JumpCurrentCount);
+	Jump();
 }

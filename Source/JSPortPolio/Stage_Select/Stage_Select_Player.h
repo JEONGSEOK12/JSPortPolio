@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "MyCharacter.generated.h"
+#include "Stage_Select_Player.generated.h"
 
 UCLASS()
-class JSPORTPOLIO_API AMyCharacter : public ACharacter
+class JSPORTPOLIO_API AStage_Select_Player : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AMyCharacter();
+	AStage_Select_Player();
 
 protected:
 	// Called when the game starts or when spawned
