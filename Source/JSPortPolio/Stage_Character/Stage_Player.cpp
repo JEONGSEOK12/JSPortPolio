@@ -27,7 +27,7 @@ void AStage_Player::BeginPlay()
 	GroundPoint.Set(0,0,300);
 	RadiusX = FVector(0, 0, 100);
 	RadiusY = FVector(100, 0, 0);
-
+	RotSpeed = 4;
 
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
@@ -138,17 +138,18 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	}
 }
 
-void AStage_Player::OverlapGround(
-	UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult
-)
+void AStage_Player::OverlapGround(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
 {
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+	TestVec1 = SweepResult.ImpactPoint;
+	TestVec2 = GetActorLocation();
+	TestVec3 = TestVec2 - TestVec1;
+	GetMovementComponent()->Velocity = TestVec3;
 
+	int a = 0;
 
+	}
 }
 
 
@@ -163,13 +164,13 @@ void AStage_Player::MoveRight(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(ForVec, -4 * Val);
+				GroundRotation(ForVec, -RotSpeed * Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(ForVec, -4 * Val);
+		BodyRotation(ForVec, -RotSpeed * 2 * Val);
 	}
 }
 
@@ -184,13 +185,13 @@ void AStage_Player::MoveForward(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(RitVec, 4 * Val);
+				GroundRotation(RitVec, RotSpeed * Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(RitVec, 4 * Val);
+		BodyRotation(RitVec, RotSpeed * 2 * Val);
 	}
 
 }

@@ -69,8 +69,12 @@ public:
 	FVector RotateValue;
 	FQuat MyCurQuat;
 
+	
+	
 	FVector RadiusX;
 	FVector RadiusY;
+	float RotSpeed;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
@@ -78,7 +82,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FVector TestVec2;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	FQuat TestQuat1;
+	FVector TestVec3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FQuat TestQuat2;
 
