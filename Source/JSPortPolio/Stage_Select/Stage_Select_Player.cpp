@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Stage_Select/Stage_Select_Player.h"
+#include "Stage_Select_Player.h"
 
 AStage_Select_Player::AStage_Select_Player()
 {
