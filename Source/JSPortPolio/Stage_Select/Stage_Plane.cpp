@@ -22,7 +22,7 @@ void AStage_Plane::BeginPlay()
 	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
 	
 	FindScene->OnComponentBeginOverlap.AddDynamic(this, &AStage_Plane::BeginOverlap);
-	
+	FindScene->OnComponentEndOverlap.AddDynamic(this, &AStage_Plane::EndOverlap);
 
 	
 }
@@ -46,10 +46,32 @@ void AStage_Plane::BeginOverlap(
 {
 	if(OtherActor->ActorHasTag(TEXT("Player")))
 	{
-		UGameplayStatics::OpenLevel(GetWorld(), TEXT("Stage_1_Test"));
+		
+		//UObject* cls = StaticLoadObject(UObject::StaticClass(), nullptr, TEXT("/Game/Stage_Select_Map/BP_Enter_Text.BP_Enter_Text"));
+		//UBlueprint* bp = Cast<UBlueprint>(cls);
+		//TSubclassOf<class UObject> blockBP = (UClass*)bp->GeneratedClass;
+		//GetWorld()->SpawnActor<AActor>(blockBP, FVector::ZeroVector, FRotator::ZeroRotator);
+
+
+
+
 	}
 
 }
+
+void AStage_Plane::EndOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex
+)
+{
+	if (OtherActor->ActorHasTag(TEXT("Player")))
+	{
+		
+	}
+}
+
 
 void AStage_Plane::Hit_Ground()
 {

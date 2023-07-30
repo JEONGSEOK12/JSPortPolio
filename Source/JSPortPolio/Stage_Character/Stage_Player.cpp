@@ -24,15 +24,25 @@ void AStage_Player::BeginPlay()
 {
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
-	GroundPoint.Set(0, 0, 300);
+	GroundPoint.Set(0,0,300);
 	RadiusX = FVector(0, 0, 100);
 	RadiusY = FVector(100, 0, 0);
+	RotSpeed = 4;
 
-	TArray<UActorComponent*> Findid = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
-	UCapsuleComponent* FindScene = Cast<UCapsuleComponent>(Findid[0]);
-	
 
-	FindScene->OnComponentHit.AddDynamic(this, &AStage_Player::HitGround);
+	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
+	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	FindScene1->OnComponentHit.AddDynamic(this, &AStage_Player::LandGround);
+
+
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Body"));
+	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
+	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &AStage_Player::OverlapGround);
+
+
+	//UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit);
+
+
 }
 
 // Called every frame
@@ -40,9 +50,19 @@ void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	if(bisGround)
+	{
 	
-	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	TestVec = GetMovementComponent()->Velocity;
+	}
+	else
+	{
+		GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	}
+
+	
+
+
+	
 	if (bJumpPressed)
 	{
 		fJumpTime += DeltaTime;
@@ -99,7 +119,7 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 
-void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
@@ -107,168 +127,106 @@ void AStage_Player::HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
+		GroundPoint = Hit.Location - (87 * GetActorUpVector());
+		bUseControllerRotationYaw = true;
+	}
+}
+
+void AStage_Player::OverlapGround(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
+{
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+	TestVec1 = SweepResult.ImpactPoint;
+	TestVec2 = GetActorLocation();
+	TestVec3 = TestVec2 - TestVec1;
+	GetMovementComponent()->Velocity = TestVec3;
+
+	int a = 0;
+
 	}
 }
 
 
 void AStage_Player::MoveRight(float Val)
 {
+	FVector ForVec;
+	ForVec.Set(1, 0, 0);
 
-	if (Val != 0.f)
+	if (bisGround)
 	{
-		if (Controller)
+		if (Val != 0.f)
 		{
-
-			if (Val > 0.f)
+			if (Controller)
 			{
-				FVector NewLocation = GroundPoint;
-
-				Mydeg -= 3;
-
-				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
-
-				NewLocation.X += RotateValue.X;
-				NewLocation.Y += RotateValue.Y;
-				NewLocation.Z += RotateValue.Z;
-
-				SetActorLocation(NewLocation);
-
-
-				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
-
-				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
-				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
-				MyQuat = MyQuat * MyQuat2;
-
-
-				SetActorRotation(MyQuat);
+				GroundRotation(ForVec, -RotSpeed * Val);
 			}
-			if (Val < 0.f)
-			{
-				FVector NewLocation = GroundPoint;
-
-				Mydeg += 3;
-
-				RotateValue = RadiusX.RotateAngleAxis(Mydeg, GetActorForwardVector());
-
-				NewLocation.X += RotateValue.X;
-				NewLocation.Y += RotateValue.Y;
-				NewLocation.Z += RotateValue.Z;
-
-				SetActorLocation(NewLocation);
-
-
-				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
-
-				FQuat MyQuat = FQuat(FVector(1, 0, 0), Mydeg2 + PI / 2);
-				FQuat MyQuat2 = FQuat(FVector(1, 0, 0), -PI / 2);
-				MyQuat = MyQuat * MyQuat2;
-
-
-				SetActorRotation(MyQuat);
-			}
-
-			return;
-
-
 		}
 	}
-
-
-
+	else
+	{
+		BodyRotation(ForVec, -RotSpeed * 2 * Val);
+	}
 }
 
 void AStage_Player::MoveForward(float Val)
 {
+	FVector RitVec;
+	RitVec.Set(0, 1, 0);
 
-	if (Val != 0.f)
+	if(bisGround)
 	{
-		if (Controller)
+		if (Val != 0.f)
 		{
-
-			if (Val > 0.f)
+			if (Controller)
 			{
-				FVector NewLocation = GroundPoint;
-
-				Mydeg += 3;
-
-				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
-
-				NewLocation.X += RotateValue.X;
-				NewLocation.Y += RotateValue.Y;
-				NewLocation.Z += RotateValue.Z;
-
-				SetActorLocation(NewLocation);
-
-
-				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
-
-				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
-				
-
-
-				SetActorRotation(MyQuat);
+				GroundRotation(RitVec, RotSpeed * Val);
 			}
-			if (Val < 0.f)
-			{
-				FVector NewLocation = GroundPoint;
-
-				Mydeg -= 3;
-
-				RotateValue = RadiusY.RotateAngleAxis(Mydeg, GetActorRightVector());
-
-				NewLocation.X += RotateValue.X;
-				NewLocation.Y += RotateValue.Y;
-				NewLocation.Z += RotateValue.Z;
-
-				SetActorLocation(NewLocation);
-
-
-				Mydeg2 = UKismetMathLibrary::DegreesToRadians(Mydeg);
-
-				FQuat MyQuat = FQuat(FVector(0, 1, 0), Mydeg2 + PI / 2);
-
-
-				SetActorRotation(MyQuat);
-			}
-			return;
-
 		}
 	}
-
-
+	else
+	{
+		BodyRotation(RitVec, RotSpeed * 2 * Val);
+	}
 
 }
 
+void AStage_Player::BodyRotation(FVector Dir, double Speed)
+{
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
+	MyCurQuat = GetActorQuat();
+	MyCurQuat = MyCurQuat * AddQuat;
+	SetActorRotation(MyCurQuat);
+}
+
+void AStage_Player::GroundRotation(FVector Dir,double Speed)
+{	
+	BodyRotation(Dir, Speed);
+
+	FVector UpVec = MyCurQuat.GetUpVector();
+	UpVec.Normalize();
+	UpVec = UpVec * 87;
+	FVector CurLocation = GroundPoint + UpVec;
+	SetActorLocation(CurLocation);
+}
 
 void AStage_Player::PlayerJumpStart()
 {
 	bJumpPressed = true;
-	
-	
-	//AddMovementInput()
-	
 }
 
 
 void AStage_Player::PlayerJumpEnd()
-{
-
-	//TArray<UActorComponent*> Findid = GetComponentsByTag(UCharacterMovementComponent::StaticClass(), TEXT("Player_MoveCom"));
-	//UCharacterMovementComponent* FindScene = Cast<UCharacterMovementComponent>(Findid[0]);
-	
-
+{	
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
 	USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
 
-
 	FVector JumpVec;
-
 	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
 
 	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
-
+	bUseControllerRotationYaw = false;
 	bisGround = false;
 	fJumpTime = 0.f;
 }

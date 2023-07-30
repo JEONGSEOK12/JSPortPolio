@@ -3,24 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "Stage_PlayerController.h"
-#include "Stage_Player.generated.h"
+#include "GameFramework/Pawn.h"
+#include "MyPawn.generated.h"
+
 
 UCLASS()
-class JSPORTPOLIO_API AStage_Player : public ACharacter
+class JSPORTPOLIO_API AMyPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AStage_Player();
+	AMyPawn();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -29,9 +29,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn", meta = (AllowPrivateAccess = "true"))
 		float BaseLookUpRate = 45.0f;
+	FQuat MyCurQuat;
 
 
-	FQuat MyQuat;
 	void MoveRight(float Val);
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
@@ -40,26 +40,10 @@ public:
 	void PlayerJumpEnd();
 
 	UFUNCTION()
-	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	UFUNCTION()
-		void OverlapGround(
-			UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex,
-			bool bFromSweep,
-			const FHitResult& SweepResult
-		);
-
-
-	void GroundRotation(FVector Dir,double Speed);
-	void BodyRotation(FVector Dir, double Speed);
-
+		void HitGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 
 	bool bisGround;
-
 
 	FVector Gravity;
 	FVector GroundPoint;
@@ -67,14 +51,9 @@ public:
 	double Mydeg;
 	double Mydeg2;
 	FVector RotateValue;
-	FQuat MyCurQuat;
 
-	
-	
 	FVector RadiusX;
 	FVector RadiusY;
-	float RotSpeed;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
@@ -84,11 +63,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FVector TestVec3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	FQuat TestQuat2;
+	FVector TestVec4;
 
-	
-	
-	
+
+
+
 
 
 	// Called to bind functionality to input
