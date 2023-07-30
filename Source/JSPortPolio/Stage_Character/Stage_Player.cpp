@@ -37,7 +37,7 @@ void AStage_Player::BeginPlay()
 
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Body"));
 	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
-	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &AStage_Player::OverlapGround);
+	FindScene2->OnComponentHit.AddDynamic(this, &AStage_Player::OverlapGround);
 
 
 	//UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit);
@@ -52,7 +52,7 @@ void AStage_Player::Tick(float DeltaTime)
 	
 	if(bisGround)
 	{
-	
+		GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	}
 	else
 	{
@@ -132,11 +132,11 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	}
 }
 
-void AStage_Player::OverlapGround(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
+void AStage_Player::OverlapGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
-	TestVec1 = SweepResult.ImpactPoint;
+	TestVec1 = Hit.ImpactPoint;
 	TestVec2 = GetActorLocation();
 	TestVec3 = TestVec2 - TestVec1;
 	//GetMovementComponent()->Velocity = TestVec3;
@@ -158,13 +158,13 @@ void AStage_Player::MoveRight(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(ForVec, -RotSpeed * Val);
+				GroundRotation(ForVec, -RotSpeed *0.5* Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(ForVec, -RotSpeed * 2 * Val);
+		BodyRotation(ForVec, -RotSpeed * 1 * Val);
 	}
 }
 
@@ -179,13 +179,13 @@ void AStage_Player::MoveForward(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(RitVec, RotSpeed * Val);
+				GroundRotation(RitVec, RotSpeed * 0.5 * Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(RitVec, RotSpeed * 2 * Val);
+		BodyRotation(RitVec, RotSpeed * 1 * Val);
 	}
 
 }
@@ -203,11 +203,8 @@ void AStage_Player::GroundRotation(FVector Dir,double Speed)
 {	
 	BodyRotation(Dir, Speed);
 
-	FVector UpVec = MyCurQuat.GetUpVector();
-	UpVec.Normalize();
-	UpVec = UpVec * 87;
-	FVector CurLocation = GroundPoint + UpVec;
-	SetActorLocation(CurLocation);
+	//FVector CurLocation = GetActorLocation();
+	//SetActorLocation(CurLocation);
 }
 
 void AStage_Player::PlayerJumpStart()

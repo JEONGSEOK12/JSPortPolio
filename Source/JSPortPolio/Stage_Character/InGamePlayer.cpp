@@ -9,17 +9,6 @@ AInGamePlayer::AInGamePlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	USceneComponent* Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
-
-	RootComponent = Scene;
-	
-	m_mcomp = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("CharacterMovementComponent"));
-	if (m_mcomp)
-	{
-		m_mcomp->UpdatedComponent = Scene;
-	}
-	m_mcomp->UpdatedComponent = RootComponent;
-	
 
 }
 
@@ -28,7 +17,9 @@ void AInGamePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Gravity.Set(0, 0, -100);
+	TestPoint.Set(0, 0, 300);
+	TestPoint.Normalize();
+	Timespent = 0;
 
 
 }
@@ -37,9 +28,19 @@ void AInGamePlayer::BeginPlay()
 void AInGamePlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	m_mcomp->Velocity = Gravity;
 
 	//AddMovementInput(Gravity, 100);
+
+	Timespent += DeltaTime;
+
+	FVector LookVec = TestPoint - GetActorLocation();
+	LookVec.Normalize();
+	LookVec.Set(1, 1, 0);
+
+	FQuat MyQa = FQuat(LookVec, Timespent * PI / 4.f);
+	SetActorRotation(MyQa);
+
+
 }
 
 // Called to bind functionality to input

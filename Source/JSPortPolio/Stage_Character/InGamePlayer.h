@@ -16,16 +16,13 @@ class JSPORTPOLIO_API AInGamePlayer : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AInGamePlayer();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCharacterMovementComponent* m_mcomp;
-
-
-	FVector Gravity;
+	
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	FVector TestPoint;
+	double Timespent;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
