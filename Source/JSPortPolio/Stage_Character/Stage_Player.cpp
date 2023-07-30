@@ -139,7 +139,7 @@ void AStage_Player::OverlapGround(UPrimitiveComponent* OverlappedComponent,AActo
 	TestVec1 = SweepResult.ImpactPoint;
 	TestVec2 = GetActorLocation();
 	TestVec3 = TestVec2 - TestVec1;
-	GetMovementComponent()->Velocity = TestVec3;
+	//GetMovementComponent()->Velocity = TestVec3;
 
 	int a = 0;
 
