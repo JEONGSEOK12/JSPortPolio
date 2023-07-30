@@ -203,11 +203,8 @@ void AStage_Player::GroundRotation(FVector Dir,double Speed)
 {	
 	BodyRotation(Dir, Speed);
 
-	FVector UpVec = MyCurQuat.GetUpVector();
-	UpVec.Normalize();
-	UpVec = UpVec * 87.f;
-	FVector CurLocation = GroundPoint + UpVec;
-	SetActorLocation(CurLocation);
+	//FVector CurLocation = GetActorLocation();
+	//SetActorLocation(CurLocation);
 }
 
 void AStage_Player::PlayerJumpStart()
