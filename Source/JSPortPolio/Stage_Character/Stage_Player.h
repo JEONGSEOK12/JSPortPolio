@@ -43,7 +43,14 @@ public:
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION()
-	void OverlapGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+		void OverlapGround(
+			UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult
+		);
 
 	void GroundRotation(FVector Dir,double Speed);
 	void BodyRotation(FVector Dir, double Speed);

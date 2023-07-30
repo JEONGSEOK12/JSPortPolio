@@ -37,7 +37,7 @@ void AStage_Player::BeginPlay()
 
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Body"));
 	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
-	FindScene2->OnComponentHit.AddDynamic(this, &AStage_Player::OverlapGround);
+	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &AStage_Player::OverlapGround);
 
 
 	//UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit);
@@ -132,13 +132,18 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	}
 }
 
-void AStage_Player::OverlapGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AStage_Player::OverlapGround(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult
+)
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
-	TestVec1 = Hit.ImpactPoint;
-	TestVec2 = GetActorLocation();
-	TestVec3 = TestVec2 - TestVec1;
+	
 	//GetMovementComponent()->Velocity = TestVec3;
 
 	int a = 0;
@@ -158,13 +163,13 @@ void AStage_Player::MoveRight(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(ForVec, -RotSpeed *0.5* Val);
+				GroundRotation(ForVec, -RotSpeed * 1* Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(ForVec, -RotSpeed * 1 * Val);
+		BodyRotation(ForVec, -RotSpeed * 2 * Val);
 	}
 }
 
@@ -179,13 +184,13 @@ void AStage_Player::MoveForward(float Val)
 		{
 			if (Controller)
 			{
-				GroundRotation(RitVec, RotSpeed * 0.5 * Val);
+				GroundRotation(RitVec, RotSpeed * 1 * Val);
 			}
 		}
 	}
 	else
 	{
-		BodyRotation(RitVec, RotSpeed * 1 * Val);
+		BodyRotation(RitVec, RotSpeed * 2 * Val);
 	}
 
 }
