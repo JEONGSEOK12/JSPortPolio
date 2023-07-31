@@ -234,6 +234,11 @@ void AStage_Player::PlayerJumpEnd()
 	FVector JumpVec;
 	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
 
+	if (bRotated == true)
+	{
+		//start effect
+	}
+
 	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
 	bUseControllerRotationYaw = false;
