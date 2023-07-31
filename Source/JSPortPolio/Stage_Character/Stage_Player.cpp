@@ -25,23 +25,18 @@ void AStage_Player::BeginPlay()
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
 	GroundPoint.Set(0,0,300);
-	RadiusX = FVector(0, 0, 100);
-	RadiusY = FVector(100, 0, 0);
 	RotSpeed = 4;
 
+	XRotTime = 0;
+	YRotTime = 0;
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &AStage_Player::LandGround);
 
-
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Body"));
 	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
 	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &AStage_Player::OverlapGround);
-
-
-	//UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit);
-
 
 }
 
@@ -49,18 +44,7 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if(bisGround)
-	{
-		GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	}
-	else
-	{
-		GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	}
-
-	
-
+	GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
 	
 	if (bJumpPressed)
@@ -129,6 +113,8 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		bisGround = true;
 		GroundPoint = Hit.Location - (87 * GetActorUpVector());
 		bUseControllerRotationYaw = true;
+		XRotTime = 0;
+		YRotTime = 0;
 	}
 }
 
@@ -164,12 +150,17 @@ void AStage_Player::MoveRight(float Val)
 			if (Controller)
 			{
 				GroundRotation(ForVec, -RotSpeed * 1* Val);
+				
+				
 			}
 		}
 	}
 	else
 	{
 		BodyRotation(ForVec, -RotSpeed * 2 * Val);
+
+
+		YRotTime += Val;
 	}
 }
 
@@ -185,12 +176,18 @@ void AStage_Player::MoveForward(float Val)
 			if (Controller)
 			{
 				GroundRotation(RitVec, RotSpeed * 1 * Val);
+
+				
+				
 			}
 		}
 	}
 	else
 	{
 		BodyRotation(RitVec, RotSpeed * 2 * Val);
+
+		XRotTime += Val;
+		
 	}
 
 }

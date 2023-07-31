@@ -30,8 +30,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn", meta = (AllowPrivateAccess = "true"))
 		float BaseLookUpRate = 45.0f;
 
-
-	FQuat MyQuat;
 	void MoveRight(float Val);
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
@@ -63,19 +61,16 @@ public:
 	FVector Gravity;
 	FVector GroundPoint;
 	bool bJumpPressed;
-	double Mydeg;
-	double Mydeg2;
-	FVector RotateValue;
 	FQuat MyCurQuat;
-
-	
-	
-	FVector RadiusX;
-	FVector RadiusY;
 	float RotSpeed;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float XRotTime;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float YRotTime;
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FVector TestVec1;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
