@@ -61,6 +61,7 @@ public:
 	FVector Gravity;
 	FVector GroundPoint;
 	bool bJumpPressed;
+	bool bRotated;
 	FQuat MyCurQuat;
 	float RotSpeed;
 	float fJumpTime;

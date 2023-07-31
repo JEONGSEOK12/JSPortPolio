@@ -46,7 +46,17 @@ void AStage_Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
-	
+	if (XRotTime > 60 || YRotTime > 60)
+	{
+		bRotated = true;
+	}
+
+	if (bRotated == true)
+	{
+		//start effect
+	}
+
+
 	if (bJumpPressed)
 	{
 		fJumpTime += DeltaTime;
@@ -115,6 +125,7 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		bUseControllerRotationYaw = true;
 		XRotTime = 0;
 		YRotTime = 0;
+		bRotated = false;
 	}
 }
 
