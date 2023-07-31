@@ -6,8 +6,8 @@
 #include "Stage_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/KismetMathLibrary.h>
+#include "Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "CascadeParticleSystemComponent.h"
-
 
 
 // Sets default values
