@@ -29,7 +29,7 @@ void AStage_Player::BeginPlay()
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
 	GroundPoint.Set(0,0,300);
-	RotSpeed = 4;
+	RotSpeed = 2;
 
 	XRotTime = 0;
 	YRotTime = 0;
