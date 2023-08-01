@@ -6,8 +6,8 @@
 #include "Stage_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/KismetMathLibrary.h>
-#include "Engine/Classes/Particles/ParticleSystemComponent.h"
-#include "CascadeParticleSystemComponent.h"
+#include "Particles/ParticleSystemComponent.h"
+
 
 
 // Sets default values
@@ -15,7 +15,7 @@ AStage_Player::AStage_Player()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CreateDefaultSubobject<UCascadeParticleSystemComponent>(TEXT("CameraComponent"));
+	
 
 
 
