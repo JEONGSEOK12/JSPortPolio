@@ -2,6 +2,9 @@
 
 
 #include "MyGameInstance.h"
+#include "MyObject.h"
+
+
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -27,10 +30,12 @@ UMyGameInstance::~UMyGameInstance()
 }
 
 
-TSubclassOf<AActor> UMyGameInstance::GetPlayerDatas()
+TSubclassOf<AActor> UMyGameInstance::GetPlayerActor(FName _Name)
 {
 	
-		//FSubClassData* FindTable = PlayerDatas->FindRow<FSubClassData>(_Name, _Name.ToString());
+	FMyObject* FindTable = PlayerDatas->FindRow<FMyObject>(_Name, _Name.ToString());
+	TSubclassOf<AActor> Player = FindTable->Body;
+		
 
-	//return FindTable;
+		return Player;
 }

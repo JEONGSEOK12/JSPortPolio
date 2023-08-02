@@ -40,7 +40,7 @@ void AStage_Player::BeginPlay()
 
 
 
-	AActor* Head = GetWorld()->SpawnActor<AActor>()
+	AHead = GetWorld()->SpawnActor<AActor>(Head);
 
 
 
@@ -72,6 +72,27 @@ void AStage_Player::Tick(float DeltaTime)
 	{
 		fJumpTime += DeltaTime;
 	}
+
+
+	if (bisGround)
+	{
+		FVector SetVector = GetActorUpVector();
+		SetVector.Normalize();
+		AHead->SetActorLocation(GetActorLocation() + SetVector * 100);
+		FQuat SetQuat = GetActorQuat();
+		AHead->SetActorRotation(SetQuat);
+	}
+	else
+	{
+
+
+		FVector DownVector = -AHead->GetActorUpVector();
+		DownVector.Normalize();
+
+		//SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
+	}
+
+
 }
 
 
@@ -159,10 +180,13 @@ void AStage_Player::MoveRight(float Val)
 	}
 	else
 	{
-		BodyRotation(ForVec, -RotSpeed * 2 * Val);
-		// Head->rotate()
-		
-		YRotTime += Val;
+		if (Val != 0.f)
+		{
+			BodyRotation(ForVec, -RotSpeed * 2 * Val);
+
+
+			YRotTime += Val;
+		}
 	}
 }
 
@@ -186,27 +210,36 @@ void AStage_Player::MoveForward(float Val)
 	}
 	else
 	{
-		BodyRotation(RitVec, RotSpeed * 2 * Val);
-		// Head->rotate()
+		if (Val != 0.f)
+		{
+			BodyRotation(RitVec, RotSpeed * 2 * Val);
+			// Head->rotate()
 
-		XRotTime += Val;
-		
+			XRotTime += Val;
+		}
 	}
 
 }
 
 void AStage_Player::BodyRotation(FVector Dir, double Speed)
 {
+
+
+
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
+	MyCurQuat = AHead->GetActorQuat();
+	MyCurQuat = MyCurQuat * AddQuat;
+	AHead->SetActorRotation(MyCurQuat);
+}
+
+void AStage_Player::GroundRotation(FVector Dir,double Speed)
+{	
 	Dir.Normalize();
 	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
 	SetActorRotation(MyCurQuat);
-}
-
-void AStage_Player::GroundRotation(FVector Dir,double Speed)
-{	
-	BodyRotation(Dir, Speed);
 
 }
 
@@ -218,11 +251,11 @@ void AStage_Player::PlayerJumpStart()
 
 void AStage_Player::PlayerJumpEnd()
 {	
-	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("UpBody"));
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("DownBody"));
 	USceneComponent* FindScene2 = Cast<USceneComponent>(Findid2[0]);
 
 	FVector JumpVec;
-	JumpVec = FindScene2->GetUpVector() * fJumpTime * 1000.0f;
+	JumpVec = FindScene2->GetUpVector() * fJumpTime * -1000.0f;
 
 	if (bRotated == true)
 	{

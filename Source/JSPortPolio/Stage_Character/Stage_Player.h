@@ -72,8 +72,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FQuat TestQuat2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body");
 	TSubclassOf<AActor> Head;
+
+	AActor* AHead;
 	
 	
 

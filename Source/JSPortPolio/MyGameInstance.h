@@ -19,7 +19,7 @@ public:
 	UMyGameInstance();
 	~UMyGameInstance();
 
-	TSubclassOf<AActor> GetPlayerDatas();
+	TSubclassOf<AActor> GetPlayerActor(FName _Name);
 
 private:
 	UPROPERTY()
