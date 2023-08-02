@@ -19,6 +19,8 @@ public:
 	UMyGameInstance();
 	~UMyGameInstance();
 
+	TSubclassOf<AActor> GetPlayerDatas();
+
 private:
 	UPROPERTY()
 	UDataTable* PlayerDatas;

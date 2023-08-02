@@ -36,6 +36,16 @@ void AStage_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &AStage_Player::LandGround);
 
+	UGameInstance* Inst = GetGameInstance();
+
+
+
+	AActor* Head = GetWorld()->SpawnActor<AActor>()
+
+
+
+
+
 }
 
 // Called every frame

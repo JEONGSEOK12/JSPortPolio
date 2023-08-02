@@ -25,3 +25,12 @@ UMyGameInstance::~UMyGameInstance()
 {
 
 }
+
+
+TSubclassOf<AActor> UMyGameInstance::GetPlayerDatas()
+{
+	
+		//FSubClassData* FindTable = PlayerDatas->FindRow<FSubClassData>(_Name, _Name.ToString());
+
+	//return FindTable;
+}
