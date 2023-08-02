@@ -28,25 +28,13 @@ void AStage_Player::BeginPlay()
 {
 	Super::BeginPlay();
 	Gravity.Set(0, 0, -1000);
-	GroundPoint.Set(0,0,300);
 	RotSpeed = 2;
-
 	XRotTime = 0;
 	YRotTime = 0;
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Collision"));
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &AStage_Player::LandGround);
-
-	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Player_Body"));
-	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
-	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &AStage_Player::OverlapGround);
-
-
-
-
-
-
 
 }
 
@@ -65,7 +53,10 @@ void AStage_Player::Tick(float DeltaTime)
 	{
 		//start effect
 	}
-
+	else
+	{
+		//end effect
+	}
 
 	if (bJumpPressed)
 	{
@@ -131,30 +122,10 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
-		GroundPoint = Hit.Location - (87 * GetActorUpVector());
 		bUseControllerRotationYaw = true;
 		XRotTime = 0;
 		YRotTime = 0;
 		bRotated = false;
-	}
-}
-
-void AStage_Player::OverlapGround(
-	UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult
-)
-{
-	if (OtherActor->ActorHasTag(TEXT("Terrain")))
-	{
-	
-	//GetMovementComponent()->Velocity = TestVec3;
-
-	int a = 0;
-
 	}
 }
 
@@ -179,8 +150,8 @@ void AStage_Player::MoveRight(float Val)
 	else
 	{
 		BodyRotation(ForVec, -RotSpeed * 2 * Val);
-
-
+		// Head->rotate()
+		
 		YRotTime += Val;
 	}
 }
@@ -206,6 +177,7 @@ void AStage_Player::MoveForward(float Val)
 	else
 	{
 		BodyRotation(RitVec, RotSpeed * 2 * Val);
+		// Head->rotate()
 
 		XRotTime += Val;
 		
@@ -226,8 +198,6 @@ void AStage_Player::GroundRotation(FVector Dir,double Speed)
 {	
 	BodyRotation(Dir, Speed);
 
-	//FVector CurLocation = GetActorLocation();
-	//SetActorLocation(CurLocation);
 }
 
 void AStage_Player::PlayerJumpStart()
@@ -246,7 +216,7 @@ void AStage_Player::PlayerJumpEnd()
 
 	if (bRotated == true)
 	{
-		//start effect
+		//spawn effect
 	}
 
 	GetMovementComponent()->Velocity = JumpVec;

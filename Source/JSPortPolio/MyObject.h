@@ -19,5 +19,16 @@ struct JSPORTPOLIO_API FMyObject : public FTableRowBase
 	~FMyObject() {}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-		int MyValue;
+		TSubclassOf<AActor> MyActor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int MyValue1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int MyValue2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int MyValue3;
+
+
+
+
+
 };

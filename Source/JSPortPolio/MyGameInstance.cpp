@@ -11,7 +11,7 @@ UMyGameInstance::UMyGameInstance()
 
 		if (DataTable.Succeeded())
 		{
-			MyDatas = DataTable.Object;
+			PlayerDatas = DataTable.Object;
 		}
 	}
 

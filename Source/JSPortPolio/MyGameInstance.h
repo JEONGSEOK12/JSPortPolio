@@ -21,6 +21,17 @@ public:
 
 private:
 	UPROPERTY()
-	UDataTable* MyDatas;
+	UDataTable* PlayerDatas;
+
+	UPROPERTY()
+	UDataTable* SubClassData;
+
+	UPROPERTY()
+	UDataTable* MeshDatas;
+
+	UPROPERTY()
+	UDataTable* MonsterDatas;
+
+
 
 };
