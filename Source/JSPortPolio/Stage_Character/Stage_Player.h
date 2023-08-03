@@ -72,12 +72,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FQuat TestQuat2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body");
-	TSubclassOf<AActor> Head;
+	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
+	TSubclassOf<ACharacter> Test;
 
-	AActor* AHead;
-	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
+	TSubclassOf<ACharacter> Head;
+
+	ACharacter* AHead;
 
 
 	// Called to bind functionality to input

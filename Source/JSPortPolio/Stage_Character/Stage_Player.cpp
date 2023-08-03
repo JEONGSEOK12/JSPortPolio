@@ -40,8 +40,13 @@ void AStage_Player::BeginPlay()
 
 
 
-	AHead = GetWorld()->SpawnActor<AActor>(Head);
+	
+	FVector BeginLoctaion;
+	BeginLoctaion.Set(100, 0, 200);
 
+	
+	AHead = GetWorld()->SpawnActor<ACharacter>(Head);
+	AHead->SetActorLocation(BeginLoctaion);
 
 
 
@@ -52,7 +57,7 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	AHead->GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
 	if (XRotTime > 60 || YRotTime > 60)
 	{
@@ -84,10 +89,13 @@ void AStage_Player::Tick(float DeltaTime)
 	}
 	else
 	{
-
+	
 
 		FVector DownVector = -AHead->GetActorUpVector();
 		DownVector.Normalize();
+		SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
+		FQuat SetQuat = AHead->GetActorQuat();
+		SetActorRotation(SetQuat);
 
 		//SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
 	}
@@ -151,7 +159,7 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	{
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
-		GetMovementComponent()->Velocity = ZeroVec;
+		AHead->GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 		bUseControllerRotationYaw = true;
 		XRotTime = 0;
@@ -262,7 +270,7 @@ void AStage_Player::PlayerJumpEnd()
 		//spawn effect
 	}
 
-	GetMovementComponent()->Velocity = JumpVec;
+	AHead->GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
 	bUseControllerRotationYaw = false;
 	bisGround = false;
