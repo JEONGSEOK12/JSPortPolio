@@ -35,5 +35,9 @@ private:
 	UDataTable* MonsterDatas;
 
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ClearLevel = 0;
+
 
 };

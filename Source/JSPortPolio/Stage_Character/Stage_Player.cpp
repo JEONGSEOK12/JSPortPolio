@@ -57,7 +57,7 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AHead->GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
 	if (XRotTime > 60 || YRotTime > 60)
 	{
@@ -93,9 +93,9 @@ void AStage_Player::Tick(float DeltaTime)
 
 		FVector DownVector = -AHead->GetActorUpVector();
 		DownVector.Normalize();
-		SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
+		//SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
 		FQuat SetQuat = AHead->GetActorQuat();
-		SetActorRotation(SetQuat);
+		//SetActorRotation(SetQuat);
 
 		//SetActorLocation(AHead->GetActorLocation() + DownVector * 100);
 	}
@@ -159,7 +159,7 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	{
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
-		AHead->GetMovementComponent()->Velocity = ZeroVec;
+		GetMovementComponent()->Velocity = ZeroVec;
 		bisGround = true;
 		bUseControllerRotationYaw = true;
 		XRotTime = 0;
@@ -270,7 +270,7 @@ void AStage_Player::PlayerJumpEnd()
 		//spawn effect
 	}
 
-	AHead->GetMovementComponent()->Velocity = JumpVec;
+	GetMovementComponent()->Velocity = JumpVec;
 	bJumpPressed = false;
 	bUseControllerRotationYaw = false;
 	bisGround = false;
