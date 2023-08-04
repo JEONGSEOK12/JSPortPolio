@@ -34,8 +34,6 @@ public:
 	void MoveForward(float Val);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	void PlayerJumpStart();
-	void PlayerJumpEnd();
 
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -43,24 +41,17 @@ public:
 	
 
 	void GroundRotation(FVector Dir,double Speed);
-	void BodyRotation(FVector Dir, double Speed);
 
 
 
-	bool bisGround;
 
 
 	FVector Gravity;
-	bool bJumpPressed;
-	bool bRotated;
+	
+
 	FQuat MyCurQuat;
 	float RotSpeed;
-	float fJumpTime;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	float XRotTime;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	float YRotTime;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
@@ -81,6 +72,11 @@ public:
 	TSubclassOf<ACharacter> Head;
 
 	ACharacter* AHead;
+
+
+
+	class AStage_Player_Head* Headptr;
+
 
 
 	// Called to bind functionality to input
