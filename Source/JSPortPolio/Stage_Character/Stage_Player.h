@@ -38,7 +38,7 @@ public:
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	
+	void PlayerJumpStart();
 
 	void GroundRotation(FVector Dir,double Speed);
 

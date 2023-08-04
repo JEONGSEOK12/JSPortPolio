@@ -47,7 +47,7 @@ public:
 
 
 	void HeadRotation(FVector Dir, double Speed);
-	void PlayerJumpStart();
+	
 	void PlayerJumpEnd();
 
 

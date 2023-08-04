@@ -50,10 +50,7 @@ void AStage_Player::BeginPlay()
 	Headptr->bisGround = false;
 	Headptr->PlayerPtr = this;
 
-	//APlayerController* controller = Cast<APlayerController>(GetController());
-	// controller->Possess(AHead);
-	//GetController()->Possess(Headptr);
-	//GetWorld()->GetFirstPlayerController()->Possess(AHead);
+	GetWorld()->GetFirstPlayerController()->Possess(AHead);
 
 
 }
@@ -123,7 +120,7 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 
-		
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 		
 		
 	}
@@ -138,7 +135,7 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &AStage_Player::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
 	
-	
+	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &AStage_Player::PlayerJumpStart);
 
 	
 }
@@ -217,6 +214,14 @@ void AStage_Player::GroundRotation(FVector Dir,double Speed)
 
 
 
+
+void AStage_Player::PlayerJumpStart()
+{
+	Headptr->bJumpPressed = true;
+
+	GetWorld()->GetFirstPlayerController()->Possess(AHead);
+
+}
 
 
 void AStage_Player::TurnAtRate(float Rate)

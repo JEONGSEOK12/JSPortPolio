@@ -93,7 +93,7 @@ void AStage_Player_Head::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &AStage_Player_Head::MoveForward);
 	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &AStage_Player_Head::MoveRight);
 
-	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &AStage_Player_Head::PlayerJumpStart);
+
 	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &AStage_Player_Head::PlayerJumpEnd);
 
 }
@@ -148,10 +148,6 @@ void AStage_Player_Head::MoveForward(float Val)
 }
 
 
-void AStage_Player_Head::PlayerJumpStart()
-{
-	bJumpPressed = true;
-}
 
 
 void AStage_Player_Head::PlayerJumpEnd()
