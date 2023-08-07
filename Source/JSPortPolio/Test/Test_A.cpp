@@ -20,11 +20,14 @@ void ATest_A::BeginPlay()
 	Super::BeginPlay();
 
 	Head = GetWorld()->SpawnActor<ATest_B>(MyHead);
-
-	FVector BeginLoc;
-	BeginLoc.Set(0, 0, 300);
 	
+	BeginLoc.Set(0, 0, 300);
 	Head->SetActorLocation(BeginLoc);
+
+	//FVector UpVec;
+	//UpVec.Set(0, 0, 100);
+	//
+	//GetCharacterMovement()->Velocity = UpVec;
 
 }
 
@@ -33,12 +36,10 @@ void ATest_A::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector UpVec;
-	UpVec.Set(0, 0, 10);
 
-
-	Head->GetCharacterMovement()->Velocity = UpVec;
-
+	//Head->GetCharacterMovement()->Velocity = UpVec;
+	//GetCharacterMovement()->Velocity = UpVec;
+	//Head->AddActorLocalOffset(UpVec);
 }
 
 // Called to bind functionality to input

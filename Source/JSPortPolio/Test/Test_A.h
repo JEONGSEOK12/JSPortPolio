@@ -27,6 +27,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
+	FVector BeginLoc;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
 	TSubclassOf<ACharacter> MyHead;
 

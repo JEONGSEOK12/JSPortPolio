@@ -40,6 +40,8 @@ public:
 
 	void PlayerJumpStart();
 
+	void PlayerJumpEnd();
+
 	void GroundRotation(FVector Dir,double Speed);
 
 

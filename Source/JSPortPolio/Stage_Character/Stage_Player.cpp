@@ -41,7 +41,7 @@ void AStage_Player::BeginPlay()
 
 
 	AHead = GetWorld()->SpawnActor<ACharacter>(Head);
-	AHead->SetActorLocation(GetActorLocation());
+	//AHead->SetActorLocation(GetActorLocation());
 
 	Headptr = Cast<AStage_Player_Head>(AHead);
 
@@ -50,7 +50,7 @@ void AStage_Player::BeginPlay()
 	Headptr->bisGround = false;
 	Headptr->PlayerPtr = this;
 
-	GetWorld()->GetFirstPlayerController()->Possess(AHead);
+	//GetWorld()->GetFirstPlayerController()->Possess(AHead);
 
 
 }
@@ -59,7 +59,7 @@ void AStage_Player::BeginPlay()
 void AStage_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
 	if (Headptr->XRotTime > 60 || Headptr->YRotTime > 60)
 	{
@@ -79,11 +79,11 @@ void AStage_Player::Tick(float DeltaTime)
 
 	if (Headptr->bisGround)
 	{
-		FVector SetVector = GetActorUpVector();
-		SetVector.Normalize();
-		AHead->SetActorLocation(GetActorLocation() + SetVector * 100);
-		FQuat SetQuat = GetActorQuat();
-		AHead->SetActorRotation(SetQuat);
+		//FVector SetVector = GetActorUpVector();
+		//SetVector.Normalize();
+		//AHead->SetActorLocation(GetActorLocation() + SetVector * 100);
+		//FQuat SetQuat = GetActorQuat();
+		//AHead->SetActorRotation(SetQuat);
 	}
 	else
 	{
@@ -136,6 +136,8 @@ void AStage_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &AStage_Player::LookUpAtRate);
 	
 	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &AStage_Player::PlayerJumpStart);
+	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &AStage_Player::PlayerJumpEnd);
+
 
 	
 }
@@ -153,7 +155,7 @@ void AStage_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		Headptr->XRotTime = 0;
 		Headptr->YRotTime = 0;
 		Headptr->bRotated = false;
-		GetWorld()->GetFirstPlayerController()->Possess(this);
+		//GetWorld()->GetFirstPlayerController()->Possess(this);
 
 	}
 }
@@ -164,7 +166,7 @@ void AStage_Player::MoveRight(float Val)
 	FVector ForVec;
 	ForVec.Set(1, 0, 0);
 
-	if (Headptr->bisGround)
+	if (!Headptr->bisGround)
 	{
 		if (Val != 0.f)
 		{
@@ -185,7 +187,7 @@ void AStage_Player::MoveForward(float Val)
 	FVector RitVec;
 	RitVec.Set(0, 1, 0);
 
-	if(Headptr->bisGround)
+	if(!Headptr->bisGround)
 	{
 		if (Val != 0.f)
 		{
@@ -219,9 +221,29 @@ void AStage_Player::PlayerJumpStart()
 {
 	Headptr->bJumpPressed = true;
 
-	GetWorld()->GetFirstPlayerController()->Possess(AHead);
+	//GetWorld()->GetFirstPlayerController()->Possess(AHead);
 
 }
+
+void AStage_Player::PlayerJumpEnd()
+{
+
+	FVector JumpVec;
+	JumpVec = GetActorUpVector() * Headptr->fJumpTime * 1000.0f;
+
+	if (Headptr->bRotated == true)
+	{
+		//spawn effect
+	}
+
+	GetMovementComponent()->Velocity = JumpVec;
+	Headptr->bJumpPressed = false;
+	bUseControllerRotationYaw = false;
+	Headptr->bisGround = false;
+	Headptr->fJumpTime = 0.f;
+}
+
+
 
 
 void AStage_Player::TurnAtRate(float Rate)

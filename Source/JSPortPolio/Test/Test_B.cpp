@@ -2,6 +2,9 @@
 
 
 #include "Test/Test_B.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
+
 
 // Sets default values
 ATest_B::ATest_B()
@@ -15,13 +18,21 @@ ATest_B::ATest_B()
 void ATest_B::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
+
 }
 
 // Called every frame
 void ATest_B::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	FVector UpVec;
+	UpVec.Set(0, 0, 100);
+
+	GetMovementComponent()->Velocity = UpVec;
+
 
 }
 

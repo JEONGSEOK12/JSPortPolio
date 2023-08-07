@@ -37,7 +37,7 @@ void AStage_Player_Head::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	
 	if (bJumpPressed)
 	{
@@ -58,11 +58,11 @@ void AStage_Player_Head::Tick(float DeltaTime)
 	}
 	else
 	{
-		FVector SetVector = GetActorUpVector();
-		SetVector.Normalize();
-		PlayerPtr->SetActorLocation(GetActorLocation() + -SetVector * 100,true);
-		FQuat SetQuat = GetActorQuat();
-		PlayerPtr->SetActorRotation(SetQuat);
+		//FVector SetVector = GetActorUpVector();
+		//SetVector.Normalize();
+		//PlayerPtr->SetActorLocation(GetActorLocation() + -SetVector * 100,true);
+		//FQuat SetQuat = GetActorQuat();
+		//PlayerPtr->SetActorRotation(SetQuat);
 	}
 
 	
@@ -120,7 +120,7 @@ void AStage_Player_Head::MoveRight(float Val)
 	{
 		if (Val != 0.f)
 		{
-			HeadRotation(ForVec, -RotSpeed * 2 * Val);
+			//HeadRotation(ForVec, -RotSpeed * 2 * Val);
 			YRotTime += Val;
 		}
 	}
