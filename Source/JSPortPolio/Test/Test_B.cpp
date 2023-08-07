@@ -34,6 +34,8 @@ void ATest_B::Tick(float DeltaTime)
 	GetMovementComponent()->Velocity = UpVec;
 
 
+
+
 }
 
 // Called to bind functionality to input
