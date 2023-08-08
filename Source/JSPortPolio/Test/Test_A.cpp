@@ -107,6 +107,17 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+
+
+
+		//if ()
+		//{
+		//
+		//}
+
+
+
+
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
