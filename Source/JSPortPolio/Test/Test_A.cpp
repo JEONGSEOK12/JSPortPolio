@@ -24,10 +24,16 @@ void ATest_A::BeginPlay()
 	MyBody = Cast<UCapsuleComponent>(FindArr[0]);
 	Casted_Body = Cast<AActor>(MyBody);
 
-	JumpPower = 100.0f;
+	JumpPower = 1000.0f;
 
 	bisGround = true;
 	
+	Gravity.Set(0, 0, -10);
+
+	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
+	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	FindScene1->OnComponentHit.AddDynamic(this, &ATest_A::LandGround);
+
 
 	
 
@@ -38,6 +44,8 @@ void ATest_A::BeginPlay()
 void ATest_A::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	GetMovementComponent()->Velocity += Gravity + DeltaTime;
 
 	if (bJumpPressed)
 	{
@@ -99,11 +107,11 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
-		//FVector ZeroVec;
-		//ZeroVec.Set(0, 0, 0);
-		//GetMovementComponent()->Velocity = ZeroVec;
+		FVector ZeroVec;
+		ZeroVec.Set(0, 0, 0);
+		GetMovementComponent()->Velocity = ZeroVec;
 		
-
+		bisGround = true;
 	}
 
 }
@@ -118,11 +126,14 @@ void ATest_A::PlayerJumpEnd()
 
 
 
-	FVector JumpVec = Casted_Body->GetActorUpVector() * fJumpTime * JumpPower;
+	FVector JumpVec = MyBody->GetUpVector() * fJumpTime * JumpPower;
 	GetMovementComponent()->Velocity = JumpVec;
 
 	fJumpTime = 0.0f;
 	bJumpPressed = false;
+
+
+	bisGround = false;
 }
 
 void ATest_A::GroundRotation(FVector Dir, double Speed)
@@ -141,11 +152,11 @@ void ATest_A::BodyRotation(FVector Dir, double Speed)
 	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
 	
 	
-	MyBodyQuat = Casted_Body->GetActorQuat();
+	MyBodyQuat = MyBody->GetComponentQuat();
 	MyBodyQuat = MyBodyQuat * AddQuat;
-	Casted_Body->SetActorRotation(MyBodyQuat);
+	MyBody->SetWorldRotation(MyBodyQuat);
 
-
+	
 }
 
 void ATest_A::MoveRight(float Val)
