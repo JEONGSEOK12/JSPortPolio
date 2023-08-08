@@ -28,6 +28,10 @@ void ATest_A::BeginPlay()
 
 	bisGround = true;
 	
+
+	
+
+
 }
 
 // Called every frame
