@@ -34,9 +34,10 @@ void ATest_A::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_A::LandGround);
 
-
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USceneComponent::StaticClass(), TEXT("Leg"));
+	Check_Scene = Cast<USceneComponent>(Findid2[0]);
 	
-
+	
 
 }
 
@@ -108,20 +109,23 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-
-
-		//if ()
-		//{
-		//
-		//}
-
-
-
+		FVector Distance = Check_Scene->GetComponentLocation() - GetActorLocation();
+		
+		if (Distance.Size()>=1.0f)
+		{
+			FVector CheckVec;
+			CheckVec = Check_Scene->GetComponentLocation();
+			FQuat BodyQuat;
+			BodyQuat = MyBody->GetComponentQuat();
+			SetActorLocation(CheckVec);
+			SetActorRotation(BodyQuat);
+			return;
+		}
 
 		FVector ZeroVec;
 		ZeroVec.Set(0, 0, 0);
 		GetMovementComponent()->Velocity = ZeroVec;
-		
+
 		bisGround = true;
 	}
 
@@ -180,11 +184,11 @@ void ATest_A::MoveRight(float Val)
 	{
 		if (bisGround)
 		{
-			GroundRotation(ForVec, -RotSpeed * 1 * Val);
+			GroundRotation(ForVec, RotSpeed * 1 * Val);
 		}
 		else
 		{
-			BodyRotation(ForVec, -RotSpeed * 1 * Val);
+			BodyRotation(ForVec, RotSpeed * 1 * Val);
 		}
 
 	}

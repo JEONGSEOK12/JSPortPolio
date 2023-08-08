@@ -30,17 +30,28 @@ void ATest_Player::BeginPlay()
 
 	Gravity.Set(0, 0, -1000);
 
-
-
 }
 
 // Called every frame
 void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	GetMovementComponent()->Velocity += Gravity * DeltaTime;
 
+	if (bisGround)
+	{	
+		FVector HeadLoc;
+		HeadLoc = GetActorLocation() + GetActorUpVector() * 100.0f;
+		
+		HeadPtr->SetActorLocation(HeadLoc);
+	}
+	else
+	{
+		FVector PlayerLoc;
+		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -100.0f;
 
+		SetActorLocation(PlayerLoc);
+	}
 
 
 }
@@ -138,15 +149,13 @@ void ATest_Player::MoveForward(float Val)
 void ATest_Player::PlayerJumpStart()
 {
 	HeadPtr->bJumpPressed = true;
-	GetWorld()->GetFirstPlayerController()->Possess(HeadPtr);
-
-
+	//GetWorld()->GetFirstPlayerController()->Possess(HeadPtr);
 }
 
 void ATest_Player::PlayerJumpEnd()
 {
 	FVector JumpVec;
-	JumpVec = HeadPtr->GetActorUpVector() * HeadPtr->fJumpTime * -1000.0f;
+	JumpVec = HeadPtr->GetActorUpVector() * HeadPtr->fJumpTime * 100.0f;
 	HeadPtr->GetMovementComponent()->Velocity = JumpVec;
 	HeadPtr->fJumpTime = 0;
 

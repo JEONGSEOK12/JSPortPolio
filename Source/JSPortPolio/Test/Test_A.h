@@ -36,6 +36,7 @@ public:
 	FQuat MyCurQuat;
 	FQuat MyBodyQuat;
 	UCapsuleComponent* MyBody;
+	USceneComponent* Check_Scene;
 	AActor* Casted_Body;
 	float RotSpeed;
 	bool bisGround;
