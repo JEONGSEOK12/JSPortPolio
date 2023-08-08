@@ -42,6 +42,8 @@ void ATest_Player::Tick(float DeltaTime)
 	{	
 		FVector HeadLoc;
 		HeadLoc = GetActorLocation() + GetActorUpVector() * 100.0f;
+
+
 		
 		HeadPtr->SetActorLocation(HeadLoc);
 	}
