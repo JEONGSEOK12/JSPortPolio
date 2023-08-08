@@ -18,8 +18,9 @@ ATest_B::ATest_B()
 void ATest_B::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
+	FVector UpVec;
+	UpVec.Set(0, 0, 10000);
+	AddMovementInput(UpVec);
 
 }
 
@@ -29,7 +30,7 @@ void ATest_B::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	FVector UpVec;
-	UpVec.Set(0, 0, 100);
+	UpVec.Set(0, 0, 1000);
 
 	GetMovementComponent()->Velocity = UpVec;
 

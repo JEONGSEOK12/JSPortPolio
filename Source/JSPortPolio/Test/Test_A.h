@@ -26,14 +26,43 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn", meta = (AllowPrivateAccess = "true"))
+		float BaseTurnRate = 45.0f;
 
-	FVector BeginLoc;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
-	TSubclassOf<ACharacter> MyHead;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn", meta = (AllowPrivateAccess = "true"))
+		float BaseLookUpRate = 45.0f;
 
 
+	FQuat MyCurQuat;
+	FQuat MyBodyQuat;
+	UCapsuleComponent* MyBody;
+	AActor* Casted_Body;
+	float RotSpeed;
+	bool bisGround;
+	FVector Gravity;
+	bool bJumpPressed;
+	float fJumpTime;
+	float JumpPower;
 
-	class ATest_B* Head;
 
+
+
+
+
+	void MoveRight(float Val);
+	void MoveForward(float Val);
+	void TurnAtRate(float Rate);
+	void LookUpAtRate(float Rate);
+
+	UFUNCTION()
+		void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	void PlayerJumpStart();
+
+	void PlayerJumpEnd();
+
+	void GroundRotation(FVector Dir, double Speed);
+
+	void BodyRotation(FVector Dir, double Speed);
+	
 };

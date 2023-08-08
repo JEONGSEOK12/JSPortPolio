@@ -61,11 +61,13 @@ void ATest_Head::HeadRotation(FVector Dir, double Speed)
 void ATest_Head::PlayerJumpEnd()
 {
 	FVector JumpVec;
-	JumpVec = GetActorUpVector() * fJumpTime * 100.0f;
+	JumpVec = GetActorUpVector() * 1000.0f; //fJumpTime * 100.0f;
 	GetMovementComponent()->Velocity = JumpVec;
+	//AddMovementInput(JumpVec);
+	
 	fJumpTime = 0;
 	//AddActorLocalOffset(JumpVec);
-	GetWorld()->GetFirstPlayerController()->Possess(PlayerPtr);
+	//GetWorld()->GetFirstPlayerController()->Possess(PlayerPtr);
 }
 
 
