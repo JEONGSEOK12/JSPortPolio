@@ -46,7 +46,10 @@ void ATest_Player::Tick(float DeltaTime)
 	GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	
-
+	if (bJumpPressed)
+	{
+		fJumpTime += DeltaTime;
+	}
 
 
 	if (bisGround)
@@ -133,6 +136,17 @@ void ATest_Player::GroundRotation(FVector Dir, double Speed)
 	SetActorRotation(MyCurQuat);
 }
 
+void ATest_Player::HeadRotation(FVector Dir, double Speed)
+{
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
+	MyHeadCurQuat = HeadPtr->GetActorQuat();
+	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
+	HeadPtr->SetActorRotation(MyHeadCurQuat);
+}
+
+
+
 void ATest_Player::MoveRight(float Val)
 {
 	FVector ForVec;
@@ -149,7 +163,7 @@ void ATest_Player::MoveRight(float Val)
 	{
 		if (Val != 0.f)
 		{
-		HeadPtr->HeadRotation(ForVec, -RotSpeed * 1 * Val);
+		HeadRotation(ForVec, -RotSpeed * 1 * Val);
 		}
 	}
 }
@@ -170,7 +184,7 @@ void ATest_Player::MoveForward(float Val)
 	{
 		if (Val != 0.f)
 		{
-		HeadPtr->HeadRotation(RitVec, RotSpeed * 1 * Val);
+		HeadRotation(RitVec, RotSpeed * 1 * Val);
 		}
 	}
 
@@ -181,7 +195,7 @@ void ATest_Player::MoveForward(float Val)
 
 void ATest_Player::PlayerJumpStart()
 {
-	HeadPtr->bJumpPressed = true;
+	bJumpPressed = true;
 	//GetWorld()->GetFirstPlayerController()->Possess(HeadPtr);
 }
 
@@ -192,9 +206,9 @@ void ATest_Player::PlayerJumpEnd()
 	bisGround = false;
 
 	FVector JumpVec;
-	JumpVec = HeadPtr->GetActorUpVector() * HeadPtr->fJumpTime * 100.0f;
+	JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * 100.0f;
 	HeadPtr->GetMovementComponent()->Velocity = JumpVec;
-	HeadPtr->fJumpTime = 0;
+	fJumpTime = 0;
 
 	
 	bisGround = false;

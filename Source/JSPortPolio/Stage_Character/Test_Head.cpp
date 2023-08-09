@@ -28,10 +28,7 @@ void ATest_Head::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bJumpPressed)
-	{
-		fJumpTime += DeltaTime;
-	}
+
 
 }
 
@@ -41,34 +38,8 @@ void ATest_Head::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 
-	static bool bBindingsAdded = false;
-	if (!bBindingsAdded)
-	{
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
-	}
-	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &ATest_Head::PlayerJumpEnd);
 }
 
-void ATest_Head::HeadRotation(FVector Dir, double Speed)
-{
-	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
-	MyCurQuat = GetActorQuat();
-	MyCurQuat = MyCurQuat * AddQuat;
-	SetActorRotation(MyCurQuat);
-}
-
-void ATest_Head::PlayerJumpEnd()
-{
-	FVector JumpVec;
-	JumpVec = GetActorUpVector() * 1000.0f; //fJumpTime * 100.0f;
-	GetMovementComponent()->Velocity = JumpVec;
-	//AddMovementInput(JumpVec);
-	
-	fJumpTime = 0;
-	//AddActorLocalOffset(JumpVec);
-	//GetWorld()->GetFirstPlayerController()->Possess(PlayerPtr);
-}
 
 
 

@@ -48,6 +48,12 @@ public:
 
 	FQuat MyCurQuat;
 
+	FQuat MyHeadCurQuat;
+
+	bool bJumpPressed;
+
+	float fJumpTime;
+
 	bool bisGround = false;
 
 	float RotSpeed;
@@ -65,7 +71,7 @@ public:
 	void MoveForward(float Val);
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
-
+	void HeadRotation(FVector Dir, double Speed);
 
 
 };

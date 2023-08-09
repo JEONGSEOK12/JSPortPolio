@@ -28,13 +28,7 @@ public:
 
 
 	class ATest_Player* PlayerPtr;
-	FQuat MyCurQuat;
-	bool bJumpPressed;
-	float fJumpTime;
-
-
-	void HeadRotation(FVector Dir, double Speed);
-	void PlayerJumpEnd();
+	
 
 
 
