@@ -27,9 +27,13 @@ void ATest_Player::BeginPlay()
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
 
-	RotSpeed = 2;
+	fJumpPower = 500.0f;
+	fMaxJumpTime = 2.0f;
 
-	Gravity.Set(0, 0, -100);
+
+	RotSpeed = 4;
+
+	Gravity.Set(0, 0, -500);
 
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
@@ -48,7 +52,10 @@ void ATest_Player::Tick(float DeltaTime)
 	
 	if (bJumpPressed)
 	{
-		fJumpTime += DeltaTime;
+		if(fJumpTime<= fMaxJumpTime)
+		{
+			fJumpTime += DeltaTime;
+		}
 	}
 
 
@@ -117,7 +124,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	{
 		if(DebugTime>0.5f)
 		{
-
+			
 			bisGround = true;
 			DebugTime = 0.f;
 		}
@@ -201,17 +208,16 @@ void ATest_Player::PlayerJumpStart()
 
 void ATest_Player::PlayerJumpEnd()
 {
+	if(bisGround)
+	{
+		FVector JumpVec;
+		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
+		HeadPtr->GetMovementComponent()->Velocity = JumpVec;
+		fJumpTime = 0;
+		bJumpPressed = false;
 
-
-	bisGround = false;
-
-	FVector JumpVec;
-	JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * 100.0f;
-	HeadPtr->GetMovementComponent()->Velocity = JumpVec;
-	fJumpTime = 0;
-
-	
-	bisGround = false;
+		bisGround = false;
+	}
 
 }
 

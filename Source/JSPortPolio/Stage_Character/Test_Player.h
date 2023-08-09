@@ -52,7 +52,12 @@ public:
 
 	bool bJumpPressed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
+
+	float fMaxJumpTime;
+
+	float fJumpPower;
 
 	bool bisGround = false;
 
