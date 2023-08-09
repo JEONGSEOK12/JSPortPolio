@@ -67,7 +67,7 @@ public:
 	void LookUpAtRate(float Rate);
 
 	UFUNCTION()
-		void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void PlayerJumpStart();
 

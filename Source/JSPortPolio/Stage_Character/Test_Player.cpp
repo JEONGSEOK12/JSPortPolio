@@ -3,6 +3,7 @@
 
 #include "Stage_Character/Test_Player.h"
 #include "Stage_Character/Test_Head.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -22,13 +23,19 @@ void ATest_Player::BeginPlay()
 	FVector SetLoc;
 	SetLoc.Set(0, 0, 200);
 	Spawned_Head = GetWorld()->SpawnActor<ACharacter>(Test_Head);
-	Spawned_Head->SetActorLocation(SetLoc);
+	Spawned_Head->SetActorLocation(GetActorLocation());
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
 
 	RotSpeed = 2;
 
 	Gravity.Set(0, 0, -1000);
+
+
+	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
+	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
+
 
 }
 
@@ -43,16 +50,17 @@ void ATest_Player::Tick(float DeltaTime)
 		FVector HeadLoc;
 		HeadLoc = GetActorLocation() + GetActorUpVector() * 100.0f;
 
-
-		
 		HeadPtr->SetActorLocation(HeadLoc);
+		HeadPtr->SetActorRotation(GetActorQuat());
+
 	}
 	else
 	{
 		FVector PlayerLoc;
-		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -100.0f;
+		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -140.0f;
 
 		SetActorLocation(PlayerLoc);
+		SetActorRotation(HeadPtr->GetActorQuat());
 	}
 
 
@@ -92,6 +100,16 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &ATest_Player::PlayerJumpEnd);
 }
+
+void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+
+		bisGround = true;
+	}
+}
+
 
 void ATest_Player::GroundRotation(FVector Dir, double Speed)
 {
@@ -162,7 +180,7 @@ void ATest_Player::PlayerJumpEnd()
 	HeadPtr->fJumpTime = 0;
 
 	
-
+	bisGround = false;
 
 }
 

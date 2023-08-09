@@ -36,6 +36,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
 	TSubclassOf<ACharacter> Test_Head;
 
+	UFUNCTION()
+	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+
+
+
 	ACharacter* Spawned_Head;
 
 	class ATest_Head* HeadPtr;
