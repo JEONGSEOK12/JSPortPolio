@@ -109,22 +109,33 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		FVector Distance = Check_Scene->GetComponentLocation() - GetActorLocation();
-		
-		if (Distance.Size()>=1.0f)
-		{
-			FVector CheckVec;
-			CheckVec = Check_Scene->GetComponentLocation();
-			FQuat BodyQuat;
-			BodyQuat = MyBody->GetComponentQuat();
-			SetActorLocation(CheckVec);
-			SetActorRotation(BodyQuat);
-			return;
-		}
+		FVector Distance = GetActorLocation() - MyBody->GetComponentLocation();
+		FVector CompLoc = MyBody->GetComponentLocation() + (-MyBody->GetUpVector()) * Distance.Size();
+		FVector DisCheck = GetActorLocation() - (CompLoc);
 
-		FVector ZeroVec;
-		ZeroVec.Set(0, 0, 0);
-		GetMovementComponent()->Velocity = ZeroVec;
+
+
+		if (DisCheck.Size()>=5.0f)
+		{
+			//FVector LastVec = GetMovementComponent()->Velocity;
+
+
+			SetActorLocation(CompLoc);
+			FQuat LastQuat = MyBody->GetComponentQuat();
+			SetActorRotation(MyBody->GetComponentQuat());
+			MyBody->SetWorldRotation(LastQuat);
+			
+			//GetMovementComponent()->Velocity = LastVec;
+		
+		}
+		else
+		{
+			FVector ZeroVec;
+			ZeroVec.Set(0, 0, 0);
+			GetMovementComponent()->Velocity = ZeroVec;
+
+		}
+		
 
 		bisGround = true;
 	}

@@ -45,6 +45,17 @@ public:
 	float fJumpTime;
 	float JumpPower;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec2;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec3;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	double TestD1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	double TestD2;
+
 
 
 
