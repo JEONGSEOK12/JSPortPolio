@@ -117,7 +117,7 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 		if (DisCheck.Size()>=5.0f)
 		{
-			//FVector LastVec = GetMovementComponent()->Velocity;
+			
 
 
 			SetActorLocation(CompLoc);
@@ -125,7 +125,7 @@ void ATest_A::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 			SetActorRotation(MyBody->GetComponentQuat());
 			MyBody->SetWorldRotation(LastQuat);
 			
-			//GetMovementComponent()->Velocity = LastVec;
+			
 		
 		}
 		else
