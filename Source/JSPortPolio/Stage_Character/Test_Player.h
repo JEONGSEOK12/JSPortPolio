@@ -54,7 +54,9 @@ public:
 
 	FVector Gravity;
 
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float DebugTime;
+
 
 	void GroundRotation(FVector Dir, double Speed);
 	void TurnAtRate(float Rate);

@@ -29,7 +29,7 @@ void ATest_Player::BeginPlay()
 
 	RotSpeed = 2;
 
-	Gravity.Set(0, 0, -1000);
+	Gravity.Set(0, 0, -100);
 
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
@@ -44,11 +44,16 @@ void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	
+
+
 
 	if (bisGround)
 	{	
+
 		FVector HeadLoc;
-		HeadLoc = GetActorLocation() + GetActorUpVector() * 100.0f;
+		HeadLoc = GetActorLocation() + GetActorUpVector() * 140.0f;
 
 		HeadPtr->SetActorLocation(HeadLoc);
 		HeadPtr->SetActorRotation(GetActorQuat());
@@ -56,6 +61,8 @@ void ATest_Player::Tick(float DeltaTime)
 	}
 	else
 	{
+		DebugTime += DeltaTime;
+
 		FVector PlayerLoc;
 		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -140.0f;
 
@@ -105,8 +112,14 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+		if(DebugTime>0.5f)
+		{
 
-		bisGround = true;
+			bisGround = true;
+			DebugTime = 0.f;
+		}
+		
+
 	}
 }
 
@@ -157,7 +170,7 @@ void ATest_Player::MoveForward(float Val)
 	{
 		if (Val != 0.f)
 		{
-		HeadPtr->HeadRotation(RitVec, -RotSpeed * 1 * Val);
+		HeadPtr->HeadRotation(RitVec, RotSpeed * 1 * Val);
 		}
 	}
 
@@ -174,6 +187,10 @@ void ATest_Player::PlayerJumpStart()
 
 void ATest_Player::PlayerJumpEnd()
 {
+
+
+	bisGround = false;
+
 	FVector JumpVec;
 	JumpVec = HeadPtr->GetActorUpVector() * HeadPtr->fJumpTime * 100.0f;
 	HeadPtr->GetMovementComponent()->Velocity = JumpVec;
