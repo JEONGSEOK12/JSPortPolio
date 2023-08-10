@@ -30,9 +30,9 @@ void ATest_Player::BeginPlay()
 
 	fJumpPower = 500.0f;
 	fMaxJumpTime = 2.0f;
-
-
-	RotSpeed = 4;
+	RotCheckX = 0.f;
+	RotCheckY = 0.f;
+	RotSpeed = 4.f;
 
 	Gravity.Set(0, 0, -500);
 
@@ -138,6 +138,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 			
+			RotCheckX = 0.f;
+			RotCheckY = 0.f;
 			bisGround = true;
 			DebugTime = 0.f;
 		}
@@ -149,37 +151,33 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 void ATest_Player::Bodyoverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	if (OtherActor->ActorHasTag(TEXT("Terrain")))
-	{
-			TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes; // 히트 가능한 오브젝트 유형들.
-			TEnumAsByte<EObjectTypeQuery> Terrain = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic); //히트 필터
-			ObjectTypes.Add(Terrain);
-			FHitResult HitResult;
-			TArray<AActor*> IgnoreActors;
-
-			bool isHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), HeadPtr->GetActorLocation(), HeadPtr->GetActorLocation(), 100.0f, ObjectTypes, false, IgnoreActors, EDrawDebugTrace::ForDuration, HitResult, true);
-
-
-			//if (isHit)
-			//{
-			//	bisGround = false;
-			//
-			//	TestVec = HitResult.Normal;
-			//	TestVec.Normalize();
-			//
-			//
-			//	HeadPtr->GetMovementComponent()->Velocity = TestVec * 1000.0f;
-			//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
-			//}
-
-
-			
-
-		}
-
-
-
-	}
+	//if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	//{
+	//		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes; // 히트 가능한 오브젝트 유형들.
+	//		TEnumAsByte<EObjectTypeQuery> Terrain = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic); //히트 필터
+	//		ObjectTypes.Add(Terrain);
+	//		FHitResult HitResult;
+	//		TArray<AActor*> IgnoreActors;
+	//
+	//		bool isHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), HeadPtr->GetActorLocation(), HeadPtr->GetActorLocation(), 100.0f, ObjectTypes, false, IgnoreActors, EDrawDebugTrace::ForDuration, HitResult, true);
+	//
+	//
+	//		if (isHit)
+	//		{
+	//			bisGround = false;
+	//		
+	//			TestVec1 = HitResult.ImpactNormal;
+	//			TestVec1.Normalize();
+	//			
+	//		
+	//		
+	//			HeadPtr->GetMovementComponent()->Velocity = TestVec1 * 1000.0f;
+	//			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
+	//		}
+	//
+	//
+	//		
+	//}
 
 }
 
@@ -221,6 +219,8 @@ void ATest_Player::MoveRight(float Val)
 		if (Val != 0.f)
 		{
 		HeadRotation(ForVec, -RotSpeed * 1 * Val);
+
+		RotCheckX += RotSpeed * 1 * Val;
 		}
 	}
 }
@@ -242,6 +242,8 @@ void ATest_Player::MoveForward(float Val)
 		if (Val != 0.f)
 		{
 		HeadRotation(RitVec, RotSpeed * 1 * Val);
+
+		RotCheckY += RotSpeed * 1 * Val;
 		}
 	}
 
@@ -253,7 +255,7 @@ void ATest_Player::MoveForward(float Val)
 void ATest_Player::PlayerJumpStart()
 {
 	bJumpPressed = true;
-	//GetWorld()->GetFirstPlayerController()->Possess(HeadPtr);
+
 }
 
 void ATest_Player::PlayerJumpEnd()

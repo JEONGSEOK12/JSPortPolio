@@ -65,15 +65,23 @@ public:
 
 	float RotSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float RotCheckX;
+	float RotCheckY;
+
 	FVector Gravity;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float DebugTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	FVector TestVec;
+	FVector TestVec1;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec2;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	AActor* TestAc;
 
 	void GroundRotation(FVector Dir, double Speed);
 	void TurnAtRate(float Rate);

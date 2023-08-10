@@ -3,6 +3,7 @@
 
 #include "Stage_Character/Test_Head.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Stage_Character/Test_Player.h"
 
 
@@ -21,6 +22,11 @@ void ATest_Head::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Body"));
+	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Head::BodyHit);
+
+
 }
 
 // Called every frame
@@ -45,6 +51,23 @@ void ATest_Head::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 
 
+void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	
 
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+
+		PlayerPtr->bisGround = false;
+		PlayerPtr->TestVec1 = Hit.ImpactNormal;
+		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 500.0f;
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
+
+		PlayerPtr->RotCheckX = 0.f;
+		PlayerPtr->RotCheckY = 0.f;
+
+
+	}
+}
 
 
