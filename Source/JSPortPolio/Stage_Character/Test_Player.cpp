@@ -54,8 +54,8 @@ void ATest_Player::BeginPlay()
 void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
+	//HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
 	
 	if (bJumpPressed)
 	{
@@ -78,6 +78,10 @@ void ATest_Player::Tick(float DeltaTime)
 	}
 	else
 	{
+		GetMovementComponent()->Velocity += Gravity * DeltaTime;
+		HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
+
+
 		DebugTime += DeltaTime;
 
 		FVector PlayerLoc;
@@ -131,6 +135,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	{
 		if(DebugTime>0.5f)
 		{
+			SetActorLocation(GetActorLocation());
+			GetMovementComponent()->Velocity.Set(0, 0, 0);
 			
 			bisGround = true;
 			DebugTime = 0.f;
