@@ -39,6 +39,8 @@ public:
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
+	UFUNCTION()
+	void Bodyoverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 
 
@@ -67,6 +69,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float DebugTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec;
+
 
 
 	void GroundRotation(FVector Dir, double Speed);

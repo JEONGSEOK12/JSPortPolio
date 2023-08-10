@@ -5,6 +5,7 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 
@@ -39,6 +40,12 @@ void ATest_Player::BeginPlay()
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
+
+
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Body"));
+	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
+	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Bodyoverlap);
+
 
 
 }
@@ -131,6 +138,49 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		
 
 	}
+}
+
+void ATest_Player::Bodyoverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+
+
+
+		//if (bisGround)
+		{
+	
+
+			TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes; // 히트 가능한 오브젝트 유형들.
+			TEnumAsByte<EObjectTypeQuery> Terrain = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic); //히트 필터
+			ObjectTypes.Add(Terrain);
+			FHitResult HitResult;
+			TArray<AActor*> IgnoreActors;
+
+
+			//TestVec = SweepResult.ImpactPoint;
+			bool isHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), HeadPtr->GetActorLocation(), HeadPtr->GetActorLocation(), 100.0f, ObjectTypes, false, IgnoreActors, EDrawDebugTrace::ForDuration, HitResult, true);
+
+
+			if (isHit)
+			{
+				bisGround = false;
+
+				TestVec = HitResult.Normal;
+				TestVec.Normalize();
+
+
+				HeadPtr->GetMovementComponent()->Velocity = TestVec * 1000.0f;
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
+			}
+
+		}
+
+
+
+	}
+
 }
 
 
