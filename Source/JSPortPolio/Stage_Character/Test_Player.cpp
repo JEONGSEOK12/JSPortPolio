@@ -5,6 +5,7 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
