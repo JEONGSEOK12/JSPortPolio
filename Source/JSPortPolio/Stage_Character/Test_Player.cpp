@@ -5,6 +5,7 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -32,8 +33,13 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
-	RotVFX = Cast<UNiagaraComponent>(Findid2[0]);
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USphereComponent::StaticClass(), TEXT("Measure"));
+	USphereComponent* FindScene2 = Cast<USphereComponent>(Findid2[0]);
+	FindScene1->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Measure);
+
+
+	TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
+	RotVFX = Cast<UNiagaraComponent>(Findid3[0]);
 	
 
 	RotVFX->SetVisibility(false);
@@ -43,7 +49,7 @@ void ATest_Player::BeginPlay()
 	RotCheckX = 0.f;
 	RotCheckY = 0.f;
 	RotSpeed = 3.f;
-	SpinCheck = 600.f;
+	SpinCheck = 6.f;
 	fBasicJumpPoawer = 300.f;
 
 
@@ -59,6 +65,7 @@ void ATest_Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	fDeltaSec = DeltaTime;
+
 
 	if (bJumpPressed)
 	{
@@ -141,12 +148,17 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+
+		
+
+
 		if(DebugTime>0.5f)
 		{
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
-			
 
+			TestVec2 = GetActorLocation();
+			TestVec3 = TestVec1 - TestVec2;
 			
 		
 			RotCheckX = 0.f;
@@ -158,6 +170,22 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 	}
 }
+
+void ATest_Player::Measure(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
+{
+
+	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	{
+
+		TestVec1 = GetActorLocation();
+
+	}
+
+}
+
+
+
+
 
 
 void ATest_Player::GroundRotation(FVector Dir, double Speed)
@@ -200,7 +228,7 @@ void ATest_Player::MoveRight(float Val)
 		{
 		HeadRotation(ForVec, -RotSpeed * 1 * Val);
 
-		RotCheckX += RotSpeed * 1 * Val;
+		RotCheckX += RotSpeed * fDeltaSec * Val;
 		}
 	}
 }
@@ -223,7 +251,7 @@ void ATest_Player::MoveForward(float Val)
 		{
 		HeadRotation(RitVec, RotSpeed * 1 * Val);
 
-		RotCheckY += RotSpeed * 1 * Val;
+		RotCheckY += RotSpeed * fDeltaSec * Val;
 		}
 	}
 

@@ -38,6 +38,9 @@ public:
 	TSubclassOf<ACharacter> Test_Head;
 
 	UFUNCTION()
+	void Measure(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 
@@ -72,15 +75,11 @@ public:
 
 	UNiagaraComponent* RotVFX;
 
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float RotCheckX;
 	float RotCheckY;
 
 	FVector Gravity;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float DebugTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
@@ -88,6 +87,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FVector TestVec2;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	FVector TestVec3;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	AActor* TestAc;
