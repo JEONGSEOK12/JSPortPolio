@@ -48,9 +48,6 @@ void ATest_Head::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 
 
-
-
-
 void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	
@@ -60,9 +57,8 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 		PlayerPtr->bisGround = false;
 		PlayerPtr->TestVec1 = Hit.ImpactNormal;
-		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 500.0f;
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
-
+		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 500.0f + GetMovementComponent()->Velocity * 0.5f;
+	
 		PlayerPtr->RotCheckX = 0.f;
 		PlayerPtr->RotCheckY = 0.f;
 

@@ -5,6 +5,7 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "NiagaraComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -33,6 +34,7 @@ void ATest_Player::BeginPlay()
 	RotCheckX = 0.f;
 	RotCheckY = 0.f;
 	RotSpeed = 4.f;
+	SpinCheck = 600.f;
 
 	Gravity.Set(0, 0, -500);
 
@@ -41,11 +43,10 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-
-	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Body"));
-	UCapsuleComponent* FindScene2 = Cast<UCapsuleComponent>(Findid2[0]);
-	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Bodyoverlap);
-
+	//TArray<UActorComponent*> Findid1 = GetComponentsByTag(Uniagara::StaticClass(), TEXT("RotVFX"));
+	//UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	
+	
 
 
 }
@@ -65,6 +66,11 @@ void ATest_Player::Tick(float DeltaTime)
 		}
 	}
 
+	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
+	{
+		//visible vfx
+	}
+	
 
 	if (bisGround)
 	{	
@@ -138,6 +144,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 			
+
+			//hidden vfx
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;
@@ -146,39 +154,6 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		
 
 	}
-}
-
-void ATest_Player::Bodyoverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-
-	//if (OtherActor->ActorHasTag(TEXT("Terrain")))
-	//{
-	//		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes; // 히트 가능한 오브젝트 유형들.
-	//		TEnumAsByte<EObjectTypeQuery> Terrain = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic); //히트 필터
-	//		ObjectTypes.Add(Terrain);
-	//		FHitResult HitResult;
-	//		TArray<AActor*> IgnoreActors;
-	//
-	//		bool isHit = UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), HeadPtr->GetActorLocation(), HeadPtr->GetActorLocation(), 100.0f, ObjectTypes, false, IgnoreActors, EDrawDebugTrace::ForDuration, HitResult, true);
-	//
-	//
-	//		if (isHit)
-	//		{
-	//			bisGround = false;
-	//		
-	//			TestVec1 = HitResult.ImpactNormal;
-	//			TestVec1.Normalize();
-	//			
-	//		
-	//		
-	//			HeadPtr->GetMovementComponent()->Velocity = TestVec1 * 1000.0f;
-	//			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Checked!"));
-	//		}
-	//
-	//
-	//		
-	//}
-
 }
 
 

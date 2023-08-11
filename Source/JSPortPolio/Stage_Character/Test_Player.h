@@ -39,9 +39,6 @@ public:
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	UFUNCTION()
-	void Bodyoverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 
 
 	ACharacter* Spawned_Head;
@@ -64,6 +61,10 @@ public:
 	bool bisGround = false;
 
 	float RotSpeed;
+
+	float SpinCheck;
+
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float RotCheckX;
