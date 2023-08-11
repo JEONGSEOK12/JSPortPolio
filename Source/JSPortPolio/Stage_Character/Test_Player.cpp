@@ -56,8 +56,7 @@ void ATest_Player::BeginPlay()
 void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//GetMovementComponent()->Velocity += Gravity * DeltaTime;
-	//HeadPtr->GetMovementComponent()->Velocity += Gravity * DeltaTime;
+
 	
 	if (bJumpPressed)
 	{
