@@ -29,12 +29,13 @@ void ATest_Player::BeginPlay()
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
 
-	fJumpPower = 500.0f;
+	fJumpPower = 300.0f;
 	fMaxJumpTime = 2.0f;
 	RotCheckX = 0.f;
 	RotCheckY = 0.f;
 	RotSpeed = 4.f;
 	SpinCheck = 600.f;
+	fBasicJumpPoawer = 300.f;
 
 	Gravity.Set(0, 0, -500);
 
@@ -239,7 +240,7 @@ void ATest_Player::PlayerJumpEnd()
 	{
 		FVector JumpVec;
 		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
-		HeadPtr->GetMovementComponent()->Velocity = JumpVec;
+		HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector()*fBasicJumpPoawer;
 		fJumpTime = 0;
 		bJumpPressed = false;
 

@@ -54,6 +54,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	float fJumpTime;
 
+	float fBasicJumpPoawer;
+
 	float fMaxJumpTime;
 
 	float fJumpPower;
