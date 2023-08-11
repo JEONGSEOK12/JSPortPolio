@@ -58,7 +58,7 @@ public:
 
 	bool bJumpPressed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	UPROPERTY(BlueprintReadWrite, EditAnywhere);
 	float fJumpTime;
 
 	float fBasicJumpPoawer;

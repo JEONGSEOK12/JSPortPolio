@@ -35,7 +35,7 @@ void ATest_Player::BeginPlay()
 
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USphereComponent::StaticClass(), TEXT("Measure"));
 	USphereComponent* FindScene2 = Cast<USphereComponent>(Findid2[0]);
-	FindScene1->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Measure);
+	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Measure);
 
 
 	TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
@@ -157,8 +157,6 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
-			TestVec2 = GetActorLocation();
-			TestVec3 = TestVec1 - TestVec2;
 			
 		
 			RotCheckX = 0.f;
@@ -171,13 +169,17 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	}
 }
 
+
 void ATest_Player::Measure(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
 {
+
+	FVector Test123 = GetActorLocation();
+
 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		TestVec1 = GetActorLocation();
+	
 
 	}
 
@@ -204,8 +206,6 @@ void ATest_Player::HeadRotation(FVector Dir, double Speed)
 	MyHeadCurQuat = HeadPtr->GetActorQuat();
 	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
-
-	
 }
 
 
@@ -219,14 +219,14 @@ void ATest_Player::MoveRight(float Val)
 	{
 		if (Val != 0.f)
 		{	
-		GroundRotation(ForVec, -RotSpeed * 1 * Val);
+		GroundRotation(ForVec, -RotSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-		HeadRotation(ForVec, -RotSpeed * 1 * Val);
+		HeadRotation(ForVec, -RotSpeed * Val);
 
 		RotCheckX += RotSpeed * fDeltaSec * Val;
 		}
@@ -242,14 +242,14 @@ void ATest_Player::MoveForward(float Val)
 	{
 		if (Val != 0.f)
 		{
-		GroundRotation(RitVec, RotSpeed * 1 * Val);
+		GroundRotation(RitVec, RotSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-		HeadRotation(RitVec, RotSpeed * 1 * Val);
+		HeadRotation(RitVec, RotSpeed * Val);
 
 		RotCheckY += RotSpeed * fDeltaSec * Val;
 		}
