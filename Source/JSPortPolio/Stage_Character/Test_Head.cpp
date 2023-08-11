@@ -59,9 +59,9 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 		PlayerPtr->bisGround = false;
 		PlayerPtr->TestVec1 = Hit.ImpactNormal;
-		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 500.0f + GetMovementComponent()->Velocity * 0.5f;
+		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + GetMovementComponent()->Velocity * 0.5f;
 	
-
+		PlayerPtr->bisSpined = false;
 		PlayerPtr->RotVFX->SetVisibility(false);
 		PlayerPtr->RotCheckX = 0.f;
 		PlayerPtr->RotCheckY = 0.f;

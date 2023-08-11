@@ -44,16 +44,18 @@ void ATest_Player::BeginPlay()
 
 	RotVFX->SetVisibility(false);
 
-	fJumpPower = 300.0f;
+	fMeasured = 0.f;
+	bMeasure = false;
+	fJumpPower = 600.0f;
 	fMaxJumpTime = 2.0f;
 	RotCheckX = 0.f;
 	RotCheckY = 0.f;
-	RotSpeed = 3.f;
-	SpinCheck = 6.f;
-	fBasicJumpPoawer = 300.f;
+	RotSpeed = 4.f;
+	SpinCheck = 5.f;
+	fBasicJumpPoawer = 600.f;
 
 
-	Gravity.Set(0, 0, -500);
+	Gravity.Set(0, 0, -1200);
 	
 
 
@@ -77,9 +79,14 @@ void ATest_Player::Tick(float DeltaTime)
 
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
+		bisSpined = true;
 		RotVFX->SetVisibility(true);
 	}
 	
+	if (bMeasure)
+	{
+		fMeasured += DeltaTime;
+	}
 
 	if (bisGround)
 	{	
@@ -158,7 +165,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
 			
-		
+			
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;
@@ -178,8 +185,7 @@ void ATest_Player::Measure(UPrimitiveComponent* OverlappedComponent,AActor* Othe
 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
-
-	
+		bMeasure = true;
 
 	}
 
@@ -272,12 +278,26 @@ void ATest_Player::PlayerJumpEnd()
 	{
 		FVector JumpVec;
 		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
-		HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector()*fBasicJumpPoawer;
-		fJumpTime = 0;
-		bJumpPressed = false;
 
+		if(bisSpined)
+		{
+			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+		}
+		else
+		{
+			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+		}
+
+
+		fMeasured = 0.f;
+		fJumpTime = 0.f;
+		bJumpPressed = false;
+		bMeasure = false;
 		bisGround = false;
 	}
+
+
+	
 
 }
 

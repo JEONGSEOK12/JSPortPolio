@@ -58,7 +58,10 @@ public:
 
 	bool bJumpPressed;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere);
+	bool bMeasure;
+
+	float fMeasured;
+
 	float fJumpTime;
 
 	float fBasicJumpPoawer;
@@ -68,6 +71,8 @@ public:
 	float fJumpPower;
 
 	bool bisGround = false;
+
+	bool bisSpined;
 
 	float RotSpeed;
 
