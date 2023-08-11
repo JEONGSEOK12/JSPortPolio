@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "NiagaraComponent.h"
 #include "Test_Player.generated.h"
 
 UCLASS()
@@ -45,6 +46,9 @@ public:
 
 	class ATest_Head* HeadPtr;
 
+
+	float fDeltaSec;
+
 	FQuat MyCurQuat;
 
 	FQuat MyHeadCurQuat;
@@ -65,6 +69,8 @@ public:
 	float RotSpeed;
 
 	float SpinCheck;
+
+	UNiagaraComponent* RotVFX;
 
 
 

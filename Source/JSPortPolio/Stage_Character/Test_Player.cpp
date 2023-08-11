@@ -5,8 +5,6 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "NiagaraFunctionLibrary.h"
-#include "NiagaraComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -30,24 +28,26 @@ void ATest_Player::BeginPlay()
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
 
-	fJumpPower = 300.0f;
-	fMaxJumpTime = 2.0f;
-	RotCheckX = 0.f;
-	RotCheckY = 0.f;
-	RotSpeed = 4.f;
-	SpinCheck = 600.f;
-	fBasicJumpPoawer = 300.f;
-
-	Gravity.Set(0, 0, -500);
-
-
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-	//TArray<UActorComponent*> Findid1 = GetComponentsByTag(Uniagara::StaticClass(), TEXT("RotVFX"));
-	//UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
+	RotVFX = Cast<UNiagaraComponent>(Findid2[0]);
 	
+
+	RotVFX->SetVisibility(false);
+
+	fJumpPower = 300.0f;
+	fMaxJumpTime = 2.0f;
+	RotCheckX = 0.f;
+	RotCheckY = 0.f;
+	RotSpeed = 3.f;
+	SpinCheck = 600.f;
+	fBasicJumpPoawer = 300.f;
+
+
+	Gravity.Set(0, 0, -500);
 	
 
 
@@ -58,7 +58,8 @@ void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	fDeltaSec = DeltaTime;
+
 	if (bJumpPressed)
 	{
 		if(fJumpTime<= fMaxJumpTime)
@@ -69,7 +70,7 @@ void ATest_Player::Tick(float DeltaTime)
 
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
-		//visible vfx
+		RotVFX->SetVisibility(true);
 	}
 	
 
@@ -146,7 +147,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 			
 
-			//hidden vfx
+			
+		
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;
@@ -161,7 +163,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 void ATest_Player::GroundRotation(FVector Dir, double Speed)
 {
 	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
+	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
 	SetActorRotation(MyCurQuat);
@@ -170,10 +172,12 @@ void ATest_Player::GroundRotation(FVector Dir, double Speed)
 void ATest_Player::HeadRotation(FVector Dir, double Speed)
 {
 	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * 0.01f);
+	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
 	MyHeadCurQuat = HeadPtr->GetActorQuat();
 	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
+
+	
 }
 
 

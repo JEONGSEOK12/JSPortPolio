@@ -55,10 +55,14 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
+
+
 		PlayerPtr->bisGround = false;
 		PlayerPtr->TestVec1 = Hit.ImpactNormal;
 		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 500.0f + GetMovementComponent()->Velocity * 0.5f;
 	
+
+		PlayerPtr->RotVFX->SetVisibility(false);
 		PlayerPtr->RotCheckX = 0.f;
 		PlayerPtr->RotCheckY = 0.f;
 
