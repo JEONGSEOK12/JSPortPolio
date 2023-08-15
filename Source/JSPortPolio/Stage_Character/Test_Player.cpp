@@ -161,6 +161,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		if(DebugTime>0.5f)
 		{
+			TestVec1 = GetMovementComponent()->Velocity;
+
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
@@ -281,7 +283,7 @@ void ATest_Player::PlayerJumpEnd()
 
 		if(bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size() + HeadPtr->GetActorUpVector() * 200;
 		}
 		else
 		{
