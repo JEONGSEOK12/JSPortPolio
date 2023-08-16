@@ -167,7 +167,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
 			
-			bisSpined = false;
+			
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;
