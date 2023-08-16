@@ -29,7 +29,7 @@ public:
 	UFUNCTION()
 	void BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-
+	void BodyBounce(const FHitResult& Hit);
 
 
 	class ATest_Player* PlayerPtr;

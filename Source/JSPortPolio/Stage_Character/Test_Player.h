@@ -37,9 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
 	TSubclassOf<ACharacter> Test_Head;
 
-	UFUNCTION()
-	void Measure(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+	
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
@@ -57,10 +55,6 @@ public:
 	FQuat MyHeadCurQuat;
 
 	bool bJumpPressed;
-
-	bool bMeasure;
-
-	float fMeasured;
 
 	float fJumpTime;
 

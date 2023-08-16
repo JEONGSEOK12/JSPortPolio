@@ -33,19 +33,12 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-	TArray<UActorComponent*> Findid2 = GetComponentsByTag(USphereComponent::StaticClass(), TEXT("Measure"));
-	USphereComponent* FindScene2 = Cast<USphereComponent>(Findid2[0]);
-	FindScene2->OnComponentBeginOverlap.AddDynamic(this, &ATest_Player::Measure);
-
-
 	TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
 	RotVFX = Cast<UNiagaraComponent>(Findid3[0]);
 	
 
 	RotVFX->SetVisibility(false);
 
-	fMeasured = 0.f;
-	bMeasure = false;
 	fJumpPower = 600.0f;
 	fMaxJumpTime = 2.0f;
 	RotCheckX = 0.f;
@@ -83,10 +76,7 @@ void ATest_Player::Tick(float DeltaTime)
 		RotVFX->SetVisibility(true);
 	}
 	
-	if (bMeasure)
-	{
-		fMeasured += DeltaTime;
-	}
+	
 
 	if (bisGround)
 	{	
@@ -177,24 +167,6 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 	}
 }
-
-
-void ATest_Player::Measure(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
-{
-
-	FVector Test123 = GetActorLocation();
-
-
-	if (OtherActor->ActorHasTag(TEXT("Terrain")))
-	{
-		bMeasure = true;
-
-	}
-
-}
-
-
-
 
 
 
@@ -290,11 +262,10 @@ void ATest_Player::PlayerJumpEnd()
 			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
 		}
 
-
-		fMeasured = 0.f;
+		bisSpined = false;
+		RotVFX->SetVisibility(false);
 		fJumpTime = 0.f;
 		bJumpPressed = false;
-		bMeasure = false;
 		bisGround = false;
 	}
 

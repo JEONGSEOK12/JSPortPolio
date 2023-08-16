@@ -54,20 +54,33 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+		BodyBounce(Hit);
 
+	}
 
+	if (OtherActor->ActorHasTag(TEXT("Monster")))
+	{
+		BodyBounce(Hit);
 
-		PlayerPtr->bisGround = false;
-		PlayerPtr->TestVec1 = Hit.ImpactNormal;
-		GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + GetMovementComponent()->Velocity * 0.5f;
-	
-		PlayerPtr->bisSpined = false;
-		PlayerPtr->RotVFX->SetVisibility(false);
-		PlayerPtr->RotCheckX = 0.f;
-		PlayerPtr->RotCheckY = 0.f;
 
 
 	}
+
+
 }
 
 
+void ATest_Head::BodyBounce(const FHitResult& Hit)
+{
+
+	PlayerPtr->bisGround = false;
+	PlayerPtr->TestVec1 = Hit.ImpactNormal;
+	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + GetMovementComponent()->Velocity * 0.5f;
+
+	PlayerPtr->bisSpined = false;
+	PlayerPtr->RotVFX->SetVisibility(false);
+	PlayerPtr->RotCheckX = 0.f;
+	PlayerPtr->RotCheckY = 0.f;
+
+
+}
