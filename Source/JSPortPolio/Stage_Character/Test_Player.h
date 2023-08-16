@@ -79,6 +79,8 @@ public:
 
 	FVector Gravity;
 
+	FVector CurVec;
+
 	float DebugTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");

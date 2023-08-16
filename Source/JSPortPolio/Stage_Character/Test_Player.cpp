@@ -46,7 +46,7 @@ void ATest_Player::BeginPlay()
 	RotSpeed = 4.f;
 	SpinCheck = 5.f;
 	fBasicJumpPoawer = 600.f;
-
+	CurVec.Set(0,0,0);
 
 	Gravity.Set(0, 0, -1200);
 	
@@ -151,7 +151,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		if(DebugTime>0.5f)
 		{
-			TestVec1 = GetMovementComponent()->Velocity;
+			CurVec = GetMovementComponent()->Velocity;
 
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
@@ -255,7 +255,7 @@ void ATest_Player::PlayerJumpEnd()
 
 		if(bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size() + HeadPtr->GetActorUpVector() * 200;
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * CurVec.Size() + HeadPtr->GetActorUpVector() * 200;
 		}
 		else
 		{

@@ -7,3 +7,9 @@
 velocity 쓰는 이유 -> 점프는 가속 움직임이 아닌 감속 움직임이라 처음에 빠르게 움직이는 표현이 안됨
 		     addmovementiput한계값 높혀도 원하는 만큼의 속도가 안나옴.
 
+
+
+
+
+
+https://docs.google.com/spreadsheets/d/1Nr-0rMyyRzNCGVFgRkdBashbN8wBYgWTZmkYPRmIPd4/htmlview
