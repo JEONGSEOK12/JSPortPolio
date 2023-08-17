@@ -13,5 +13,10 @@ UCLASS()
 class JSPORTPOLIO_API APlayerHUD : public AHUD
 {
 	GENERATED_BODY()
+
+
+	void BeginPlay();
 	
+
+	//TSubclassOf<UUserWidget> MainWidget;
 };
