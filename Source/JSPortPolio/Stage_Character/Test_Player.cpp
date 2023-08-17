@@ -146,26 +146,43 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		
-
-
 		if(DebugTime>0.5f)
 		{
 			CurVec = GetMovementComponent()->Velocity;
 
 			SetActorLocation(GetActorLocation());
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
-
-			
-			
+	
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;
 			DebugTime = 0.f;
 		}
-		
 
 	}
+
+	if (OtherActor->ActorHasTag(TEXT("Monster")))
+	{
+
+		if (DebugTime > 0.5f)
+		{
+			CurVec = GetMovementComponent()->Velocity;
+
+			SetActorLocation(GetActorLocation());
+			GetMovementComponent()->Velocity.Set(0, 0, 0);
+			
+			HeadPtr->SetActorLocation(GetActorLocation());
+			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
+
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
+
+			RotCheckX = 0.f;
+			RotCheckY = 0.f;
+			DebugTime = 0.f;
+		}
+
+	}
+
 }
 
 
