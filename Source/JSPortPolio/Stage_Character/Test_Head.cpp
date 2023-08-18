@@ -54,6 +54,7 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Terrain")));
 		BodyBounce(Hit);
 
 	}

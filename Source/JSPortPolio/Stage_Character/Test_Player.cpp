@@ -145,7 +145,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		if(DebugTime>0.5f)
 		{
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Terrain Land")));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Terrain Land")));
 
 			CurVec = GetMovementComponent()->Velocity;
 
