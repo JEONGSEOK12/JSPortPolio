@@ -39,16 +39,12 @@ void ATest_Player::BeginPlay()
 
 	RotVFX->SetVisibility(false);
 
-	fJumpPower = 600.0f;
-	fMaxJumpTime = 2.0f;
-	RotCheckX = 0.f;
-	RotCheckY = 0.f;
-	RotSpeed = 4.f;
-	SpinCheck = 5.f;
-	fBasicJumpPoawer = 600.f;
-	CurVec.Set(0,0,0);
-
-	Gravity.Set(0, 0, -1200);
+	//fJumpPower = 600.0f;
+	//fMaxJumpTime = 2.0f;
+	//RotSpeed = 4.f;
+	//SpinCheck = 5.f;
+	//fBasicJumpPoawer = 600.f;
+	//Gravity.Set(0, 0, -200);
 	
 
 
@@ -148,9 +144,14 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		if(DebugTime>0.5f)
 		{
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Terrain Land")));
+
 			CurVec = GetMovementComponent()->Velocity;
 
-			SetActorLocation(GetActorLocation());
+			
+
+
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 	
 			RotCheckX = 0.f;
@@ -168,11 +169,11 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		{
 			CurVec = GetMovementComponent()->Velocity;
 
-			SetActorLocation(GetActorLocation());
-			GetMovementComponent()->Velocity.Set(0, 0, 0);
-			
-			HeadPtr->SetActorLocation(GetActorLocation());
-			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
+			//SetActorLocation(GetActorLocation());
+			//GetMovementComponent()->Velocity.Set(0, 0, 0);
+			//
+			//HeadPtr->SetActorLocation(GetActorLocation());
+			//HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 
 			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
 

@@ -58,26 +58,27 @@ public:
 
 	float fJumpTime;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float fBasicJumpPoawer;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float fMaxJumpTime;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float fJumpPower;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	float RotSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	FVector Gravity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	float SpinCheck;
 
 	bool bisGround = false;
 
 	bool bisSpined;
 
-	float RotSpeed;
-
-	float SpinCheck;
-
 	UNiagaraComponent* RotVFX;
 
 	float RotCheckX;
 	float RotCheckY;
-
-	FVector Gravity;
 
 	FVector CurVec;
 
