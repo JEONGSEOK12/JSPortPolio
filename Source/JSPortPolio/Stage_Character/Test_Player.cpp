@@ -95,7 +95,7 @@ void ATest_Player::Tick(float DeltaTime)
 		FVector PlayerLoc;
 		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -140.0f;
 
-		SetActorLocation(PlayerLoc);
+		SetActorLocation(PlayerLoc,true);
 		SetActorRotation(HeadPtr->GetActorQuat());
 	}
 
