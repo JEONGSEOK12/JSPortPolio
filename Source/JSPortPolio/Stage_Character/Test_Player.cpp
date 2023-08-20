@@ -80,7 +80,7 @@ void ATest_Player::Tick(float DeltaTime)
 		FVector HeadLoc;
 		HeadLoc = GetActorLocation() + GetActorUpVector() * 140.0f;
 
-		HeadPtr->SetActorLocation(HeadLoc);
+		HeadPtr->SetActorLocation(HeadLoc,true);
 		HeadPtr->SetActorRotation(GetActorQuat());
 
 	}
@@ -142,7 +142,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		if(DebugTime>0.5f)
+		if(DebugTime>0.1f)
 		{
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Terrain Land")));
@@ -165,7 +165,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	if (OtherActor->ActorHasTag(TEXT("Monster")))
 	{
 
-		if (DebugTime > 0.5f)
+		if (DebugTime > 0.1f)
 		{
 			CurVec = GetMovementComponent()->Velocity;
 
