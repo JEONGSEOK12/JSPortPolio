@@ -96,6 +96,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	AActor* TestAc;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
+	float Testf;
+
+
 	void GroundRotation(FVector Dir, double Speed);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);

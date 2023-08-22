@@ -33,11 +33,11 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-	TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
-	RotVFX = Cast<UNiagaraComponent>(Findid3[0]);
-	
-
-	RotVFX->SetVisibility(false);
+	//TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
+	//RotVFX = Cast<UNiagaraComponent>(Findid3[0]);
+	//
+	//
+	//RotVFX->SetVisibility(false);
 
 	//fJumpPower = 600.0f;
 	//fMaxJumpTime = 2.0f;
@@ -57,6 +57,16 @@ void ATest_Player::Tick(float DeltaTime)
 
 	fDeltaSec = DeltaTime;
 
+	TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
+	double TestD = TestVec1.Z;
+
+	Testf += DeltaTime;
+	if(Testf>=0.1f && TestD != 0.f)
+	{
+		Testf = 0.f;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Vec is %f"), TestD));
+	}
+
 
 	if (bJumpPressed)
 	{
@@ -69,7 +79,7 @@ void ATest_Player::Tick(float DeltaTime)
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
-		RotVFX->SetVisibility(true);
+		//RotVFX->SetVisibility(true);
 	}
 	
 	
@@ -151,7 +161,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 			
 
-
+			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 	
 			RotCheckX = 0.f;
@@ -168,7 +178,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		if (DebugTime > 0.1f)
 		{
 			CurVec = GetMovementComponent()->Velocity;
-
+			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			//SetActorLocation(GetActorLocation());
 			//GetMovementComponent()->Velocity.Set(0, 0, 0);
 			//
@@ -273,7 +283,7 @@ void ATest_Player::PlayerJumpEnd()
 
 		if(bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * CurVec.Size() + HeadPtr->GetActorUpVector() * 200;
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Z;
 		}
 		else
 		{
@@ -281,7 +291,7 @@ void ATest_Player::PlayerJumpEnd()
 		}
 
 		bisSpined = false;
-		RotVFX->SetVisibility(false);
+		//RotVFX->SetVisibility(false);
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;

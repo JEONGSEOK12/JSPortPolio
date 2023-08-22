@@ -54,6 +54,7 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
+
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Terrain")));
 		BodyBounce(Hit);
 
@@ -74,12 +75,17 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 void ATest_Head::BodyBounce(const FHitResult& Hit)
 {
 
+
+
 	PlayerPtr->bisGround = false;
 	PlayerPtr->TestVec1 = Hit.ImpactNormal;
+
+	GetMovementComponent()->Velocity.Set(0, 0, 0);
+
 	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + GetMovementComponent()->Velocity * 0.5f;
 
 	PlayerPtr->bisSpined = false;
-	PlayerPtr->RotVFX->SetVisibility(false);
+	//PlayerPtr->RotVFX->SetVisibility(false);
 	PlayerPtr->RotCheckX = 0.f;
 	PlayerPtr->RotCheckY = 0.f;
 
