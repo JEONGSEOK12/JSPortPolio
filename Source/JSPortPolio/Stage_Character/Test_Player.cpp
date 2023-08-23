@@ -61,7 +61,7 @@ void ATest_Player::Tick(float DeltaTime)
 
 	fDeltaSec = DeltaTime;
 	FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
-	double TestD = TTT.Size();
+	TestD = TTT.Size();
 
 	Testf += DeltaTime;
 	if(Testf>=0.1f && TestD != 0.f)
@@ -180,6 +180,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 	
+			HeadPtr->HitPower = 0.f;
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
 			bisGround = true;

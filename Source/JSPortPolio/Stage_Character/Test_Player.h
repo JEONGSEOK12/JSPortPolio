@@ -85,6 +85,8 @@ public:
 
 	float DebugTime;
 
+	double TestD;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	FVector TestVec1;
 

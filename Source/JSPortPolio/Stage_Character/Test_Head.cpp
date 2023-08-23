@@ -37,13 +37,9 @@ void ATest_Head::Tick(float DeltaTime)
 
 	if (HitPower >= 1.0f)
 	{
-		Rotation(RotVec, HitPower/200 * DeltaTime );
-		HitPower -= HitPower * DeltaTime ;
-		
-		if (HitPower <= 1.0f)
-		{
-			HitPower = 0.f;
-		}
+		Rotation(RotVec, HitPower/100 * DeltaTime );
+		HitPower -= HitPower * DeltaTime + 100.f * DeltaTime;
+
 
 	}
 
@@ -76,7 +72,11 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Terrain")));
+		HitPower = PlayerPtr->TestD;
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Power is %f"), HitPower));
+
+
 		BodyBounce(Hit);
 
 
@@ -85,7 +85,7 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 		CurVec.Normalize();
 		RotVec = FVector::CrossProduct(ImpactVec,CurVec);
 		
-		HitPower = GetMovementComponent()->Velocity.Size();
+		
 
 	}
 
