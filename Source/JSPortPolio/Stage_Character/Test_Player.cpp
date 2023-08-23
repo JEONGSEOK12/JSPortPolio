@@ -5,6 +5,7 @@
 #include "Stage_Character/Test_Head.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PhysicsVolume.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -28,6 +29,9 @@ void ATest_Player::BeginPlay()
 	Spawned_Head->SetActorLocation(GetActorLocation());
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
+
+	GetMovementComponent()->GetPhysicsVolume()->FluidFriction = 0;
+
 
 	TArray<UActorComponent*> Findid1 = GetComponentsByTag(UCapsuleComponent::StaticClass(), TEXT("Leg"));
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
