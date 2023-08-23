@@ -60,9 +60,8 @@ void ATest_Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	fDeltaSec = DeltaTime;
-
-	TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
-	double TestD = TestVec1.Z;
+	FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
+	double TestD = TTT.Size();
 
 	Testf += DeltaTime;
 	if(Testf>=0.1f && TestD != 0.f)
@@ -159,7 +158,13 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		if(DebugTime>0.1f)
 		{
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Terrain Land")));
+
+			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
+			double Tes = TestVec1.Size();
+
+			
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Terrain Land Power is %f"), Tes));
 
 			CurVec = GetMovementComponent()->Velocity;
 
@@ -287,11 +292,21 @@ void ATest_Player::PlayerJumpEnd()
 
 		if(bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Z;
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size();
+
+			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
+			double Tes = TTT.Size();
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
 		}
 		else
 		{
 			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+
+			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
+			double Tes = TTT.Size();
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
 		}
 
 		bisSpined = false;
@@ -299,6 +314,9 @@ void ATest_Player::PlayerJumpEnd()
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;
+
+
+		
 	}
 
 

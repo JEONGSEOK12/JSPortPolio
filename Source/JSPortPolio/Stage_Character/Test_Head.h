@@ -30,11 +30,16 @@ public:
 	void BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void BodyBounce(const FHitResult& Hit);
-
+	
+	void Rotation(FVector Dir, double Speed);
 
 	class ATest_Player* PlayerPtr;
-	
 
+	FVector RotVec;
+
+	FQuat MyCurQuat;
+
+	double RotSpeed;
 
 
 };

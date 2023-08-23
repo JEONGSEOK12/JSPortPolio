@@ -26,6 +26,7 @@ void ATest_Head::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Head::BodyHit);
 
+	RotSpeed = 4;
 
 }
 
@@ -34,7 +35,11 @@ void ATest_Head::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (RotVec.Size() >= 1.0f)
+	{
+		Rotation(RotVec, GetActorQuat().W);
 
+	}
 
 }
 
@@ -44,6 +49,16 @@ void ATest_Head::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 
+}
+
+
+void ATest_Head::Rotation(FVector Dir, double Speed)
+{
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed);	
+	MyCurQuat = GetActorQuat();
+	MyCurQuat = MyCurQuat * AddQuat;
+	SetActorRotation(MyCurQuat);
 }
 
 
@@ -57,6 +72,10 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Terrain")));
 		BodyBounce(Hit);
+		FVector ImpactVec = Hit.ImpactNormal;
+		FVector CurVec = GetMovementComponent()->Velocity;
+		CurVec.Normalize();
+		RotVec = CurVec - ImpactVec;
 
 	}
 
@@ -80,9 +99,11 @@ void ATest_Head::BodyBounce(const FHitResult& Hit)
 	PlayerPtr->bisGround = false;
 	PlayerPtr->TestVec1 = Hit.ImpactNormal;
 
+	FVector Vec = GetMovementComponent()->Velocity;
+
 	GetMovementComponent()->Velocity.Set(0, 0, 0);
 
-	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + GetMovementComponent()->Velocity * 0.5f;
+	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + Vec * 0.5f;
 
 	PlayerPtr->bisSpined = false;
 	//PlayerPtr->RotVFX->SetVisibility(false);
