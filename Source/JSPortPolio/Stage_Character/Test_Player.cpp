@@ -127,8 +127,13 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveForward", EKeys::W, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveForward", EKeys::S, -1.f));
+
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::A, -1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::D, 1.f));
+
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::E, 1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::Q, -1.f));
+
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurn", EKeys::MouseX, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
@@ -140,6 +145,8 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &ATest_Player::MoveForward);
 	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &ATest_Player::MoveRight);
+	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::Rotate);
+
 	PlayerInputComponent->BindAxis("PlayerTurn", this, &ATest_Player::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::AddControllerPitchInput);
@@ -272,6 +279,29 @@ void ATest_Player::MoveForward(float Val)
 		}
 	}
 
+}
+
+void ATest_Player::Rotate(float Val)
+{
+	FVector RotVec;
+	RotVec.Set(0, 0, 1);
+	
+	if (bisGround)
+	{
+		if (Val != 0.f)
+		{
+		GroundRotation(RotVec, RotSpeed * Val);
+		}
+	}
+	else
+	{
+		if (Val != 0.f)
+		{
+		HeadRotation(RotVec, RotSpeed * Val);
+
+		RotCheckZ += RotSpeed * fDeltaSec * Val;
+		}
+	}
 }
 
 

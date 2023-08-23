@@ -79,6 +79,7 @@ public:
 
 	float RotCheckX;
 	float RotCheckY;
+	float RotCheckZ;
 
 	FVector CurVec;
 
@@ -105,6 +106,7 @@ public:
 	void LookUpAtRate(float Rate);
 	void MoveRight(float Val);
 	void MoveForward(float Val);
+	void Rotate(float Val);
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
 	void HeadRotation(FVector Dir, double Speed);

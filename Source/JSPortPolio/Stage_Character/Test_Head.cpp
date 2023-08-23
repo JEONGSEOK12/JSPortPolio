@@ -37,7 +37,7 @@ void ATest_Head::Tick(float DeltaTime)
 
 	if (HitPower >= 1.0f)
 	{
-		Rotation(RotVec, HitPower/100 * DeltaTime );
+		Rotation(RotVec, HitPower/200 * DeltaTime );
 		HitPower -= HitPower * DeltaTime ;
 		
 		if (HitPower <= 1.0f)
