@@ -26,7 +26,7 @@ void ATest_Head::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Head::BodyHit);
 
-	RotSpeed = 4;
+
 
 }
 
@@ -35,9 +35,15 @@ void ATest_Head::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (RotVec.Size() >= 1.0f)
+	if (HitPower >= 1.0f)
 	{
-		Rotation(RotVec, GetActorQuat().W);
+		Rotation(RotVec, HitPower/100 * DeltaTime );
+		HitPower -= HitPower * DeltaTime ;
+		
+		if (HitPower <= 1.0f)
+		{
+			HitPower = 0.f;
+		}
 
 	}
 
@@ -72,10 +78,14 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Terrain")));
 		BodyBounce(Hit);
-		FVector ImpactVec = Hit.ImpactNormal;
+
+
+		FVector ImpactVec = Hit.ImpactPoint - GetActorLocation();
 		FVector CurVec = GetMovementComponent()->Velocity;
 		CurVec.Normalize();
-		RotVec = CurVec - ImpactVec;
+		RotVec = FVector::CrossProduct(ImpactVec,CurVec);
+		
+		HitPower = GetMovementComponent()->Velocity.Size();
 
 	}
 
