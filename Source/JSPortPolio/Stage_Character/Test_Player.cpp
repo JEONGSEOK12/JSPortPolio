@@ -162,8 +162,20 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
+
 		if(DebugTime>0.1f)
 		{
+
+			if (!bJumpPressed)
+			{
+				bisGround = true;
+
+				HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
+				GetMovementComponent()->Velocity.Set(0, 0, 0);
+
+				PlayerJumpEnd();
+				return;
+			}
 
 
 			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
