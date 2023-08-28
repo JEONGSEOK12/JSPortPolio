@@ -21,6 +21,8 @@ public:
 
 	TSubclassOf<AActor> GetPlayerActor(FName _Name);
 
+	struct FMonsterDatas* GetMonsterData(FName _Name);
+
 private:
 	UPROPERTY()
 	UDataTable* PlayerDatas;
@@ -31,8 +33,13 @@ private:
 	UPROPERTY()
 	UDataTable* MeshDatas;
 
+
+
+public:
+
 	UPROPERTY()
 	UDataTable* MonsterDatas;
+
 
 
 public:

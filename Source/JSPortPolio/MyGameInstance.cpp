@@ -3,7 +3,7 @@
 
 #include "MyGameInstance.h"
 #include "MyObject.h"
-
+#include <Datas/MonsterDatas.h>
 
 
 UMyGameInstance::UMyGameInstance()
@@ -17,6 +17,20 @@ UMyGameInstance::UMyGameInstance()
 			PlayerDatas = DataTable.Object;
 		}
 	}
+
+
+
+	FString DataPath = TEXT("/Script/Engine.DataTable'/Game/Data/MonsterDatas.MonsterDatas'");
+	ConstructorHelpers::FObjectFinder<UDataTable> DataTable(*DataPath);
+
+	if (DataTable.Succeeded())
+	{
+		MonsterDatas = DataTable.Object;
+	}
+
+
+
+
 
 }
 
@@ -38,4 +52,22 @@ TSubclassOf<AActor> UMyGameInstance::GetPlayerActor(FName _Name)
 		
 
 		return Player;
+}
+
+
+FMonsterDatas* UMyGameInstance::GetMonsterData(FName _Name)
+{
+	if (nullptr == MonsterDatas)
+	{
+		return nullptr;
+	}
+
+	FMonsterDatas* FindTable = MonsterDatas->FindRow<FMonsterDatas>(_Name, _Name.ToString());
+
+	if (nullptr == FindTable)
+	{
+		return nullptr;
+	}
+
+	return FindTable;
 }

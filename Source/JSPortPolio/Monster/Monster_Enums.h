@@ -14,7 +14,20 @@ enum class Monster_Enum : uint8
 	Run,
 	Scream,
 	GetHit,
-	Die13123
+	Die
 
 };
+
+UENUM(BlueprintType)
+enum class Monster_State : uint8
+{
+	Default_Enum,
+	Walk,
+	Run,
+	Scream,
+	GetHit,
+	Die
+
+};
+
 

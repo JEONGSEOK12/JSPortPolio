@@ -2,6 +2,10 @@
 
 
 #include "Monster/Base_Monster.h"
+#include "MyGameInstance.h"
+#include "Engine/DataTable.h"
+#include <Datas/MonsterDatas.h>
+
 
 // Sets default values
 ABase_Monster::ABase_Monster()
@@ -15,6 +19,18 @@ ABase_Monster::ABase_Monster()
 void ABase_Monster::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
+
+
+	if (nullptr != Inst)
+	{
+		MonsterData = Inst->GetMonsterData(DataName);
+
+
+
+	}
 	
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <Datas/MonsterDatas.h>
 #include "GameFramework/Character.h"
 #include "Monster_Enums.h"
 #include "Base_Monster.generated.h"
@@ -16,9 +17,6 @@ public:
 	// Sets default values for this character's properties
 	ABase_Monster();
 
-	UPROPERTY(BlueprintReadWrite)
-	Monster_Enum Monster_Anim_Enum;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,4 +28,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(Category = "Monster", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FName DataName = "NONE";
+	
+	FMonsterDatas* MonsterData;
 };
