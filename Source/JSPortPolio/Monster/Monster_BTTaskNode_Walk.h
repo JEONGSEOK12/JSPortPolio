@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTTaskNode.h"
+#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
 #include "Monster_BTTaskNode_Walk.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class JSPORTPOLIO_API UMonster_BTTaskNode_Walk : public UBTTaskNode
+class JSPORTPOLIO_API UMonster_BTTaskNode_Walk : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
