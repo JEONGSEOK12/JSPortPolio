@@ -6,7 +6,7 @@
 
 UBTTaskNode_Base::UBTTaskNode_Base()
 {
-
+	
 	bNotifyTick = true;
 }
 

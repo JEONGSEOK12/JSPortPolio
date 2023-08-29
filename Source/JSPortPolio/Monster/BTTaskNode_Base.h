@@ -6,20 +6,31 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
 #include "Monster/Monster_AIController.h"
+#include <Monster/Monster_Enums.h>
 #include "BTTaskNode_Base.generated.h"
+
+
 
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetAnimSignature, Monster_Enum, Test);
+
+
 UCLASS()
 class JSPORTPOLIO_API UBTTaskNode_Base : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
-	
+
+
+public:
 	UBTTaskNode_Base();
 
 	void OnGameplayTaskActivated(class UGameplayTask&) override;
 
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
+	FSetAnimSignature SetAnimationDelegate;
 	
 
 };

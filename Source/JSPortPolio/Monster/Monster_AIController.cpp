@@ -8,10 +8,6 @@
 #include "Character_Base.h"
 
 
-int AMonster_AIController::TestFuc()
-{
-	return Testint;
-}
 
 
 void AMonster_AIController::OnPossess(APawn* _InPawn)

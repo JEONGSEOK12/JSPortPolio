@@ -12,6 +12,8 @@
 UCLASS()
 class JSPORTPOLIO_API UBTTaskNode_Idle : public UBTTaskNode_Base
 {
+
+public:
 	GENERATED_BODY()
 
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
