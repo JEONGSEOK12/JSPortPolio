@@ -3,18 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include <Datas/CharacterDatas.h>
-#include "Character_Base.h"
-#include "Base_Monster.generated.h"
+#include "GameFramework/Character.h"
+#include  <Datas/CharacterDatas.h>
+#include "Character_Base.generated.h"
 
 UCLASS()
-class JSPORTPOLIO_API ABase_Monster : public ACharacter_Base
+class JSPORTPOLIO_API ACharacter_Base : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ABase_Monster();
+	ACharacter_Base();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,5 +26,19 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	FORCEINLINE class UBehaviorTree* GetBehaviorTree()
+	{
+		return CharacterData->BehaviorTree;
+	};
+
+
+
+
+
+	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FName DataName = "NONE";
+
+	FCharacterDatas* CharacterData;
 
 };

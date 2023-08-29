@@ -21,7 +21,7 @@ public:
 
 	TSubclassOf<AActor> GetPlayerActor(FName _Name);
 
-	struct FMonsterDatas* GetMonsterData(FName _Name);
+	struct FCharacterDatas* GetCharacterData(FName _Name);
 
 private:
 	UPROPERTY()
@@ -38,7 +38,7 @@ private:
 public:
 
 	UPROPERTY()
-	UDataTable* MonsterDatas;
+	UDataTable* CharacterDatas;
 
 
 

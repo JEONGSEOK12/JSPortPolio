@@ -2,4 +2,36 @@
 
 
 #include "Monster/Monster_AIController.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "Character_Base.h"
 
+
+int AMonster_AIController::TestFuc()
+{
+	return Testint;
+}
+
+
+void AMonster_AIController::OnPossess(APawn* _InPawn)
+{
+	Super::OnPossess(_InPawn);
+
+	if (nullptr != BehaviorTreeComponent && true == BehaviorTreeComponent->IsValidLowLevel())
+	{
+		 ACharacter_Base* AIPawn = Cast<ACharacter_Base >(_InPawn);
+		 
+		  UBehaviorTree* BehaviorTree = AIPawn->GetBehaviorTree();
+		  
+		  if (nullptr == BehaviorTree || false == BehaviorTree->IsValidLowLevel())
+		  {
+		  	UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == BehaviorTree || false == BehaviorTree->IsValidLowLevel())"), __FUNCTION__, __LINE__);
+		  	return;
+		  }
+		  
+		  BlackboardComponent->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		  
+		  BehaviorTreeComponent->StartTree(*BehaviorTree);
+	}
+}
