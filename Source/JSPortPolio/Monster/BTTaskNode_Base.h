@@ -4,17 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "Monster_BTTaskNode_Walk.generated.h"
+#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
+#include "Monster/Monster_AIController.h"
+#include "BTTaskNode_Base.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class JSPORTPOLIO_API UMonster_BTTaskNode_Walk : public UBTTaskNode
+class JSPORTPOLIO_API UBTTaskNode_Base : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
+	
+	UBTTaskNode_Base();
 
 	void OnGameplayTaskActivated(class UGameplayTask&) override;
 
 	
+
 };

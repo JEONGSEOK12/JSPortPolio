@@ -6,20 +6,20 @@
 #include "Engine/DataTable.h"
 #include <Monster/Monster_Enums.h>
 #include "UObject/NoExportTypes.h"
-#include "MonsterDatas.generated.h"
+#include "CharacterDatas.generated.h"
 
 /**
  * 
  */
 USTRUCT()
-struct JSPORTPOLIO_API FMonsterDatas : public FTableRowBase
+struct JSPORTPOLIO_API FCharacterDatas : public FTableRowBase
 
 {
 	GENERATED_BODY()
 
 
-	FMonsterDatas() {}
-	~FMonsterDatas() {}
+	FCharacterDatas() {}
+	~FCharacterDatas() {}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TMap<Monster_Enum, class UAnimMontage*> AllAnimations;

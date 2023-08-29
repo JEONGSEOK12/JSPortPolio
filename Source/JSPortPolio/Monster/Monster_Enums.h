@@ -10,6 +10,7 @@ UENUM(BlueprintType)
 enum class Monster_Enum : uint8
 {
 	Default_Enum,
+	Idle,
 	Walk,
 	Run,
 	Scream,
