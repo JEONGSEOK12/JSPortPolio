@@ -5,6 +5,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "MyGameInstance.h"
 #include "Character_Base.h"
 
 
@@ -25,6 +26,16 @@ void AMonster_AIController::OnPossess(APawn* _InPawn)
 	if (nullptr != BehaviorTreeComponent && true == BehaviorTreeComponent->IsValidLowLevel())
 	{
 		 ACharacter_Base* AIPawn = Cast<ACharacter_Base>(_InPawn);
+
+
+		 UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
+
+
+		 if (nullptr != Inst)
+		 {
+			 AIPawn->CharacterData = Inst->GetCharacterData(AIPawn->DataName);
+		 }
+
 		 
 		  UBehaviorTree* BehaviorTree = AIPawn->GetBehaviorTree();
 		  

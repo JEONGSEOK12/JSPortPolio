@@ -21,8 +21,12 @@ void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 
 	Ch->CharacterData;
 
+	class UActorComponent* Comp = Ch->GetComponentByClass(USkeletalMeshComponent::StaticClass());
 
-	
+	USkeletalMeshComponent* Skel = Cast<USkeletalMeshComponent>(Comp);
+
+	Skel->GetAnimInstance();
+
 }
 
 void UBTTaskNode_Base::SetAnim()

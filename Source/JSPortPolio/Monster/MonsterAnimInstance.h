@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Monster_Enums.h"
-#include "Character_Base.h"
 #include "MonsterAnimInstance.generated.h"
 
 /**
