@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Monster_Enums.h"
+#include "Character_Base.h"
 #include "MonsterAnimInstance.generated.h"
 
 /**
@@ -17,10 +18,12 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 
 	UMonsterAnimInstance();
 
+	void NativeBeginPlay();
+
 
 	void TestFunc(Monster_Enum Test);
 
-
-	TMap<Monster_Enum, class UAnimMontage*> AllAnimations;
 	
+	ACharacter_Base* Ch;
+
 };

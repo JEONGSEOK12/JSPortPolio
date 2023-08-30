@@ -2,6 +2,8 @@
 
 
 #include "Monster/BTTaskNode_Idle.h"
+
+#include "Character_Base.h"
 #include <BehaviorTree/BlackboardComponent.h>
 
 
@@ -12,11 +14,19 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 	AICon->GetBehaviorTreeComponent();
 
+
+	CH = Cast<ACharacter_Base>(OwnerComp.GetAIOwner()->GetOwner());
+	CH->TaskBase = this;
+
+
+	CH->TaskBase->SetAnimationDelegate.Broadcast(Monster_Enum::Idle);
+
+
 	return EBTNodeResult::Succeeded;
 }
 
 
-void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
+void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
-
+	
 }

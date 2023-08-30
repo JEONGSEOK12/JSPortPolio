@@ -41,6 +41,8 @@ public:
 
 public:
 
+	void TestFuc();
+
 	class UBTTaskNode_Base* TaskBase;
 
 	FCharacterDatas* CharacterData;

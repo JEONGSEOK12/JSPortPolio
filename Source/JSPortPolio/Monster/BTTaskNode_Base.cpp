@@ -5,17 +5,27 @@
 #include "Character_Base.h"
 
 
-
 UBTTaskNode_Base::UBTTaskNode_Base()
 {
-	
+
 	bNotifyTick = true;
 }
 
 
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
-	ACharacter_Base* CH = Cast<ACharacter_Base>(Task.GetOwnerActor());
-	CH->TaskBase = this;
+
 	
+
+
+	// CH = Cast<ACharacter_Base>(Task.GetOwnerActor());
+	// CH->TaskBase = this;
+
+	
+}
+
+void UBTTaskNode_Base::SetAnim()
+{
+
+
 }

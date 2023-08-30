@@ -18,6 +18,8 @@ void ABase_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+
 
 }
 

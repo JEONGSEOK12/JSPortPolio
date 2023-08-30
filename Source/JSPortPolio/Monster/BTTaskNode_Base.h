@@ -25,6 +25,7 @@ class JSPORTPOLIO_API UBTTaskNode_Base : public UBTTask_BlackboardBase
 
 
 public:
+
 	UBTTaskNode_Base();
 
 	void OnGameplayTaskActivated(class UGameplayTask& Task) override;
@@ -32,5 +33,9 @@ public:
 	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
 	FSetAnimSignature SetAnimationDelegate;
 	
+	class ACharacter_Base* CH;
+
+	void SetAnim();
+
 
 };

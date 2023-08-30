@@ -2,18 +2,32 @@
 
 
 #include "Monster/MonsterAnimInstance.h"
+#include "Monster/BTTaskNode_Base.h"
+#include  <Datas/CharacterDatas.h>
 
 
 
 UMonsterAnimInstance::UMonsterAnimInstance()
 {
-	this->SetAnimationDelegate.AddDynamic(this, &TestFunc);
+	
 }
 
+
+void UMonsterAnimInstance::NativeBeginPlay()
+{
+	Super::NativeBeginPlay();
+
+	Ch = Cast<ACharacter_Base>(GetOwningActor());
+
+
+	Ch->TaskBase->SetAnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
+
+}
 
 
 
 void UMonsterAnimInstance::TestFunc(Monster_Enum Test)
 {
 
+	Montage_Play(Ch->CharacterData->AllAnimations[Test]);
 }
