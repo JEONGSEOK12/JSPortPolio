@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Monster/BTTaskNode_Base.h"
+#include "Character_Base.h"
 #include "BTTaskNode_Idle.generated.h"
 
 /**
@@ -20,4 +21,7 @@ public:
 
 	void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds);
 	
+
+	
+
 };

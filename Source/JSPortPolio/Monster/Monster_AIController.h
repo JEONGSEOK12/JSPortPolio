@@ -14,7 +14,7 @@ class JSPORTPOLIO_API AMonster_AIController : public AAIController
 {
 	GENERATED_BODY()
 
-
+	AMonster_AIController();
 
 	void OnPossess(APawn* _InPawn) override;
 

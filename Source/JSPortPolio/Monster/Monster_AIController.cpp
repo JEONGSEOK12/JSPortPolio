@@ -8,6 +8,14 @@
 #include "Character_Base.h"
 
 
+AMonster_AIController::AMonster_AIController()
+{
+	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
+
+	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));;
+
+}
+
 
 
 void AMonster_AIController::OnPossess(APawn* _InPawn)
@@ -16,7 +24,7 @@ void AMonster_AIController::OnPossess(APawn* _InPawn)
 
 	if (nullptr != BehaviorTreeComponent && true == BehaviorTreeComponent->IsValidLowLevel())
 	{
-		 ACharacter_Base* AIPawn = Cast<ACharacter_Base >(_InPawn);
+		 ACharacter_Base* AIPawn = Cast<ACharacter_Base>(_InPawn);
 		 
 		  UBehaviorTree* BehaviorTree = AIPawn->GetBehaviorTree();
 		  
