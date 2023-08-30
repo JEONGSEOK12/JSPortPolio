@@ -43,7 +43,6 @@ public:
 
 	void TestFuc();
 
-	class UBTTaskNode_Idle* TaskBase;
 
 	FCharacterDatas* CharacterData;
 

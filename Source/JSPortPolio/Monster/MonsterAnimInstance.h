@@ -23,7 +23,5 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 
 	void TestFunc(Monster_Enum Test);
 
-	
-	ACharacter_Base* Ch;
 
 };

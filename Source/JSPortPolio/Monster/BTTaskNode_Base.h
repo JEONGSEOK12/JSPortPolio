@@ -28,12 +28,13 @@ public:
 
 	UBTTaskNode_Base();
 
+
 	void OnGameplayTaskActivated(class UGameplayTask& Task) override;
 
 	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
 	FSetAnimSignature SetAnimationDelegate;
-	
-	class ACharacter_Base* CH;
+
+	class ACharacter_Base* Ch;
 
 	void SetAnim();
 

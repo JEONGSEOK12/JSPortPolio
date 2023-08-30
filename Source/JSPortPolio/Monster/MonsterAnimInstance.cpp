@@ -17,10 +17,6 @@ void UMonsterAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	Ch = Cast<ACharacter_Base>(GetOwningActor());
-
-
-	Ch->TaskBase->SetAnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
 
 }
 
@@ -29,5 +25,5 @@ void UMonsterAnimInstance::NativeBeginPlay()
 void UMonsterAnimInstance::TestFunc(Monster_Enum Test)
 {
 
-	Montage_Play(Ch->CharacterData->AllAnimations[Test]);
+	//Montage_Play(Ch->CharacterData->AllAnimations[Test]);
 }

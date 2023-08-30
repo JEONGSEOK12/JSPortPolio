@@ -11,7 +11,7 @@ public class JSPortPolio : ModuleRules
         PublicIncludePaths.Add(ModuleDirectory);
         PrivateIncludePaths.Add(ModuleDirectory);
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Niagara" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Niagara" , "GameplayTasks" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
