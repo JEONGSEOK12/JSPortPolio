@@ -15,6 +15,10 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
+	UMonsterAnimInstance();
+
+
+	void TestFunc(Monster_Enum Test);
 
 
 	TMap<Monster_Enum, class UAnimMontage*> AllAnimations;

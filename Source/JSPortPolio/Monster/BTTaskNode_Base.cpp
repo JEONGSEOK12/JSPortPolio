@@ -6,12 +6,12 @@
 
 UBTTaskNode_Base::UBTTaskNode_Base()
 {
-
+	
 	bNotifyTick = true;
 }
 
 
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask&)
 {
-
+	
 }
