@@ -39,6 +39,10 @@ public:
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FName DataName = "NONE";
 
+public:
+
+	class UBTTaskNode_Base* TaskBase;
+
 	FCharacterDatas* CharacterData;
 
 };

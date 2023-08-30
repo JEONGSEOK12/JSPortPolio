@@ -2,6 +2,8 @@
 
 
 #include "Monster/BTTaskNode_Base.h"
+#include "Character_Base.h"
+
 
 
 UBTTaskNode_Base::UBTTaskNode_Base()
@@ -11,7 +13,9 @@ UBTTaskNode_Base::UBTTaskNode_Base()
 }
 
 
-void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask&)
+void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
+	ACharacter_Base* CH = Cast<ACharacter_Base>(Task.GetOwnerActor());
+	CH->TaskBase = this;
 	
 }
