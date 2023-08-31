@@ -31,7 +31,7 @@ void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 	UMonsterAnimInstance* AnimInst = Cast<UMonsterAnimInstance>(Skel->GetAnimInstance());
 
 
-	SetAnimationDelegate.Broadcast(Monster_Enum::Scream);
+	SetAnimationDelegate.Broadcast(Monster_Enum::Walk);
 
 
 }
