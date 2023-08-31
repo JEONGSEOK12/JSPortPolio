@@ -11,6 +11,19 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
 
+	ACharacter_Base* Ch = AICon->OwnerBase;
+
+	
+	
+
+	
+	UAnimInstance* AnimInst = Ch->GetMesh()->GetAnimInstance();
+
+	UMonsterAnimInstance* MyAnimInst = Cast<UMonsterAnimInstance>(AnimInst);
+
+	MyAnimInst->TaskNode = this;
+
+	
 
 
 	SetAnimationDelegate.Broadcast(Monster_Enum::Idle);

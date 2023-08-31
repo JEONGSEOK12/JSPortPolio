@@ -19,8 +19,13 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 
 	void NativeBeginPlay();
 
+	UFUNCTION()
+	void MontageEnd(UAnimMontage* Anim, bool _Inter);
+
 
 	void TestFunc(Monster_Enum Test);
+
+public:
 
 	class UBTTaskNode_Base* TaskNode;
 

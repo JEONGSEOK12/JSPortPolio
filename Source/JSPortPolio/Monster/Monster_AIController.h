@@ -36,6 +36,6 @@ public:
 		return BlackboardComponent;
 	}
 
-213213
-	
+	class ACharacter_Base* OwnerBase;
+
 };

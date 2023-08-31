@@ -18,7 +18,7 @@ void UMonsterAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	
+	OnMontageEnded.AddDynamic(this, &UMonsterAnimInstance::MontageEnd);
 	TaskNode->SetAnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
 
 
@@ -36,4 +36,10 @@ void UMonsterAnimInstance::TestFunc(Monster_Enum Test)
 
 
 	//Montage_Play();
+}
+
+
+void UMonsterAnimInstance::MontageEnd(UAnimMontage* Anim, bool _Inter)
+{
+
 }
