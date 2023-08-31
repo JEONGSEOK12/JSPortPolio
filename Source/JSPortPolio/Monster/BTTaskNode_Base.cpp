@@ -17,22 +17,6 @@ UBTTaskNode_Base::UBTTaskNode_Base()
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
 
-	
-	Ch = Cast<ACharacter_Base>(Task.GetOwnerActor());
-
-	Ch->CharacterData;
-
-	class UActorComponent* Comp = Ch->GetComponentByClass(USkeletalMeshComponent::StaticClass());
-
-	USkeletalMeshComponent* Skel = Cast<USkeletalMeshComponent>(Comp);
-
-	
-
-	UMonsterAnimInstance* AnimInst = Cast<UMonsterAnimInstance>(Skel->GetAnimInstance());
-
-
-	SetAnimationDelegate.Broadcast(Monster_Enum::Walk);
-
 
 }
 

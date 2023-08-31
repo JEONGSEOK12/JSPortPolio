@@ -25,7 +25,13 @@ void AMonster_AIController::OnPossess(APawn* _InPawn)
 
 	if (nullptr != BehaviorTreeComponent && true == BehaviorTreeComponent->IsValidLowLevel())
 	{
+
+
+		
+
 		 ACharacter_Base* AIPawn = Cast<ACharacter_Base>(_InPawn);
+
+
 
 
 		 UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();

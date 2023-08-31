@@ -3,14 +3,21 @@
 
 #include "Monster/BTTaskNode_Idle.h"
 #include <BehaviorTree/BlackboardComponent.h>
-
+#include "Character_Base.h"
+#include "Monster/MonsterAnimInstance.h"
 
 
 EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
 
-	AICon->GetBehaviorTreeComponent();
+
+
+	SetAnimationDelegate.Broadcast(Monster_Enum::Idle);
+
+
+
+
 
 
 

@@ -34,7 +34,7 @@ public:
 	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
 	FSetAnimSignature SetAnimationDelegate;
 
-	class ACharacter_Base* Ch;
+	
 
 	void SetAnim();
 
