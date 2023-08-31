@@ -22,5 +22,7 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 
 	void TestFunc(Monster_Enum Test);
 
+	class UBTTaskNode_Base* TaskNode;
+
 
 };
