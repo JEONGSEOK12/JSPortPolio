@@ -10,6 +10,12 @@
 /**
  * 
  */
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetAnimSignature1, Monster_Enum, Test);
+
+
+
 UCLASS()
 class JSPORTPOLIO_API UBTTaskNode_Idle : public UBTTaskNode_Base
 {
@@ -20,7 +26,9 @@ public:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 
 	void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds);
-	
+
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
+	FSetAnimSignature1 SetAnimationDelegate;
 
 	
 

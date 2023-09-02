@@ -24,8 +24,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	virtual void PostInitializeComponents() override;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,7 +32,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	
-
+	void BindAnim1();
+	void BindAnim2();
 
 
 
@@ -53,10 +52,11 @@ public:
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
 	
-	void AnimCaller(Monster_Enum);
+	UFUNCTION()
+	void AnimCaller(Monster_Enum Anim);
 
 
-	class UBTTaskNode_Base* TaskBase;
-
+	class UBTTaskNode_Idle* TaskIdle;
+	class UBTTaskNode_Walk* TaskWalk;
 
 };

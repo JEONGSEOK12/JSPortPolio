@@ -7,6 +7,8 @@
 #include "Monster/MonsterAnimInstance.h"
 
 
+
+
 EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
@@ -15,25 +17,27 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 	
 	
-	Ch->TaskBase = this;
-	
+	Ch->TaskIdle = this;
+
+	if (SetAnimationDelegate.IsBound() == false)
+	{
+		Ch->BindAnim1();
+	}
 	//UAnimInstance* AnimInst = Ch->GetMesh()->GetAnimInstance();
 
 	//UMonsterAnimInstance* MyAnimInst = Cast<UMonsterAnimInstance>(AnimInst);
 
+	if (SetAnimationDelegate.IsBound() == true)
+	{
+		SetAnimationDelegate.Broadcast(Monster_Enum::Idle);
+	}
 
 
 
-	SetAnimationDelegate.Broadcast(Monster_Enum::Idle);
 
 
 
-
-
-
-
-	return EBTNodeResult::Succeeded;
-}
+	return EBTNodeResult::Failed;Áö}
 
 
 void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)

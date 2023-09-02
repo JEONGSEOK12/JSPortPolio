@@ -6,6 +6,8 @@
 #include "Engine/DataTable.h"
 #include "Datas/CharacterDatas.h"
 #include "Monster/BTTaskNode_Base.h"
+#include "Monster/BTTaskNode_Idle.h"
+#include "Monster/BTTaskNode_Walk.h"
 
 
 // Sets default values
@@ -38,11 +40,15 @@ void ACharacter_Base::BeginPlay()
 	
 }
 
-void ACharacter_Base::PostInitializeComponents()
+void ACharacter_Base::BindAnim1()
 {
-	TaskBase->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
+	TaskIdle->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
 }
 
+void ACharacter_Base::BindAnim2()
+{
+	TaskWalk->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
+}
 
 
 // Called every frame

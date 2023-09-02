@@ -31,8 +31,7 @@ public:
 
 	void OnGameplayTaskActivated(class UGameplayTask& Task) override;
 
-	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
-	FSetAnimSignature SetAnimationDelegate;
+	
 
 	
 

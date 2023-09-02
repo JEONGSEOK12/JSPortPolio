@@ -16,12 +16,15 @@ EBTNodeResult::Type UBTTaskNode_Walk::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 
 
-	Ch->TaskBase = this;
+	Ch->TaskWalk = this;
 
+
+	if (SetAnimationDelegate.IsBound() == false)
+	{
+		Ch->BindAnim2();
+	}
 
 	SetAnimationDelegate.Broadcast(Monster_Enum::Walk);
-
-
 
 
 	return 	EBTNodeResult::InProgress;
