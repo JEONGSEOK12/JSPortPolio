@@ -10,21 +10,7 @@
 
 EBTNodeResult::Type UBTTaskNode_Walk::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
-
-	ACharacter_Base* Ch = AICon->OwnerBase;
-
-
-
-	Ch->TaskWalk = this;
-
-
-	if (SetAnimationDelegate.IsBound() == false)
-	{
-		Ch->BindAnim2();
-	}
-
-	SetAnimationDelegate.Broadcast(Monster_Enum::Walk);
+	
 
 
 	return 	EBTNodeResult::InProgress;

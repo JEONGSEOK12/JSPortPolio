@@ -33,22 +33,8 @@ void ACharacter_Base::BeginPlay()
 	}
 
 	
-	
-
-
-
-	
 }
 
-void ACharacter_Base::BindAnim1()
-{
-	TaskIdle->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
-}
-
-void ACharacter_Base::BindAnim2()
-{
-	TaskWalk->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
-}
 
 
 // Called every frame
@@ -71,11 +57,6 @@ UBehaviorTree* ACharacter_Base::GetBehaviorTree()
 	return CharacterData->BehaviorTree;
 };
 
-
-void ACharacter_Base::AnimCaller(Monster_Enum Anim)
-{
-	AnimationDelegate.Broadcast(Anim);
-}
 
 
 

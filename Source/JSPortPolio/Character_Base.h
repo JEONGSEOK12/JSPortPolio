@@ -6,10 +6,6 @@
 #include "GameFramework/Character.h"
 #include "Character_Base.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCallAnimSignature, Monster_Enum, Anim);
-
-
-
 
 UCLASS()
 class JSPORTPOLIO_API ACharacter_Base : public ACharacter
@@ -30,33 +26,15 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	
-	void BindAnim1();
-	void BindAnim2();
-
-
 
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAcdasdasdcess = "true"))
 	FName DataName = "NONE";
-
-public:
-
-	void TestFuc();
-
-	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
-	FCallAnimSignature AnimationDelegate;
 
 
 	struct FCharacterDatas* CharacterData;
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
 	
-	UFUNCTION()
-	void AnimCaller(Monster_Enum Anim);
-
-
-	class UBTTaskNode_Idle* TaskIdle;
-	class UBTTaskNode_Walk* TaskWalk;
 
 };

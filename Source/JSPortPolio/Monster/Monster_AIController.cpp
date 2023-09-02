@@ -31,9 +31,6 @@ void AMonster_AIController::OnPossess(APawn* _InPawn)
 
 		 ACharacter_Base* AIPawn = Cast<ACharacter_Base>(_InPawn);
 
-
-		 OwnerBase = AIPawn;
-
 		 UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
 
 

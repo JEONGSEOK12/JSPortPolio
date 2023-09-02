@@ -12,8 +12,6 @@
  */
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetAnimSignature1, Monster_Enum, Test);
-
 
 
 UCLASS()
@@ -27,8 +25,6 @@ public:
 
 	void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds);
 
-	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
-	FSetAnimSignature1 SetAnimationDelegate;
 
 	
 

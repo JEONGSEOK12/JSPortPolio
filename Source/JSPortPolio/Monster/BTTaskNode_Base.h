@@ -15,7 +15,7 @@
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetAnimSignature, Monster_Enum, Test);
+
 
 
 UCLASS()

@@ -20,25 +20,12 @@ void UMonsterAnimInstance::NativeBeginPlay()
 
 	OnMontageEnded.AddDynamic(this, &UMonsterAnimInstance::MontageEnd);
 	
-	ACharacter_Base* Character = Cast<ACharacter_Base>(GetOwningActor());
-
-	Character->AnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
 
 }
 
 
 
-void UMonsterAnimInstance::TestFunc(Monster_Enum Test)
-{
 
-
-	ACharacter_Base* Chracter = Cast<ACharacter_Base>(GetOwningActor());
-
-	Montage_Play(Chracter->CharacterData->AllAnimations[Test]);
-
-
-	//Montage_Play();
-}
 
 
 void UMonsterAnimInstance::MontageEnd(UAnimMontage* Anim, bool _Inter)

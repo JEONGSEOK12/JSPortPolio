@@ -23,7 +23,6 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 	void MontageEnd(UAnimMontage* Anim, bool _Inter);
 
 	
-	void TestFunc(Monster_Enum Test);
 
 public:
 
