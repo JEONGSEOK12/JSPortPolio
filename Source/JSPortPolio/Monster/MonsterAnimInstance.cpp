@@ -19,8 +19,10 @@ void UMonsterAnimInstance::NativeBeginPlay()
 	Super::NativeBeginPlay();
 
 	OnMontageEnded.AddDynamic(this, &UMonsterAnimInstance::MontageEnd);
-	TaskNode->SetAnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
+	
+	ACharacter_Base* Character = Cast<ACharacter_Base>(GetOwningActor());
 
+	Character->AnimationDelegate.AddDynamic(this, &UMonsterAnimInstance::TestFunc);
 
 }
 

@@ -22,12 +22,10 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 	UFUNCTION()
 	void MontageEnd(UAnimMontage* Anim, bool _Inter);
 
-
+	
 	void TestFunc(Monster_Enum Test);
 
 public:
-
-	class UBTTaskNode_Base* TaskNode;
 
 
 };

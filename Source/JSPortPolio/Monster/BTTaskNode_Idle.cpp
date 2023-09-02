@@ -15,15 +15,13 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 	
 	
-
+	Ch->TaskBase = this;
 	
-	UAnimInstance* AnimInst = Ch->GetMesh()->GetAnimInstance();
+	//UAnimInstance* AnimInst = Ch->GetMesh()->GetAnimInstance();
 
-	UMonsterAnimInstance* MyAnimInst = Cast<UMonsterAnimInstance>(AnimInst);
+	//UMonsterAnimInstance* MyAnimInst = Cast<UMonsterAnimInstance>(AnimInst);
 
-	MyAnimInst->TaskNode = this;
 
-	
 
 
 	SetAnimationDelegate.Broadcast(Monster_Enum::Idle);

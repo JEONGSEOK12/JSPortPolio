@@ -2,10 +2,21 @@
 
 
 #include "Monster/BTTaskNode_Walk.h"
+#include "Character_Base.h"
+
+
+
+
 
 EBTNodeResult::Type UBTTaskNode_Walk::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	
+	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
+
+	ACharacter_Base* Ch = AICon->OwnerBase;
+
+
+
+	Ch->TaskBase = this;
 
 
 	SetAnimationDelegate.Broadcast(Monster_Enum::Walk);

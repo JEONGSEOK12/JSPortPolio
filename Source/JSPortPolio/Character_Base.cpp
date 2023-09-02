@@ -4,6 +4,9 @@
 #include "Character_Base.h"
 #include "MyGameInstance.h"
 #include "Engine/DataTable.h"
+#include "Datas/CharacterDatas.h"
+#include "Monster/BTTaskNode_Base.h"
+
 
 // Sets default values
 ACharacter_Base::ACharacter_Base()
@@ -25,13 +28,22 @@ void ACharacter_Base::BeginPlay()
 	if (nullptr != Inst)
 	{
 		CharacterData = Inst->GetCharacterData(DataName);
-
-
-
 	}
 
 	
+	
+
+
+
+	
 }
+
+void ACharacter_Base::PostInitializeComponents()
+{
+	TaskBase->SetAnimationDelegate.AddDynamic(this, &ACharacter_Base::AnimCaller);
+}
+
+
 
 // Called every frame
 void ACharacter_Base::Tick(float DeltaTime)
@@ -46,4 +58,19 @@ void ACharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+
+UBehaviorTree* ACharacter_Base::GetBehaviorTree()
+{
+	return CharacterData->BehaviorTree;
+};
+
+
+void ACharacter_Base::AnimCaller(Monster_Enum Anim)
+{
+	AnimationDelegate.Broadcast(Anim);
+}
+
+
+
 

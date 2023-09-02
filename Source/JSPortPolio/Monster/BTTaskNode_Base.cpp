@@ -16,7 +16,7 @@ UBTTaskNode_Base::UBTTaskNode_Base()
 
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
-
+	
 
 }
 
