@@ -5,9 +5,8 @@
 #include "MyGameInstance.h"
 #include "Engine/DataTable.h"
 #include "Datas/CharacterDatas.h"
-#include "Monster/BTTaskNode_Base.h"
-#include "Monster/BTTaskNode_Idle.h"
-#include "Monster/BTTaskNode_Walk.h"
+#include "Monster/MonsterAnimInstance.h"
+
 
 
 // Sets default values
@@ -27,10 +26,28 @@ void ACharacter_Base::BeginPlay()
 	UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
 
 
+	this;
+
 	if (nullptr != Inst)
 	{
 		CharacterData = Inst->GetCharacterData(DataName);
 	}
+
+	UAnimInstance* AnimInst = GetMesh()->GetAnimInstance();
+
+
+	UMonsterAnimInstance* MonsterAnimInstance = Cast<UMonsterAnimInstance>(AnimInst);
+
+	// MonsterAnimInstance->MonsterAnimations = CharacterData->AllAnimations;
+	 for (TPair<int, UAnimMontage*> Pair : CharacterData->AllAnimations)
+	 {
+		 AllAnimations.Add(Pair.Key, Pair.Value);
+	 
+	 }
+
+	 GetActorLocation();
+
+
 
 	
 }

@@ -31,8 +31,22 @@ public:
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAcdasdasdcess = "true"))
 	FName DataName = "NONE";
 
+	int Anistate = 0;
+
+	int GetAnistate()
+	{
+		return Anistate;
+	}
+
+	template<typename EnumType>
+	void SetAniState(EnumType _AniState)
+	{
+		AniState = static_cast<int>(_AniState);
+	}
 
 	struct FCharacterDatas* CharacterData;
+
+	TMap<int, class UAnimMontage*> AllAnimations;
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
 	

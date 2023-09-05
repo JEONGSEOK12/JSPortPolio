@@ -14,3 +14,5 @@ bttask에서 getowner 후 onwer의 bttask 포인터에 이 객체 집어넣으�
 
 
 https://docs.google.com/spreadsheets/d/1Nr-0rMyyRzNCGVFgRkdBashbN8wBYgWTZmkYPRmIPd4/htmlview
+
+C++ pair 문법 알려주기

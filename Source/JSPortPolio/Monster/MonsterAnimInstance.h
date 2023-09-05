@@ -19,11 +19,17 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 
 	void NativeBeginPlay();
 
+	void NativeUpdateAnimation(float _DeltaTime) override;
+
 	UFUNCTION()
 	void MontageEnd(UAnimMontage* Anim, bool _Inter);
+public:
 
+	Monster_Enum* MonsterAnim;
 	
+	TMap<int, UAnimMontage*> MonsterAnimations;
 
+	int AniState = 0;
 public:
 
 
