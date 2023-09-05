@@ -25,3 +25,23 @@ void UBTTaskNode_Base::SetAnim()
 
 
 }
+
+ACharacter_Base* UBTTaskNode_Base::GetBaseCharacter(UBehaviorTreeComponent& OwnerComp)
+{
+	AMonster_AIController* AiCon = OwnerComp.GetOwner<AMonster_AIController>();
+	if (nullptr == AiCon || false == AiCon->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == Chracter || false == Chracter->IsValidLowLevel())"), __FUNCTION__, __LINE__);
+		return nullptr;
+	}
+
+	ACharacter_Base* Character = AiCon->GetPawn<ACharacter_Base>();
+
+	if (nullptr == Character || false == Character->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == Chracter || false == Chracter->IsValidLowLevel())"), __FUNCTION__, __LINE__);
+		return nullptr;
+	}
+
+	return Character;
+}

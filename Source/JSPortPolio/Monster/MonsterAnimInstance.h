@@ -27,9 +27,9 @@ public:
 
 	Monster_Enum* MonsterAnim;
 	
-	TMap<int, UAnimMontage*> MonsterAnimations;
+	//TMap<int, UAnimMontage*> MonsterAnimations;
 
-	int AniState = 0;
+	//int AniState = 0;
 public:
 
 

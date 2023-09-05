@@ -32,6 +32,7 @@ public:
 	void OnGameplayTaskActivated(class UGameplayTask& Task) override;
 
 	
+	class ACharacter_Base* GetBaseCharacter(UBehaviorTreeComponent& OwnerComp);
 
 	
 

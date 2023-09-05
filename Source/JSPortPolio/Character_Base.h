@@ -27,21 +27,29 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAcdasdasdcess = "true"))
 	FName DataName = "NONE";
 
-	int Anistate = 0;
+	int AniState = 0;
 
-	int GetAnistate()
+	int GetAniState()
 	{
-		return Anistate;
+		return AniState;
 	}
 
 	template<typename EnumType>
-	void SetAniState(EnumType _AniState)
+	void SetAniState(EnumType State)
 	{
-		AniState = static_cast<int>(_AniState);
+		AniState = static_cast<int>(State);
+	}
+
+	template<typename EnumType>
+	void SetAllAnimation(const TMap<EnumType, class UAnimMontage*>& _MapAnimation)
+	{
+		for (TPair<EnumType, UAnimMontage*> Pair : _MapAnimation)
+		{
+			AllAnimations.Add(static_cast<int>(Pair.Key), Pair.Value);
+		}
 	}
 
 	struct FCharacterDatas* CharacterData;
@@ -50,5 +58,4 @@ public:
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
 	
-
 };

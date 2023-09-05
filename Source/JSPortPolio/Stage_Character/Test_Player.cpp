@@ -134,8 +134,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::E, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::Q, -1.f));
 
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurn", EKeys::MouseX, 1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurnRate", EKeys::MouseX, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 
@@ -147,7 +146,6 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &ATest_Player::MoveRight);
 	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::Rotate);
 
-	PlayerInputComponent->BindAxis("PlayerTurn", this, &ATest_Player::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &ATest_Player::LookUpAtRate);
@@ -371,12 +369,23 @@ void ATest_Player::PlayerJumpEnd()
 
 void ATest_Player::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
+
+	if (Rate != 0.f && Controller && Controller->IsLocalPlayerController())
+	{
+		
+			APlayerController* const PC = CastChecked<APlayerController>(Controller);
+			PC->AddYawInput(Rate);
+		
+	
+	}
+
 }
 
 void ATest_Player::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
+	if (Rate != 0.f)
+	{
+		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
+	}
 }

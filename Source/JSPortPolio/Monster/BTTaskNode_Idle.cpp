@@ -5,15 +5,14 @@
 #include <BehaviorTree/BlackboardComponent.h>
 #include "Character_Base.h"
 #include "Monster/MonsterAnimInstance.h"
+#include "Monster_Enums.h"
 
 
 
 
 EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AMonster_AIController* AICon = OwnerComp.GetOwner<AMonster_AIController>();
-
-
+	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Idle);
 
 
 	return EBTNodeResult::Failed;

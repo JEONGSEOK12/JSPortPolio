@@ -35,26 +35,25 @@ void UMonsterAnimInstance::NativeUpdateAnimation(float _DeltaTime)
 		return;
 	}
 
-	AniState = Chracter->GetAnistate();
+	
+	if(Chracter->GetAniState() !=0)
+	{
+		UAnimMontage* Montage = Chracter->AllAnimations[Chracter->GetAniState()];
 
-	UAnimMontage* Montage = MonsterAnimations[AniState];
-	
-	if (nullptr == Montage)
-	{
-		return;
+		if (nullptr == Montage)
+		{
+			return;
+		}
+
+		if (false == Montage_IsPlaying(Montage))
+		{
+
+			Montage_Play(Montage, 1.0f);
+		}
+
 	}
+
 	
-	// 조건1. 몽타주 재생이 끝났다.
-	// 조건2. 이전에 이미 재생한 몽타주다.
-	// 조건3. 몽타주가 루프다.
-	if (false == Montage_IsPlaying(Montage))
-	{
-		//if (Montage == CurMontage && -1 != DefaultAniState && false == Montage->bLoop)
-		//{
-		//	Montage = AllAnimations[DefaultAniState];
-		//}
-		Montage_Play(Montage, 1.0f);
-	}
 
 }
 

@@ -6,6 +6,7 @@
 #include "Engine/DataTable.h"
 #include "Datas/CharacterDatas.h"
 #include "Monster/MonsterAnimInstance.h"
+#include "Monster/Monster_Enums.h"
 
 
 
@@ -17,16 +18,16 @@ ACharacter_Base::ACharacter_Base()
 
 }
 
+
+
+
 // Called when the game starts or when spawned
 void ACharacter_Base::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
 
-
-	this;
 
 	if (nullptr != Inst)
 	{
@@ -38,21 +39,10 @@ void ACharacter_Base::BeginPlay()
 
 	UMonsterAnimInstance* MonsterAnimInstance = Cast<UMonsterAnimInstance>(AnimInst);
 
-	// MonsterAnimInstance->MonsterAnimations = CharacterData->AllAnimations;
-	 for (TPair<int, UAnimMontage*> Pair : CharacterData->AllAnimations)
-	 {
-		 AllAnimations.Add(Pair.Key, Pair.Value);
-	 
-	 }
-
-	 GetActorLocation();
+	SetAllAnimation(CharacterData->AllAnimations);
 
 
-
-	
 }
-
-
 
 // Called every frame
 void ACharacter_Base::Tick(float DeltaTime)

@@ -11,7 +11,7 @@
 EBTNodeResult::Type UBTTaskNode_Walk::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	
-
+	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Walk);
 
 	return 	EBTNodeResult::InProgress;
 }
