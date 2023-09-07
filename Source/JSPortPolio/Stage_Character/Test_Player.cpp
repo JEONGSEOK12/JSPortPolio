@@ -376,7 +376,6 @@ void ATest_Player::TurnAtRate(float Rate)
 			APlayerController* const PC = CastChecked<APlayerController>(Controller);
 			PC->AddYawInput(Rate);
 		
-	
 	}
 
 }
