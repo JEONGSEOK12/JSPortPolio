@@ -31,6 +31,7 @@ void ATest_Player::BeginPlay()
 	Spawned_Head->SetActorLocation(GetActorLocation());
 	HeadPtr = Cast<ATest_Head>(Spawned_Head);
 	HeadPtr->PlayerPtr = this;
+	MySpringArm = Cast<USpringArmComponent>(GetComponentByClass(USpringArmComponent::StaticClass()));
 
 	GetMovementComponent()->GetPhysicsVolume()->FluidFriction = 0;
 
@@ -137,7 +138,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::Q, -1.f));
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurnRate", EKeys::MouseX, 1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, 1.f));
 
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerCameraReset"), EKeys::F));
 
@@ -152,7 +153,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::Rotate);
 
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
-	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::LookUpAtRate);
 
 	PlayerInputComponent->BindAction("PlayerCameraReset", IE_Pressed, this, &ATest_Player::PlayerCameraResetStart);
 
@@ -164,8 +165,10 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ATest_Player::PlayerCameraResetStart()
 {
-
-	GetComponentByClass(USpringArmComponent::StaticClass());
+	FRotator ResetRot = MySpringArm->GetRelativeRotation();
+	ResetRot.Yaw = GetActorRotation().Yaw;
+	ResetRot.Roll = 0;
+	MySpringArm->SetRelativeRotation(ResetRot);
 	
 }
 
@@ -384,11 +387,13 @@ void ATest_Player::PlayerJumpEnd()
 void ATest_Player::TurnAtRate(float Rate)
 {
 
-	if (Rate != 0.f && Controller && Controller->IsLocalPlayerController())
+	if (Rate != 0.f)
 	{
-
-		APlayerController* const PC = CastChecked<APlayerController>(Controller);
-		PC->AddYawInput(Rate);
+		FRotator ArmRot = MySpringArm->GetRelativeRotation();
+		
+		ArmRot = ArmRot + FRotator(0, Rate, 0);
+		
+		MySpringArm->SetRelativeRotation(ArmRot);
 
 	}
 
@@ -399,6 +404,11 @@ void ATest_Player::LookUpAtRate(float Rate)
 	// calculate delta for this frame from the rate information
 	if (Rate != 0.f)
 	{
-		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * CustomTimeDilation);
+		FRotator ArmRot = MySpringArm->GetRelativeRotation();
+
+		ArmRot = ArmRot + FRotator(Rate, 0, 0);
+
+		MySpringArm->SetRelativeRotation(ArmRot);
+
 	}
 }

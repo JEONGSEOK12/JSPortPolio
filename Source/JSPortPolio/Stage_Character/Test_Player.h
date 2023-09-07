@@ -37,7 +37,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
 	TSubclassOf<ACharacter> Test_Head;
 
-	
+	class USpringArmComponent* MySpringArm;
+
 	UFUNCTION()
 	void LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
