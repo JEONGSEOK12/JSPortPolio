@@ -8,13 +8,15 @@
 #include "GameFramework/PhysicsVolume.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "GameFramework/SpringArmComponent.h"
+
 
 
 
 // Sets default values
 ATest_Player::ATest_Player()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -49,7 +51,7 @@ void ATest_Player::BeginPlay()
 	//SpinCheck = 5.f;
 	//fBasicJumpPoawer = 600.f;
 	//Gravity.Set(0, 0, -200);
-	
+
 
 
 }
@@ -64,7 +66,7 @@ void ATest_Player::Tick(float DeltaTime)
 	TestD = TTT.Size();
 
 	Testf += DeltaTime;
-	if(Testf>=0.1f && TestD != 0.f)
+	if (Testf >= 0.1f && TestD != 0.f)
 	{
 		Testf = 0.f;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Vec is %f"), TestD));
@@ -73,7 +75,7 @@ void ATest_Player::Tick(float DeltaTime)
 
 	if (bJumpPressed)
 	{
-		if(fJumpTime<= fMaxJumpTime)
+		if (fJumpTime <= fMaxJumpTime)
 		{
 			fJumpTime += DeltaTime;
 		}
@@ -84,16 +86,16 @@ void ATest_Player::Tick(float DeltaTime)
 		bisSpined = true;
 		//RotVFX->SetVisibility(true);
 	}
-	
-	
+
+
 
 	if (bisGround)
-	{	
+	{
 
 		FVector HeadLoc;
 		HeadLoc = GetActorLocation() + GetActorUpVector() * 140.0f;
 
-		HeadPtr->SetActorLocation(HeadLoc,true);
+		HeadPtr->SetActorLocation(HeadLoc, true);
 		HeadPtr->SetActorRotation(GetActorQuat());
 
 	}
@@ -108,7 +110,7 @@ void ATest_Player::Tick(float DeltaTime)
 		FVector PlayerLoc;
 		PlayerLoc = HeadPtr->GetActorLocation() + HeadPtr->GetActorUpVector() * -140.0f;
 
-		SetActorLocation(PlayerLoc,true);
+		SetActorLocation(PlayerLoc, true);
 		SetActorRotation(HeadPtr->GetActorQuat());
 	}
 
@@ -136,6 +138,9 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurnRate", EKeys::MouseX, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, -1.f));
+
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerCameraReset"), EKeys::F));
+
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
@@ -148,11 +153,20 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("PlayerLookUpRate", this, &ATest_Player::LookUpAtRate);
+
+	PlayerInputComponent->BindAction("PlayerCameraReset", IE_Pressed, this, &ATest_Player::PlayerCameraResetStart);
 
 	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &ATest_Player::PlayerJumpStart);
 
 	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &ATest_Player::PlayerJumpEnd);
+
+}
+
+void ATest_Player::PlayerCameraResetStart()
+{
+
+	GetComponentByClass(USpringArmComponent::StaticClass());
+	
 }
 
 void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -161,7 +175,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	{
 
 
-		if(DebugTime>0.1f)
+		if (DebugTime > 0.1f)
 		{
 
 			if (!bJumpPressed)
@@ -179,17 +193,17 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TestVec1.Size();
 
-			
+
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Terrain Land Power is %f"), Tes));
 
 			CurVec = GetMovementComponent()->Velocity;
 
-			
+
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
-	
+
 			HeadPtr->HitPower = 0.f;
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;
@@ -253,17 +267,17 @@ void ATest_Player::MoveRight(float Val)
 	if (bisGround)
 	{
 		if (Val != 0.f)
-		{	
-		GroundRotation(ForVec, -RotSpeed * Val);
+		{
+			GroundRotation(ForVec, -RotSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-		HeadRotation(ForVec, -RotSpeed * Val);
+			HeadRotation(ForVec, -RotSpeed * Val);
 
-		RotCheckX += RotSpeed * fDeltaSec * Val;
+			RotCheckX += RotSpeed * fDeltaSec * Val;
 		}
 	}
 }
@@ -277,16 +291,16 @@ void ATest_Player::MoveForward(float Val)
 	{
 		if (Val != 0.f)
 		{
-		GroundRotation(RitVec, RotSpeed * Val);
+			GroundRotation(RitVec, RotSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-		HeadRotation(RitVec, RotSpeed * Val);
+			HeadRotation(RitVec, RotSpeed * Val);
 
-		RotCheckY += RotSpeed * fDeltaSec * Val;
+			RotCheckY += RotSpeed * fDeltaSec * Val;
 		}
 	}
 
@@ -296,21 +310,21 @@ void ATest_Player::Rotate(float Val)
 {
 	FVector RotVec;
 	RotVec.Set(0, 0, 1);
-	
+
 	if (bisGround)
 	{
 		if (Val != 0.f)
 		{
-		GroundRotation(RotVec, RotSpeed * Val);
+			GroundRotation(RotVec, RotSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-		HeadRotation(RotVec, RotSpeed * Val);
+			HeadRotation(RotVec, RotSpeed * Val);
 
-		RotCheckZ += RotSpeed * fDeltaSec * Val;
+			RotCheckZ += RotSpeed * fDeltaSec * Val;
 		}
 	}
 }
@@ -326,12 +340,12 @@ void ATest_Player::PlayerJumpStart()
 
 void ATest_Player::PlayerJumpEnd()
 {
-	if(bisGround)
+	if (bisGround)
 	{
 		FVector JumpVec;
 		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
 
-		if(bisSpined)
+		if (bisSpined)
 		{
 			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size();
 
@@ -357,11 +371,11 @@ void ATest_Player::PlayerJumpEnd()
 		bisGround = false;
 
 
-		
+
 	}
 
 
-	
+
 
 }
 
@@ -372,10 +386,10 @@ void ATest_Player::TurnAtRate(float Rate)
 
 	if (Rate != 0.f && Controller && Controller->IsLocalPlayerController())
 	{
-		
-			APlayerController* const PC = CastChecked<APlayerController>(Controller);
-			PC->AddYawInput(Rate);
-		
+
+		APlayerController* const PC = CastChecked<APlayerController>(Controller);
+		PC->AddYawInput(Rate);
+
 	}
 
 }

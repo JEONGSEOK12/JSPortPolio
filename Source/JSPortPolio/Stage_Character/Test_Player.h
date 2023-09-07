@@ -112,6 +112,6 @@ public:
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
 	void HeadRotation(FVector Dir, double Speed);
-
+	void PlayerCameraResetStart();
 
 };
