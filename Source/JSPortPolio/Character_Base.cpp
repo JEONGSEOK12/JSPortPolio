@@ -41,6 +41,8 @@ void ACharacter_Base::BeginPlay()
 
 	SetAllAnimation(CharacterData->AllAnimations);
 
+	HP = CharacterData->HP;
+
 
 }
 

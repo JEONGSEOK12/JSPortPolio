@@ -9,6 +9,7 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/SpringArmComponent.h"
+#include <Character_Base.h>
 
 
 
@@ -230,6 +231,15 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			//HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 
 			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
+
+			ACharacter_Base* Monster = Cast<ACharacter_Base>(OtherActor);
+			Monster->HP -= 100;
+			if (Monster->HP <= 0)
+			{
+				Monster->Destroy();
+			}
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("MonsterHit")));
 
 			RotCheckX = 0.f;
 			RotCheckY = 0.f;

@@ -34,9 +34,7 @@ public:
 	
 	class ACharacter_Base* GetBaseCharacter(UBehaviorTreeComponent& OwnerComp);
 
-	
-
-	void SetAnim();
+	void SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State);
 
 
 };

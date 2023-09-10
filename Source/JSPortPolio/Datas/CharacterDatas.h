@@ -26,7 +26,7 @@ struct JSPORTPOLIO_API FCharacterDatas : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	class UBehaviorTree* BehaviorTree;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	int MyValue1;
+	int HP;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int MyValue2;
 

@@ -54,6 +54,8 @@ public:
 
 	struct FCharacterDatas* CharacterData;
 
+	int HP;
+
 	TMap<int, class UAnimMontage*> AllAnimations;
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();

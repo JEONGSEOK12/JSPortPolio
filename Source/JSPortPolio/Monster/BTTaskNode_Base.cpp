@@ -5,6 +5,9 @@
 #include  <Datas/CharacterDatas.h>
 #include "Character_Base.h"
 #include "Monster/MonsterAnimInstance.h"
+#include <BehaviorTree/BlackboardComponent.h>
+#include "Character_Base.h"
+
 
 UBTTaskNode_Base::UBTTaskNode_Base()
 {
@@ -20,11 +23,6 @@ void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 
 }
 
-void UBTTaskNode_Base::SetAnim()
-{
-
-
-}
 
 ACharacter_Base* UBTTaskNode_Base::GetBaseCharacter(UBehaviorTreeComponent& OwnerComp)
 {
@@ -44,4 +42,19 @@ ACharacter_Base* UBTTaskNode_Base::GetBaseCharacter(UBehaviorTreeComponent& Owne
 	}
 
 	return Character;
+}
+
+void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State)
+{
+	UBlackboardComponent* BlockBoard = OwnerComp.GetBlackboardComponent();
+
+	if (nullptr == BlockBoard)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == BlockBoard)"), __FUNCTION__, __LINE__);
+		return;
+	}
+
+	BlockBoard->SetValueAsEnum(TEXT("Monster_Enum"), _State);
+
+	FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
 }

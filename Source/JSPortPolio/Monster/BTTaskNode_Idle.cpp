@@ -14,6 +14,10 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Idle);
 
+	OwnerComp.GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"), nullptr);
+
+	
+
 
 	return EBTNodeResult::Failed;
 
@@ -22,5 +26,11 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
-	
+
+	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
+
+
+
+
+
 }
