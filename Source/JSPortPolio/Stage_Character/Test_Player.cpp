@@ -14,6 +14,8 @@
 
 
 
+
+
 // Sets default values
 ATest_Player::ATest_Player()
 {
@@ -147,6 +149,8 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 	}
+
+	
 
 
 	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &ATest_Player::MoveForward);
