@@ -123,7 +123,7 @@ public:
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
 	void HeadRotation(FVector Dir, float Speed);
-	void PlayerCameraResetStart();
+	void CameraReset();
 	void PlayerMove(FVector Dir, const struct FInputActionValue& Val);
 	void MoveMouse(const struct FInputActionValue& Val);
 
