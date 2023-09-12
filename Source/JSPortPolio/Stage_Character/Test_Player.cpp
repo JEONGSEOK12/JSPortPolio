@@ -151,7 +151,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &ATest_Player::MoveForward);
 	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &ATest_Player::MoveRight);
-	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::Rotate);
+	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::MoveTurn);
 
 	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
 	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::LookUpAtRate);
@@ -164,20 +164,125 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
+
+void ATest_Player::GroundRotation(FVector Dir, double Speed)
+{
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
+	MyCurQuat = GetActorQuat();
+	MyCurQuat = MyCurQuat * AddQuat;
+	SetActorRotation(MyCurQuat);
+}
+
+void ATest_Player::HeadRotation(FVector Dir, double Speed)
+{
+	Dir.Normalize();
+	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
+	MyHeadCurQuat = HeadPtr->GetActorQuat();
+	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
+	HeadPtr->SetActorRotation(MyHeadCurQuat);
+}
+
+void ATest_Player::PlayerMove(FVector Dir, float Val)
+{
+	if (bisGround)
+	{
+		if (Val != 0.f)
+		{
+			GroundRotation(Dir, RotMaxSpeed * Val);
+		}
+	}
+	else
+	{
+		if (Val != 0.f)
+		{
+			HeadRotation(Dir, RotMaxSpeed * Val);
+		}
+	}
+}
+
+void ATest_Player::MoveForward(float Val)
+{
+	FVector RitVec;
+	RitVec.Set(0, 1, 0);
+
+	PlayerMove(RitVec, Val);
+	RotCheckX += RotMaxSpeed * fDeltaSec * Val;
+}
+
+void ATest_Player::MoveRight(float Val)
+{
+	FVector ForVec;
+	ForVec.Set(-1, 0, 0);
+
+	PlayerMove(ForVec, Val);
+	RotCheckY += RotMaxSpeed * fDeltaSec * Val;
+}
+
+void ATest_Player::MoveTurn(float Val)
+{
+	FVector RotVec;
+	RotVec.Set(0, 0, 1);
+
+	PlayerMove(RotVec, Val);
+	RotCheckZ += RotMaxSpeed * fDeltaSec * Val;
+}
+
 void ATest_Player::PlayerCameraResetStart()
 {
 	FRotator ResetRot = MySpringArm->GetRelativeRotation();
 	ResetRot.Yaw = GetActorRotation().Yaw;
 	ResetRot.Roll = 0;
 	MySpringArm->SetRelativeRotation(ResetRot);
+}
+
+
+void ATest_Player::PlayerJumpStart()
+{
+	bJumpPressed = true;
 
 }
+
+void ATest_Player::PlayerJumpEnd()
+{
+	if (bisGround)
+	{
+		FVector JumpVec;
+		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
+
+		if (bisSpined)
+		{
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size();
+
+			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
+			double Tes = TTT.Size();
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
+		}
+		else
+		{
+			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+
+			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
+			double Tes = TTT.Size();
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
+		}
+
+		bisSpined = false;
+		//RotVFX->SetVisibility(false);
+		fJumpTime = 0.f;
+		bJumpPressed = false;
+		bisGround = false;
+	}
+
+}
+
 
 void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
-
 
 		if (DebugTime > 0.1f)
 		{
@@ -197,13 +302,9 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TestVec1.Size();
 
-
-
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Terrain Land Power is %f"), Tes));
 
 			CurVec = GetMovementComponent()->Velocity;
-
-
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
@@ -246,148 +347,6 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		}
 
 	}
-
-}
-
-
-
-void ATest_Player::GroundRotation(FVector Dir, double Speed)
-{
-	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
-	MyCurQuat = GetActorQuat();
-	MyCurQuat = MyCurQuat * AddQuat;
-	SetActorRotation(MyCurQuat);
-}
-
-void ATest_Player::HeadRotation(FVector Dir, double Speed)
-{
-	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
-	MyHeadCurQuat = HeadPtr->GetActorQuat();
-	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
-	HeadPtr->SetActorRotation(MyHeadCurQuat);
-}
-
-
-
-void ATest_Player::MoveRight(float Val)
-{
-	FVector ForVec;
-	ForVec.Set(1, 0, 0);
-
-	if (bisGround)
-	{
-		if (Val != 0.f)
-		{
-			GroundRotation(ForVec, -RotMaxSpeed * Val);
-		}
-	}
-	else
-	{
-		if (Val != 0.f)
-		{
-			HeadRotation(ForVec, -RotMaxSpeed * Val);
-
-			RotCheckX += RotMaxSpeed * fDeltaSec * Val;
-		}
-	}
-}
-
-void ATest_Player::MoveForward(float Val)
-{
-	FVector RitVec;
-	RitVec.Set(0, 1, 0);
-
-	if (bisGround)
-	{
-		if (Val != 0.f)
-		{
-			GroundRotation(RitVec, -RotMaxSpeed * Val);
-		}
-	}
-	else
-	{
-		if (Val != 0.f)
-		{
-			HeadRotation(RitVec, -RotMaxSpeed * Val);
-
-			RotCheckX += RotMaxSpeed * fDeltaSec * Val;
-		}
-	}
-
-}
-
-void ATest_Player::Rotate(float Val)
-{
-	FVector RotVec;
-	RotVec.Set(0, 0, 1);
-
-	if (bisGround)
-	{
-		if (Val != 0.f)
-		{
-			GroundRotation(RotVec, RotMaxSpeed * Val);
-		}
-	}
-	else
-	{
-		if (Val != 0.f)
-		{
-			HeadRotation(RotVec, RotMaxSpeed * Val);
-
-			RotCheckZ += RotMaxSpeed * fDeltaSec * Val;
-		}
-	}
-}
-
-
-
-
-void ATest_Player::PlayerJumpStart()
-{
-	bJumpPressed = true;
-
-}
-
-void ATest_Player::PlayerJumpEnd()
-{
-	if (bisGround)
-	{
-		FVector JumpVec;
-		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
-
-		if (bisSpined)
-		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size();
-
-			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
-			double Tes = TTT.Size();
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
-		}
-		else
-		{
-			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
-
-			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
-			double Tes = TTT.Size();
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
-		}
-
-		bisSpined = false;
-		//RotVFX->SetVisibility(false);
-		fJumpTime = 0.f;
-		bJumpPressed = false;
-		bisGround = false;
-
-
-
-	}
-
-
-
 
 }
 

@@ -113,10 +113,11 @@ public:
 	void LookUpAtRate(float Rate);
 	void MoveRight(float Val);
 	void MoveForward(float Val);
-	void Rotate(float Val);
+	void MoveTurn(float Val);
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
 	void HeadRotation(FVector Dir, double Speed);
 	void PlayerCameraResetStart();
+	void PlayerMove(FVector Dir, float Val);
 
 };
