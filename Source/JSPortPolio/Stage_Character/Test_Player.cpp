@@ -140,6 +140,11 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Triggered, this, &ATest_Player::MoveRight);
 	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Triggered, this, &ATest_Player::MoveTurn);
 	PIE->BindAction(InputDatas->MoveMouse, ETriggerEvent::Triggered, this, &ATest_Player::MoveMouse);
+	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Triggered, this, &ATest_Player::PlayerJumpStart);
+	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Completed, this, &ATest_Player::PlayerJumpEnd);
+	PIE->BindAction(InputDatas->CameraReset, ETriggerEvent::Triggered, this, &ATest_Player::PlayerCameraResetStart);
+
+
 
 	static bool bBindingsAdded = false;
 	if (!bBindingsAdded)
@@ -148,21 +153,21 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 
 
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerCameraReset"), EKeys::F));
+		// UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerCameraReset"), EKeys::F));
 
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
-
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
+		// UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
+		// 
+		// UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerJump"), EKeys::SpaceBar));
 	}
 
 	
 
 
-	PlayerInputComponent->BindAction("PlayerCameraReset", IE_Pressed, this, &ATest_Player::PlayerCameraResetStart);
+	// PlayerInputComponent->BindAction("PlayerCameraReset", IE_Pressed, this, &ATest_Player::PlayerCameraResetStart);
 
-	PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &ATest_Player::PlayerJumpStart);
-
-	PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &ATest_Player::PlayerJumpEnd);
+	// PlayerInputComponent->BindAction("PlayerJump", IE_Pressed, this, &ATest_Player::PlayerJumpStart);
+	// 
+	// PlayerInputComponent->BindAction("PlayerJump", IE_Released, this, &ATest_Player::PlayerJumpEnd);
 
 }
 
@@ -246,8 +251,6 @@ void ATest_Player::MoveMouse(const FInputActionValue& Val)
 	}
 
 }
-
-
 
 void ATest_Player::PlayerCameraResetStart()
 {
