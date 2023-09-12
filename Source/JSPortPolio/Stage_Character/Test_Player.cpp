@@ -10,8 +10,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/SpringArmComponent.h"
 #include <Character_Base.h>
-
-
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 
 
 
@@ -126,6 +126,15 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	APlayerController* PlayerCon = Cast<APlayerController>(GetController());
+		
+	UEnhancedInputLocalPlayerSubsystem* System = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerCon->GetLocalPlayer());
+
+	System->ClearAllMappings();
+	System->AddMappingContext(InputMapping,0);
+
+	UEnhancedInputComponent* PIE = Cast< UEnhancedInputComponent>(PlayerInputComponent);
+
 	static bool bBindingsAdded = false;
 	if (!bBindingsAdded)
 	{
@@ -151,6 +160,8 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 
 	
+	
+	 
 
 
 	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &ATest_Player::MoveForward);

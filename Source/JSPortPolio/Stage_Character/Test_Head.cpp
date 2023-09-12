@@ -9,6 +9,8 @@
 
 
 
+
+
 // Sets default values
 ATest_Head::ATest_Head()
 {
@@ -26,7 +28,7 @@ void ATest_Head::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Head::BodyHit);
 
-
+	
 
 }
 

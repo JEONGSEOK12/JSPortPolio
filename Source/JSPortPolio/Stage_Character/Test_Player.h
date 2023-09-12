@@ -37,6 +37,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Head");
 	TSubclassOf<ACharacter> Test_Head;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputDatas");
+	class UInputMappingContext* InputMapping;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputDatas");
+	class UInputDataAsset* InputDatas;
+
 	class USpringArmComponent* MySpringArm;
 
 	UFUNCTION()
