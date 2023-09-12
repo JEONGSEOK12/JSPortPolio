@@ -4,7 +4,6 @@
 #include "Monster/BTTaskNode_Idle.h"
 #include <BehaviorTree/BlackboardComponent.h>
 #include "Character_Base.h"
-#include "Monster/MonsterAnimInstance.h"
 #include "Monster_Enums.h"
 
 
@@ -16,10 +15,9 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"), nullptr);
 
-	
 
 
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::InProgress;
 
 }
 
@@ -29,8 +27,9 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
 
+	DeathCheck(OwnerComp);
 
-
-
+	FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
 
 }
+

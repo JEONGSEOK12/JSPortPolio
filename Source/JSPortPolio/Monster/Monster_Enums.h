@@ -16,7 +16,7 @@ enum class Monster_Enum : uint8
 	Run,
 	Scream,
 	GetHit,
-	Die
+	Death
 
 };
 

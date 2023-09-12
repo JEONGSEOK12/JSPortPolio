@@ -7,6 +7,8 @@
 #include "Datas/CharacterDatas.h"
 #include "Monster/MonsterAnimInstance.h"
 #include "Monster/Monster_Enums.h"
+#include "Animation/AnimMontage.h"
+
 
 
 
@@ -65,8 +67,6 @@ UBehaviorTree* ACharacter_Base::GetBehaviorTree()
 {
 	return CharacterData->BehaviorTree;
 };
-
-
 
 
 

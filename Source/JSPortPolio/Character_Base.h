@@ -7,6 +7,7 @@
 #include "Character_Base.generated.h"
 
 
+
 UCLASS()
 class JSPORTPOLIO_API ACharacter_Base : public ACharacter
 {
@@ -59,5 +60,6 @@ public:
 	TMap<int, class UAnimMontage*> AllAnimations;
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
-	
+
+
 };

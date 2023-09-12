@@ -3,10 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTTaskNode.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "Monster/Monster_AIController.h"
-#include <Monster/Monster_Enums.h>
 #include "BTTaskNode_Base.generated.h"
 
 
@@ -36,5 +33,6 @@ public:
 
 	void SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State);
 
+	void DeathCheck(UBehaviorTreeComponent& OwnerComp);
 
 };

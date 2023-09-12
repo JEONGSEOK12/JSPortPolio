@@ -49,7 +49,7 @@ void ATest_Player::BeginPlay()
 
 	//fJumpPower = 600.0f;
 	//fMaxJumpTime = 2.0f;
-	//RotSpeed = 4.f;
+	//RotMaxSpeed = 4.f;
 	//SpinCheck = 5.f;
 	//fBasicJumpPoawer = 600.f;
 	//Gravity.Set(0, 0, -200);
@@ -170,7 +170,7 @@ void ATest_Player::PlayerCameraResetStart()
 	ResetRot.Yaw = GetActorRotation().Yaw;
 	ResetRot.Roll = 0;
 	MySpringArm->SetRelativeRotation(ResetRot);
-	
+
 }
 
 void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -233,11 +233,10 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
 
 			ACharacter_Base* Monster = Cast<ACharacter_Base>(OtherActor);
+
+
 			Monster->HP -= 100;
-			if (Monster->HP <= 0)
-			{
-				Monster->Destroy();
-			}
+
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("MonsterHit")));
 
@@ -281,16 +280,16 @@ void ATest_Player::MoveRight(float Val)
 	{
 		if (Val != 0.f)
 		{
-			GroundRotation(ForVec, -RotSpeed * Val);
+			GroundRotation(ForVec, -RotMaxSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-			HeadRotation(ForVec, -RotSpeed * Val);
+			HeadRotation(ForVec, -RotMaxSpeed * Val);
 
-			RotCheckX += RotSpeed * fDeltaSec * Val;
+			RotCheckX += RotMaxSpeed * fDeltaSec * Val;
 		}
 	}
 }
@@ -304,16 +303,16 @@ void ATest_Player::MoveForward(float Val)
 	{
 		if (Val != 0.f)
 		{
-			GroundRotation(RitVec, RotSpeed * Val);
+			GroundRotation(RitVec, -RotMaxSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-			HeadRotation(RitVec, RotSpeed * Val);
+			HeadRotation(RitVec, -RotMaxSpeed * Val);
 
-			RotCheckY += RotSpeed * fDeltaSec * Val;
+			RotCheckX += RotMaxSpeed * fDeltaSec * Val;
 		}
 	}
 
@@ -328,16 +327,16 @@ void ATest_Player::Rotate(float Val)
 	{
 		if (Val != 0.f)
 		{
-			GroundRotation(RotVec, RotSpeed * Val);
+			GroundRotation(RotVec, RotMaxSpeed * Val);
 		}
 	}
 	else
 	{
 		if (Val != 0.f)
 		{
-			HeadRotation(RotVec, RotSpeed * Val);
+			HeadRotation(RotVec, RotMaxSpeed * Val);
 
-			RotCheckZ += RotSpeed * fDeltaSec * Val;
+			RotCheckZ += RotMaxSpeed * fDeltaSec * Val;
 		}
 	}
 }
@@ -400,9 +399,9 @@ void ATest_Player::TurnAtRate(float Rate)
 	if (Rate != 0.f)
 	{
 		FRotator ArmRot = MySpringArm->GetRelativeRotation();
-		
+
 		ArmRot = ArmRot + FRotator(0, Rate, 0);
-		
+
 		MySpringArm->SetRelativeRotation(ArmRot);
 
 	}

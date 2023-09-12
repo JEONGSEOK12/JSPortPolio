@@ -66,7 +66,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float fJumpPower;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
-	float RotSpeed;
+	float RotIniSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	float RotMaxSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	float RotAccel;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	FVector Gravity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");

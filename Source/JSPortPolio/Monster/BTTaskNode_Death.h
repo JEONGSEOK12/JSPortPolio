@@ -4,26 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Monster/BTTaskNode_Base.h"
-#include "BTTaskNode_Idle.generated.h"
+#include "BTTaskNode_Death.generated.h"
 
 /**
  * 
  */
-
-
-
-
 UCLASS()
-class JSPORTPOLIO_API UBTTaskNode_Idle : public UBTTaskNode_Base
+class JSPORTPOLIO_API UBTTaskNode_Death : public UBTTaskNode_Base
 {
-
-public:
 	GENERATED_BODY()
 
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 
 	void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds);
 
-	
+	int CurAni;
+	int DeathTime;
+	float Curtime;
+
 
 };

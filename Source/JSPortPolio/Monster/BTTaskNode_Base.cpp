@@ -2,11 +2,10 @@
 
 
 #include "Monster/BTTaskNode_Base.h"
-#include  <Datas/CharacterDatas.h>
 #include "Character_Base.h"
-#include "Monster/MonsterAnimInstance.h"
 #include <BehaviorTree/BlackboardComponent.h>
-#include "Character_Base.h"
+#include <Monster/Monster_AIController.h>
+#include "Monster_Enums.h"
 
 
 UBTTaskNode_Base::UBTTaskNode_Base()
@@ -42,6 +41,7 @@ ACharacter_Base* UBTTaskNode_Base::GetBaseCharacter(UBehaviorTreeComponent& Owne
 	}
 
 	return Character;
+
 }
 
 void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State)
@@ -58,3 +58,27 @@ void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
 }
+
+void UBTTaskNode_Base::DeathCheck(UBehaviorTreeComponent& OwnerComp)
+{
+	if (GetBaseCharacter(OwnerComp)->HP <= 0)
+	{
+
+	
+
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Death);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+

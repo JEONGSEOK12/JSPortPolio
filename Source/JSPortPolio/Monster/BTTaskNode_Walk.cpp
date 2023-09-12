@@ -3,6 +3,7 @@
 
 #include "Monster/BTTaskNode_Walk.h"
 #include "Character_Base.h"
+#include <Monster/Monster_Enums.h>
 
 
 
@@ -19,5 +20,10 @@ EBTNodeResult::Type UBTTaskNode_Walk::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 void UBTTaskNode_Walk::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
+	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
+
+
+
+	DeathCheck(OwnerComp);
 
 }
