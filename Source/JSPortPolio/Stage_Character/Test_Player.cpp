@@ -12,7 +12,8 @@
 #include <Character_Base.h>
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
+#include "InputActionValue.h"
+#include <Datas/InputDataAsset.h>
 
 
 
@@ -135,22 +136,17 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	UEnhancedInputComponent* PIE = Cast< UEnhancedInputComponent>(PlayerInputComponent);
 
+	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Triggered,this, &ATest_Player::MoveForward);
+	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Triggered, this, &ATest_Player::MoveRight);
+	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Triggered, this, &ATest_Player::MoveTurn);
+	PIE->BindAction(InputDatas->MoveMouse, ETriggerEvent::Triggered, this, &ATest_Player::MoveMouse);
+
 	static bool bBindingsAdded = false;
 	if (!bBindingsAdded)
 	{
 		bBindingsAdded = true;
 
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveForward", EKeys::W, 1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveForward", EKeys::S, -1.f));
 
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::A, -1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerMoveRight", EKeys::D, 1.f));
-
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::E, 1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerRotate", EKeys::Q, -1.f));
-
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerTurnRate", EKeys::MouseX, 1.f));
-		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("PlayerLookUp", EKeys::MouseY, 1.f));
 
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("PlayerCameraReset"), EKeys::F));
 
@@ -160,16 +156,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 
 	
-	
-	 
 
-
-	PlayerInputComponent->BindAxis("PlayerMoveForward", this, &ATest_Player::MoveForward);
-	PlayerInputComponent->BindAxis("PlayerMoveRight", this, &ATest_Player::MoveRight);
-	PlayerInputComponent->BindAxis("PlayerRotate", this, &ATest_Player::MoveTurn);
-
-	PlayerInputComponent->BindAxis("PlayerTurnRate", this, &ATest_Player::TurnAtRate);
-	PlayerInputComponent->BindAxis("PlayerLookUp", this, &ATest_Player::LookUpAtRate);
 
 	PlayerInputComponent->BindAction("PlayerCameraReset", IE_Pressed, this, &ATest_Player::PlayerCameraResetStart);
 
@@ -180,16 +167,17 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 }
 
 
-void ATest_Player::GroundRotation(FVector Dir, double Speed)
+void ATest_Player::GroundRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
+
 	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
 	SetActorRotation(MyCurQuat);
 }
 
-void ATest_Player::HeadRotation(FVector Dir, double Speed)
+void ATest_Player::HeadRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
 	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
@@ -198,50 +186,68 @@ void ATest_Player::HeadRotation(FVector Dir, double Speed)
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
 }
 
-void ATest_Player::PlayerMove(FVector Dir, float Val)
+void ATest_Player::PlayerMove(FVector Dir, const  FInputActionValue& Val)
 {
 	if (bisGround)
 	{
-		if (Val != 0.f)
+		if (Val.Get<float>() != 0.f)
 		{
-			GroundRotation(Dir, RotMaxSpeed * Val);
+			GroundRotation(Dir, RotMaxSpeed * Val.Get<float>());
 		}
 	}
 	else
 	{
-		if (Val != 0.f)
+		if (Val.Get<float>() != 0.f)
 		{
-			HeadRotation(Dir, RotMaxSpeed * Val);
+			HeadRotation(Dir, RotMaxSpeed * Val.Get<float>());
 		}
 	}
 }
 
-void ATest_Player::MoveForward(float Val)
+void ATest_Player::MoveForward(const FInputActionValue& Val)
 {
 	FVector RitVec;
 	RitVec.Set(0, 1, 0);
 
 	PlayerMove(RitVec, Val);
-	RotCheckX += RotMaxSpeed * fDeltaSec * Val;
+	RotCheckX += RotMaxSpeed * fDeltaSec * Val.Get<float>();
 }
 
-void ATest_Player::MoveRight(float Val)
+void ATest_Player::MoveRight(const FInputActionValue& Val)
 {
 	FVector ForVec;
 	ForVec.Set(-1, 0, 0);
 
 	PlayerMove(ForVec, Val);
-	RotCheckY += RotMaxSpeed * fDeltaSec * Val;
+	RotCheckY += RotMaxSpeed * fDeltaSec * Val.Get<float>();
 }
 
-void ATest_Player::MoveTurn(float Val)
+void ATest_Player::MoveTurn(const FInputActionValue& Val)
 {
 	FVector RotVec;
 	RotVec.Set(0, 0, 1);
 
 	PlayerMove(RotVec, Val);
-	RotCheckZ += RotMaxSpeed * fDeltaSec * Val;
+	RotCheckZ += RotMaxSpeed * fDeltaSec * Val.Get<float>();
 }
+
+void ATest_Player::MoveMouse(const FInputActionValue& Val)
+{
+	FVector2D Mouse = Val.Get<FVector2D>();
+	
+	if (Mouse.X != 0.f && Mouse.Y != 0.f)
+	{
+		FRotator ArmRot = MySpringArm->GetRelativeRotation();
+
+		ArmRot = ArmRot + FRotator(Mouse.Y, Mouse.X, 0);
+
+		MySpringArm->SetRelativeRotation(ArmRot);
+
+	}
+
+}
+
+
 
 void ATest_Player::PlayerCameraResetStart()
 {
@@ -367,31 +373,3 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 
 
-void ATest_Player::TurnAtRate(float Rate)
-{
-
-	if (Rate != 0.f)
-	{
-		FRotator ArmRot = MySpringArm->GetRelativeRotation();
-
-		ArmRot = ArmRot + FRotator(0, Rate, 0);
-
-		MySpringArm->SetRelativeRotation(ArmRot);
-
-	}
-
-}
-
-void ATest_Player::LookUpAtRate(float Rate)
-{
-	// calculate delta for this frame from the rate information
-	if (Rate != 0.f)
-	{
-		FRotator ArmRot = MySpringArm->GetRelativeRotation();
-
-		ArmRot = ArmRot + FRotator(Rate, 0, 0);
-
-		MySpringArm->SetRelativeRotation(ArmRot);
-
-	}
-}

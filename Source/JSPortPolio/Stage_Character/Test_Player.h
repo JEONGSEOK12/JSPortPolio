@@ -114,16 +114,18 @@ public:
 	float Testf;
 
 
-	void GroundRotation(FVector Dir, double Speed);
+	void GroundRotation(FVector Dir, float Speed);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	void MoveRight(float Val);
-	void MoveForward(float Val);
-	void MoveTurn(float Val);
+	void MoveRight(const struct FInputActionValue& Val);
+	void MoveForward(const struct FInputActionValue& Val);
+	void MoveTurn(const struct FInputActionValue& Val);
 	void PlayerJumpStart();
 	void PlayerJumpEnd();
-	void HeadRotation(FVector Dir, double Speed);
+	void HeadRotation(FVector Dir, float Speed);
 	void PlayerCameraResetStart();
-	void PlayerMove(FVector Dir, float Val);
+	void PlayerMove(FVector Dir, const struct FInputActionValue& Val);
+	void MoveMouse(const struct FInputActionValue& Val);
+
 
 };
