@@ -55,6 +55,8 @@ public:
 	class ATest_Head* HeadPtr;
 
 
+	float fFowardSpeed;
+
 	float fDeltaSec;
 
 	FQuat MyCurQuat;
@@ -117,8 +119,12 @@ public:
 	void GroundRotation(FVector Dir, float Speed);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
+	
+	
 	void MoveRight(const struct FInputActionValue& Val);
 	void MoveForward(const struct FInputActionValue& Val);
+	void MoveForwardEnd();
+
 	void MoveTurn(const struct FInputActionValue& Val);
 
 	void PlayerJumpStart();

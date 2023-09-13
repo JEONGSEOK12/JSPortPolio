@@ -120,6 +120,8 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	UEnhancedInputComponent* PIE = Cast< UEnhancedInputComponent>(PlayerInputComponent);
 
 	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Triggered,this, &ATest_Player::MoveForward);
+	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Completed, this, &ATest_Player::MoveForwardEnd);
+
 	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Triggered, this, &ATest_Player::MoveRight);
 	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Triggered, this, &ATest_Player::MoveTurn);
 
@@ -176,20 +178,25 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 	FVector RitVec;
 	RitVec.Set(0, 1, 0);
 
-	float Speed = Val.Get<float>();
-	Testf += Speed;
+	fFowardSpeed = Val.Get<float>();
+	Testf += fFowardSpeed;
 
-	if (Testf >= RotMaxSpeed * Speed)
+	if (Testf >= RotMaxSpeed * fFowardSpeed)
 	{
-		PlayerMove(RitVec, Speed);
-		RotCheckX += fDeltaSec * Speed;
+		PlayerMove(RitVec, Testf);
+		RotCheckX += fDeltaSec * fFowardSpeed;
 	}
 	else
 	{
-		PlayerMove(RitVec, RotMaxSpeed * Speed);
-		RotCheckX += RotMaxSpeed * fDeltaSec * Speed;
+		PlayerMove(RitVec, RotMaxSpeed * fFowardSpeed);
+		RotCheckX += RotMaxSpeed * fDeltaSec * fFowardSpeed;
 	}
 	
+}
+
+void ATest_Player::MoveForwardEnd()
+{
+	Testf = 0;
 }
 
 void ATest_Player::MoveRight(const FInputActionValue& Val)
@@ -244,7 +251,7 @@ void ATest_Player::CameraReset()
 void ATest_Player::PlayerJumpStart()
 {
 	bJumpPressed = true;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump started")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump started")));
 }
 
 void ATest_Player::PlayerJumpTriggered()
@@ -254,7 +261,7 @@ void ATest_Player::PlayerJumpTriggered()
 		fJumpTime += fDeltaSec;
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered")));
 
 }
 
@@ -273,7 +280,7 @@ void ATest_Player::PlayerJumpEnd()
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("JumpEnded"), Tes));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("JumpEnded"), Tes));
 		}
 		else
 		{
@@ -282,7 +289,7 @@ void ATest_Player::PlayerJumpEnd()
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded"), Tes));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded"), Tes));
 		}
 
 		bisSpined = false;
