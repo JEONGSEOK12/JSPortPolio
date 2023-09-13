@@ -322,8 +322,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 			}
 
 			LandVec = HeadPtr->GetMovementComponent()->Velocity;
-			// LandVec = GetMovementComponent()->Velocity;
-
+			
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
