@@ -54,6 +54,7 @@ public:
 
 	class ATest_Head* HeadPtr;
 
+	float fFowardAccel;
 
 	float fFowardSpeed;
 
@@ -94,7 +95,7 @@ public:
 	float RotCheckY;
 	float RotCheckZ;
 
-	FVector CurVec;
+	FVector LandVec;
 
 	float DebugTime;
 
@@ -112,9 +113,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	AActor* TestAc;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
-	float Testf;
-
+	
 
 	void GroundRotation(FVector Dir, float Speed);
 	void TurnAtRate(float Rate);

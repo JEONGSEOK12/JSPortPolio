@@ -178,25 +178,25 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 	FVector RitVec;
 	RitVec.Set(0, 1, 0);
 
-	fFowardSpeed = Val.Get<float>();
-	Testf += fFowardSpeed;
+	fFowardAccel = fDeltaSec * 10 * Val.Get<float>();
+	fFowardSpeed += fFowardAccel;
 
-	if (Testf >= RotMaxSpeed * fFowardSpeed)
+	if (abs(fFowardSpeed) <= abs(RotMaxSpeed * fFowardAccel))
 	{
-		PlayerMove(RitVec, Testf);
-		RotCheckX += fDeltaSec * fFowardSpeed;
+		PlayerMove(RitVec, fFowardSpeed);
+		RotCheckX += fDeltaSec * fFowardAccel;
 	}
 	else
 	{
-		PlayerMove(RitVec, RotMaxSpeed * fFowardSpeed);
-		RotCheckX += RotMaxSpeed * fDeltaSec * fFowardSpeed;
+		PlayerMove(RitVec, RotMaxSpeed * fFowardAccel);
+		RotCheckX += RotMaxSpeed * fDeltaSec * fFowardAccel;
 	}
 	
 }
 
 void ATest_Player::MoveForwardEnd()
 {
-	Testf = 0;
+	fFowardSpeed = 0;
 }
 
 void ATest_Player::MoveRight(const FInputActionValue& Val)
@@ -205,7 +205,7 @@ void ATest_Player::MoveRight(const FInputActionValue& Val)
 	ForVec.Set(-1, 0, 0);
 
 	float Speed = Val.Get<float>();
-	Testf += Speed;
+	fFowardSpeed += Speed;
 
 	PlayerMove(ForVec, Speed);
 	RotCheckY += RotMaxSpeed * fDeltaSec * Val.Get<float>();
@@ -217,7 +217,7 @@ void ATest_Player::MoveTurn(const FInputActionValue& Val)
 	RotVec.Set(0, 0, 1);
 
 	float Speed = Val.Get<float>();
-	Testf += Speed;
+	fFowardSpeed += Speed;
 
 	PlayerMove(RotVec, Speed);
 	RotCheckZ += RotMaxSpeed * fDeltaSec * Val.Get<float>();
@@ -275,12 +275,12 @@ void ATest_Player::PlayerJumpEnd()
 
 		if (bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * TestVec1.Size();
+			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * LandVec.Size();
 
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("JumpEnded"), Tes));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), Tes));
 		}
 		else
 		{
@@ -289,7 +289,7 @@ void ATest_Player::PlayerJumpEnd()
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded"), Tes));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded %f"), Tes));
 		}
 
 		bisSpined = false;
@@ -321,8 +321,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 				return;
 			}
 
-
-			CurVec = GetMovementComponent()->Velocity;
+			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
+			LandVec = GetMovementComponent()->Velocity;
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
@@ -341,7 +341,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		if (DebugTime > 0.1f)
 		{
-			CurVec = GetMovementComponent()->Velocity;
+
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			//SetActorLocation(GetActorLocation());
 			//GetMovementComponent()->Velocity.Set(0, 0, 0);
