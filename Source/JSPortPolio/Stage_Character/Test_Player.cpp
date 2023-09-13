@@ -248,32 +248,32 @@ void ATest_Player::MoveTurn(const FInputActionValue& Val)
 	FVector TurnVec;
 	TurnVec.Set(0, 0, 1);
 
-	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
+	fTurnAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
 
-	if (RotMaxSpeed >= abs(fFowardAccel))
+	if (RotMaxSpeed >= abs(fTurnAccel))
 	{
-		PlayerMove(TurnVec, fFowardAccel);
-		RotCheckX += fFowardAccel;
+		PlayerMove(TurnVec, fTurnAccel);
+		RotCheckX += fTurnAccel;
 	}
 	else
 	{
-		if (fFowardAccel >= 0)
+		if (fTurnAccel >= 0)
 		{
-			fFowardAccel = RotMaxSpeed;
+			fTurnAccel = RotMaxSpeed;
 		}
 		else
 		{
-			fFowardAccel = -RotMaxSpeed;
+			fTurnAccel = -RotMaxSpeed;
 		}
-		PlayerMove(TurnVec, fFowardAccel);
+		PlayerMove(TurnVec, fTurnAccel);
 		RotCheckX += RotMaxSpeed;
 	}
 }
 
 void ATest_Player::MoveTurnEnd()
 {
-	fTurnSpeed = 0;
+	fTurnAccel = 0;
 }
 
 void ATest_Player::MoveMouse(const FInputActionValue& Val)
