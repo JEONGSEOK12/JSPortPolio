@@ -119,11 +119,14 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	UEnhancedInputComponent* PIE = Cast< UEnhancedInputComponent>(PlayerInputComponent);
 
-	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Triggered,this, &ATest_Player::MoveForward);
+	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Triggered, this, &ATest_Player::MoveForward);
 	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Completed, this, &ATest_Player::MoveForwardEnd);
 
 	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Triggered, this, &ATest_Player::MoveRight);
+	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Completed, this, &ATest_Player::MoveRightEnd);
+
 	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Triggered, this, &ATest_Player::MoveTurn);
+	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Completed, this, &ATest_Player::MoveTurnEnd);
 
 	PIE->BindAction(InputDatas->MoveMouse, ETriggerEvent::Triggered, this, &ATest_Player::MoveMouse);
 
@@ -140,7 +143,7 @@ void ATest_Player::GroundRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
 	
-	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
+	FQuat AddQuat = FQuat(Dir, Speed);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
 	SetActorRotation(MyCurQuat);
@@ -149,7 +152,7 @@ void ATest_Player::GroundRotation(FVector Dir, float Speed)
 void ATest_Player::HeadRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
-	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
+	FQuat AddQuat = FQuat(Dir, Speed);
 	MyHeadCurQuat = HeadPtr->GetActorQuat();
 	MyHeadCurQuat = MyHeadCurQuat * AddQuat;
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
@@ -175,52 +178,102 @@ void ATest_Player::PlayerMove(FVector Dir, float Val)
 
 void ATest_Player::MoveForward(const FInputActionValue& Val)
 {
-	FVector RitVec;
-	RitVec.Set(0, 1, 0);
+	FVector ForVec;
+	ForVec.Set(0, 1, 0);
 
-	fFowardAccel = fDeltaSec * 10 * Val.Get<float>();
-	fFowardSpeed += fFowardAccel;
+	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
+	
 
-	if (abs(fFowardSpeed) <= abs(RotMaxSpeed * fFowardAccel))
+	if (RotMaxSpeed >= abs(fFowardAccel))
 	{
-		PlayerMove(RitVec, fFowardSpeed);
-		RotCheckX += fDeltaSec * fFowardAccel;
+		PlayerMove(ForVec, fFowardAccel);
+		RotCheckX += fFowardAccel;
 	}
 	else
 	{
-		PlayerMove(RitVec, RotMaxSpeed * fFowardAccel);
-		RotCheckX += RotMaxSpeed * fDeltaSec * fFowardAccel;
+		if(fFowardAccel>=0)
+		{
+			fFowardAccel = RotMaxSpeed;
+		}
+		else
+		{
+			fFowardAccel = -RotMaxSpeed;
+		}
+		PlayerMove(ForVec, fFowardAccel);
+		RotCheckX += RotMaxSpeed ;
 	}
 	
 }
 
 void ATest_Player::MoveForwardEnd()
 {
-	fFowardSpeed = 0;
+	fFowardAccel = 0;
 }
 
 void ATest_Player::MoveRight(const FInputActionValue& Val)
 {
-	FVector ForVec;
-	ForVec.Set(-1, 0, 0);
+	FVector RitVec;
+	RitVec.Set(-1, 0, 0);
 
-	float Speed = Val.Get<float>();
-	fFowardSpeed += Speed;
+	fRightAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
-	PlayerMove(ForVec, Speed);
-	RotCheckY += RotMaxSpeed * fDeltaSec * Val.Get<float>();
+
+	if (RotMaxSpeed >= abs(fRightAccel))
+	{
+		PlayerMove(RitVec, fRightAccel);
+		RotCheckX += fRightAccel;
+	}
+	else
+	{
+		if (fRightAccel >= 0)
+		{
+			fRightAccel = RotMaxSpeed;
+		}
+		else
+		{
+			fRightAccel = -RotMaxSpeed;
+		}
+		PlayerMove(RitVec, fRightAccel);
+		RotCheckX += RotMaxSpeed;
+	}
+}
+
+void ATest_Player::MoveRightEnd()
+{
+	fRightAccel = 0;
 }
 
 void ATest_Player::MoveTurn(const FInputActionValue& Val)
 {
-	FVector RotVec;
-	RotVec.Set(0, 0, 1);
+	FVector TurnVec;
+	TurnVec.Set(0, 0, 1);
 
-	float Speed = Val.Get<float>();
-	fFowardSpeed += Speed;
+	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
-	PlayerMove(RotVec, Speed);
-	RotCheckZ += RotMaxSpeed * fDeltaSec * Val.Get<float>();
+
+	if (RotMaxSpeed >= abs(fFowardAccel))
+	{
+		PlayerMove(TurnVec, fFowardAccel);
+		RotCheckX += fFowardAccel;
+	}
+	else
+	{
+		if (fFowardAccel >= 0)
+		{
+			fFowardAccel = RotMaxSpeed;
+		}
+		else
+		{
+			fFowardAccel = -RotMaxSpeed;
+		}
+		PlayerMove(TurnVec, fFowardAccel);
+		RotCheckX += RotMaxSpeed;
+	}
+}
+
+void ATest_Player::MoveTurnEnd()
+{
+	fTurnSpeed = 0;
 }
 
 void ATest_Player::MoveMouse(const FInputActionValue& Val)

@@ -58,6 +58,14 @@ public:
 
 	float fFowardSpeed;
 
+	float fRightAccel;
+
+	float fRightSpeed;
+
+	float fTurnAccel;
+
+	float fTurnSpeed;
+
 	float fDeltaSec;
 
 	FQuat MyCurQuat;
@@ -114,17 +122,20 @@ public:
 	AActor* TestAc;
 
 	
+	void TestFuc(float Val, FVector Dir, float OwnParameter);
 
-	void GroundRotation(FVector Dir, float Speed);
+	void GroundRotation(FVector Dir, const  float Speed);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
 	
 	
-	void MoveRight(const struct FInputActionValue& Val);
+
 	void MoveForward(const struct FInputActionValue& Val);
 	void MoveForwardEnd();
-
+	void MoveRight(const struct FInputActionValue& Val);
+	void MoveRightEnd();
 	void MoveTurn(const struct FInputActionValue& Val);
+	void MoveTurnEnd();
 
 	void PlayerJumpStart();
 	void PlayerJumpOngoing();
@@ -133,9 +144,9 @@ public:
 	void PlayerJumpEnd();
 	
 	
-	void HeadRotation(FVector Dir, float Speed);
+	void HeadRotation(FVector Dir, const float Speed);
 	void CameraReset();
-	void PlayerMove(FVector Dir, float Val);
+	void PlayerMove(FVector Dir, const float Val);
 	void MoveMouse(const struct FInputActionValue& Val);
 
 
