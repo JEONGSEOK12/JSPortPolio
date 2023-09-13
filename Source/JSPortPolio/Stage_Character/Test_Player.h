@@ -120,11 +120,17 @@ public:
 	void MoveRight(const struct FInputActionValue& Val);
 	void MoveForward(const struct FInputActionValue& Val);
 	void MoveTurn(const struct FInputActionValue& Val);
+
 	void PlayerJumpStart();
+	void PlayerJumpOngoing();
+	void PlayerJumpTriggered();
+	void PlayerJumpCanceled();
 	void PlayerJumpEnd();
+	
+	
 	void HeadRotation(FVector Dir, float Speed);
 	void CameraReset();
-	void PlayerMove(FVector Dir, const struct FInputActionValue& Val);
+	void PlayerMove(FVector Dir, float Val);
 	void MoveMouse(const struct FInputActionValue& Val);
 
 

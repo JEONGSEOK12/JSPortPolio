@@ -67,24 +67,7 @@ void ATest_Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	fDeltaSec = DeltaTime;
-	FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
-	TestD = TTT.Size();
 
-	Testf += DeltaTime;
-	if (Testf >= 0.1f && TestD != 0.f)
-	{
-		Testf = 0.f;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Vec is %f"), TestD));
-	}
-
-
-	if (bJumpPressed)
-	{
-		if (fJumpTime <= fMaxJumpTime)
-		{
-			fJumpTime += DeltaTime;
-		}
-	}
 
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
@@ -139,10 +122,14 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PIE->BindAction(InputDatas->MoveForward, ETriggerEvent::Triggered,this, &ATest_Player::MoveForward);
 	PIE->BindAction(InputDatas->MoveRight, ETriggerEvent::Triggered, this, &ATest_Player::MoveRight);
 	PIE->BindAction(InputDatas->MoveTurn, ETriggerEvent::Triggered, this, &ATest_Player::MoveTurn);
+
 	PIE->BindAction(InputDatas->MoveMouse, ETriggerEvent::Triggered, this, &ATest_Player::MoveMouse);
-	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Triggered, this, &ATest_Player::PlayerJumpStart);
+
+	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Started, this, &ATest_Player::PlayerJumpStart);
+	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Triggered, this, &ATest_Player::PlayerJumpTriggered);
 	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Completed, this, &ATest_Player::PlayerJumpEnd);
-	PIE->BindAction(InputDatas->CameraReset, ETriggerEvent::Triggered, this, &ATest_Player::CameraReset);
+	
+	PIE->BindAction(InputDatas->CameraReset, ETriggerEvent::Started, this, &ATest_Player::CameraReset);
 
 }
 
@@ -150,7 +137,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 void ATest_Player::GroundRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
-
+	
 	FQuat AddQuat = FQuat(Dir, Speed * fDeltaSec);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
@@ -166,20 +153,20 @@ void ATest_Player::HeadRotation(FVector Dir, float Speed)
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
 }
 
-void ATest_Player::PlayerMove(FVector Dir, const  FInputActionValue& Val)
+void ATest_Player::PlayerMove(FVector Dir, float Val)
 {
 	if (bisGround)
 	{
-		if (Val.Get<float>() != 0.f)
+		if (Val != 0.f)
 		{
-			GroundRotation(Dir, RotMaxSpeed * Val.Get<float>());
+			GroundRotation(Dir, Val);
 		}
 	}
 	else
 	{
-		if (Val.Get<float>() != 0.f)
+		if (Val != 0.f)
 		{
-			HeadRotation(Dir, RotMaxSpeed * Val.Get<float>());
+			HeadRotation(Dir, Val );
 		}
 	}
 }
@@ -189,8 +176,20 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 	FVector RitVec;
 	RitVec.Set(0, 1, 0);
 
-	PlayerMove(RitVec, Val);
-	RotCheckX += RotMaxSpeed * fDeltaSec * Val.Get<float>();
+	float Speed = Val.Get<float>();
+	Testf += Speed;
+
+	if (Testf >= RotMaxSpeed * Speed)
+	{
+		PlayerMove(RitVec, Speed);
+		RotCheckX += fDeltaSec * Speed;
+	}
+	else
+	{
+		PlayerMove(RitVec, RotMaxSpeed * Speed);
+		RotCheckX += RotMaxSpeed * fDeltaSec * Speed;
+	}
+	
 }
 
 void ATest_Player::MoveRight(const FInputActionValue& Val)
@@ -198,7 +197,10 @@ void ATest_Player::MoveRight(const FInputActionValue& Val)
 	FVector ForVec;
 	ForVec.Set(-1, 0, 0);
 
-	PlayerMove(ForVec, Val);
+	float Speed = Val.Get<float>();
+	Testf += Speed;
+
+	PlayerMove(ForVec, Speed);
 	RotCheckY += RotMaxSpeed * fDeltaSec * Val.Get<float>();
 }
 
@@ -207,7 +209,10 @@ void ATest_Player::MoveTurn(const FInputActionValue& Val)
 	FVector RotVec;
 	RotVec.Set(0, 0, 1);
 
-	PlayerMove(RotVec, Val);
+	float Speed = Val.Get<float>();
+	Testf += Speed;
+
+	PlayerMove(RotVec, Speed);
 	RotCheckZ += RotMaxSpeed * fDeltaSec * Val.Get<float>();
 }
 
@@ -239,8 +244,20 @@ void ATest_Player::CameraReset()
 void ATest_Player::PlayerJumpStart()
 {
 	bJumpPressed = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump started")));
+}
+
+void ATest_Player::PlayerJumpTriggered()
+{
+	if (fJumpTime <= fMaxJumpTime)
+	{
+		fJumpTime += fDeltaSec;
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered")));
 
 }
+
 
 void ATest_Player::PlayerJumpEnd()
 {
@@ -256,7 +273,7 @@ void ATest_Player::PlayerJumpEnd()
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("JumpEnded"), Tes));
 		}
 		else
 		{
@@ -265,7 +282,7 @@ void ATest_Player::PlayerJumpEnd()
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Total Jump Power is %f"), Tes));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded"), Tes));
 		}
 
 		bisSpined = false;
@@ -297,11 +314,6 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 				return;
 			}
 
-
-			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
-			double Tes = TestVec1.Size();
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Terrain Land Power is %f"), Tes));
 
 			CurVec = GetMovementComponent()->Velocity;
 
