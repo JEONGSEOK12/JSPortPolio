@@ -321,8 +321,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 				return;
 			}
 
-			LandVec = HeadPtr->GetMovementComponent()->Velocity;
-			// LandVec = GetMovementComponent()->Velocity;
+			TestVec1 = HeadPtr->GetMovementComponent()->Velocity;
+			LandVec = GetMovementComponent()->Velocity;
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
