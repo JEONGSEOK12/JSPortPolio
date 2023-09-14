@@ -22,13 +22,13 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Owne
 
 void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
-	GetBaseCharacter(OwnerComp)->GetBlackboardComponent()->GetValueAsFloat(TEXT("PatrolDistance")) += GetBaseCharacter(OwnerComp)->GetCharacterMovement()->MaxWalkSpeed * DelataSeconds;
-
-	
-	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(Distance,ESplineCoordinateSpace::Local);
-
-
-	GetBaseCharacter(OwnerComp)->SetActorRelativeTransform();
+	// GetBaseCharacter(OwnerComp)->GetBlackboardComponent()->GetValueAsFloat(TEXT("PatrolDistance")) += GetBaseCharacter(OwnerComp)->GetCharacterMovement()->MaxWalkSpeed * DelataSeconds;
+	// 
+	// 
+	// FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(Distance,ESplineCoordinateSpace::Local);
+	// 
+	// 
+	// GetBaseCharacter(OwnerComp)->SetActorRelativeTransform();
 	
 
 
