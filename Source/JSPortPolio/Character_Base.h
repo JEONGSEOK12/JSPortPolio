@@ -61,5 +61,10 @@ public:
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	class UBlackboardComponent* BlackboardComponent;
+
+	class UBlackboardComponent* GetBlackboardComponent();
+
 
 };

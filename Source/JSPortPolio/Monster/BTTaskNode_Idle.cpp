@@ -18,7 +18,18 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	
 	ABase_Monster* Monster = Cast<ABase_Monster>(GetBaseCharacter(OwnerComp));
 	
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("bisPatroling"), Monster->bisPatroling);
+	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("bCanPatrol")))
+	{
+
+		//ExecuteTask에서 FinishLatentTask 써도 되는지 나중에 확인
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Patrol);
+	}
+	else
+	{
+		return EBTNodeResult::InProgress;
+	}
+
+
 
 
 	return EBTNodeResult::InProgress;
@@ -33,16 +44,7 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	DeathCheck(OwnerComp);
 
-	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("bisPatroling")))
-	{
-		SetStateChange(OwnerComp,)
 
-	}
-	else
-	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
-
-	}
 
 	
 }

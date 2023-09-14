@@ -3,7 +3,7 @@
 
 #include "Monster/Base_Monster.h"
 #include <Datas/CharacterDatas.h>
-
+#include "BehaviorTree/BlackboardComponent.h"
 
 // Sets default values
 ABase_Monster::ABase_Monster()
@@ -18,7 +18,7 @@ void ABase_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), bCanPatrol);
 
 
 }

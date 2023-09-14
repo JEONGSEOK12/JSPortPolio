@@ -8,6 +8,10 @@
 #include "Monster/MonsterAnimInstance.h"
 #include "Monster/Monster_Enums.h"
 #include "Animation/AnimMontage.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AIController.h"
+
+
 
 
 
@@ -68,5 +72,20 @@ UBehaviorTree* ACharacter_Base::GetBehaviorTree()
 	return CharacterData->BehaviorTree;
 };
 
+UBlackboardComponent* ACharacter_Base::GetBlackboardComponent()
+{
+	if (nullptr == BlackboardComponent)
+	{
+		AAIController* AiCon = GetController<AAIController>();
 
+		if (nullptr == AiCon)
+		{
+			return nullptr;
+		}
+
+		BlackboardComponent = AiCon->GetBlackboardComponent();
+	}
+
+	return BlackboardComponent;
+}
 

@@ -28,7 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterInfo");
-	bool bisPatroling = false;
+	bool bCanPatrol = false;
 
 
 
