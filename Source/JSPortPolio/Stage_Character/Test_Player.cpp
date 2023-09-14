@@ -111,11 +111,11 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	APlayerController* PlayerCon = Cast<APlayerController>(GetController());
-		
+
 	UEnhancedInputLocalPlayerSubsystem* System = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerCon->GetLocalPlayer());
 
 	System->ClearAllMappings();
-	System->AddMappingContext(InputMapping,0);
+	System->AddMappingContext(InputMapping, 0);
 
 	UEnhancedInputComponent* PIE = Cast< UEnhancedInputComponent>(PlayerInputComponent);
 
@@ -133,7 +133,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Started, this, &ATest_Player::PlayerJumpStart);
 	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Triggered, this, &ATest_Player::PlayerJumpTriggered);
 	PIE->BindAction(InputDatas->Jump, ETriggerEvent::Completed, this, &ATest_Player::PlayerJumpEnd);
-	
+
 	PIE->BindAction(InputDatas->CameraReset, ETriggerEvent::Started, this, &ATest_Player::CameraReset);
 
 }
@@ -142,7 +142,7 @@ void ATest_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 void ATest_Player::GroundRotation(FVector Dir, float Speed)
 {
 	Dir.Normalize();
-	
+
 	FQuat AddQuat = FQuat(Dir, Speed);
 	MyCurQuat = GetActorQuat();
 	MyCurQuat = MyCurQuat * AddQuat;
@@ -158,7 +158,7 @@ void ATest_Player::HeadRotation(FVector Dir, float Speed)
 	HeadPtr->SetActorRotation(MyHeadCurQuat);
 }
 
-void ATest_Player::PlayerMove(FVector Dir, float Val)
+void ATest_Player::PlayerSimpleMove(FVector Dir, float Val)
 {
 	if (bisGround)
 	{
@@ -171,9 +171,34 @@ void ATest_Player::PlayerMove(FVector Dir, float Val)
 	{
 		if (Val != 0.f)
 		{
-			HeadRotation(Dir, Val );
+			HeadRotation(Dir, Val);
 		}
 	}
+}
+
+void ATest_Player::PlayerMove(FVector Dir, float Val)
+{
+	if (RotMaxSpeed >= abs(Val))
+	{
+		PlayerSimpleMove(Dir, Val);
+		RotCheckX += Val;
+
+	}
+	else
+	{
+		if (Val >= 0)
+		{
+			Val = RotMaxSpeed;
+		}
+		else
+		{
+			Val = -RotMaxSpeed;
+		}
+		PlayerSimpleMove(Dir, Val);
+
+		RotCheckX += RotMaxSpeed;
+	}
+
 }
 
 void ATest_Player::MoveForward(const FInputActionValue& Val)
@@ -182,27 +207,9 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 	ForVec.Set(0, 1, 0);
 
 	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
-	
 
-	if (RotMaxSpeed >= abs(fFowardAccel))
-	{
-		PlayerMove(ForVec, fFowardAccel);
-		RotCheckX += fFowardAccel;
-	}
-	else
-	{
-		if(fFowardAccel>=0)
-		{
-			fFowardAccel = RotMaxSpeed;
-		}
-		else
-		{
-			fFowardAccel = -RotMaxSpeed;
-		}
-		PlayerMove(ForVec, fFowardAccel);
-		RotCheckX += RotMaxSpeed ;
-	}
-	
+	PlayerMove(ForVec, fFowardAccel);
+
 }
 
 void ATest_Player::MoveForwardEnd()
@@ -217,25 +224,7 @@ void ATest_Player::MoveRight(const FInputActionValue& Val)
 
 	fRightAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
-
-	if (RotMaxSpeed >= abs(fRightAccel))
-	{
-		PlayerMove(RitVec, fRightAccel);
-		RotCheckX += fRightAccel;
-	}
-	else
-	{
-		if (fRightAccel >= 0)
-		{
-			fRightAccel = RotMaxSpeed;
-		}
-		else
-		{
-			fRightAccel = -RotMaxSpeed;
-		}
-		PlayerMove(RitVec, fRightAccel);
-		RotCheckX += RotMaxSpeed;
-	}
+	PlayerMove(RitVec, fRightAccel);
 }
 
 void ATest_Player::MoveRightEnd()
@@ -250,25 +239,7 @@ void ATest_Player::MoveTurn(const FInputActionValue& Val)
 
 	fTurnAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
-
-	if (RotMaxSpeed >= abs(fTurnAccel))
-	{
-		PlayerMove(TurnVec, fTurnAccel);
-		RotCheckX += fTurnAccel;
-	}
-	else
-	{
-		if (fTurnAccel >= 0)
-		{
-			fTurnAccel = RotMaxSpeed;
-		}
-		else
-		{
-			fTurnAccel = -RotMaxSpeed;
-		}
-		PlayerMove(TurnVec, fTurnAccel);
-		RotCheckX += RotMaxSpeed;
-	}
+	PlayerMove(TurnVec, fTurnAccel);
 }
 
 void ATest_Player::MoveTurnEnd()
@@ -279,7 +250,7 @@ void ATest_Player::MoveTurnEnd()
 void ATest_Player::MoveMouse(const FInputActionValue& Val)
 {
 	FVector2D Mouse = Val.Get<FVector2D>();
-	
+
 	if (Mouse.X != 0.f && Mouse.Y != 0.f)
 	{
 		FRotator ArmRot = MySpringArm->GetRelativeRotation();
@@ -357,64 +328,53 @@ void ATest_Player::PlayerJumpEnd()
 
 void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor->ActorHasTag(TEXT("Terrain")))
+	if (OtherActor->ActorHasTag(TEXT("Terrain")) && DebugTime > 0.1f)
 	{
 
-		if (DebugTime > 0.1f)
+
+		if (!bJumpPressed)
 		{
+			bisGround = true;
 
-			if (!bJumpPressed)
-			{
-				bisGround = true;
-
-				HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
-				GetMovementComponent()->Velocity.Set(0, 0, 0);
-
-				PlayerJumpEnd();
-				return;
-			}
-
-			LandVec = HeadPtr->GetMovementComponent()->Velocity;
-			
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 			GetMovementComponent()->Velocity.Set(0, 0, 0);
 
-			HeadPtr->HitPower = 0.f;
-			RotCheckX = 0.f;
-			RotCheckY = 0.f;
-			bisGround = true;
-			DebugTime = 0.f;
+			PlayerJumpEnd();
+			return;
 		}
+
+		LandVec = HeadPtr->GetMovementComponent()->Velocity;
+
+		HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
+		GetMovementComponent()->Velocity.Set(0, 0, 0);
+
+		HeadPtr->HitPower = 0.f;
+		RotCheckX = 0.f;
+		RotCheckY = 0.f;
+		bisGround = true;
+		DebugTime = 0.f;
+
 
 	}
 
-	if (OtherActor->ActorHasTag(TEXT("Monster")))
+	if (OtherActor->ActorHasTag(TEXT("Monster")) && DebugTime > 0.1f)
 	{
 
-		if (DebugTime > 0.1f)
-		{
+		HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
 
-			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
-			//SetActorLocation(GetActorLocation());
-			//GetMovementComponent()->Velocity.Set(0, 0, 0);
-			//
-			//HeadPtr->SetActorLocation(GetActorLocation());
-			//HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
+		HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
 
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
+		ACharacter_Base* Monster = Cast<ACharacter_Base>(OtherActor);
+		
+		// 나중에 바꿀것
+		Monster->HP -= 100;
 
-			ACharacter_Base* Monster = Cast<ACharacter_Base>(OtherActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("MonsterHit")));
 
+		RotCheckX = 0.f;
+		RotCheckY = 0.f;
+		DebugTime = 0.f;
 
-			Monster->HP -= 100;
-
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("MonsterHit")));
-
-			RotCheckX = 0.f;
-			RotCheckY = 0.f;
-			DebugTime = 0.f;
-		}
 
 	}
 

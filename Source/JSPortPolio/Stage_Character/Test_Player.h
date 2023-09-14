@@ -122,7 +122,7 @@ public:
 	AActor* TestAc;
 
 	
-	void TestFuc(float Val, FVector Dir, float OwnParameter);
+	void PlayerMove(FVector Dir, float OwnParameter);
 
 	void GroundRotation(FVector Dir, const  float Speed);
 	void TurnAtRate(float Rate);
@@ -146,7 +146,7 @@ public:
 	
 	void HeadRotation(FVector Dir, const float Speed);
 	void CameraReset();
-	void PlayerMove(FVector Dir, const float Val);
+	void PlayerSimpleMove(FVector Dir, const float Val);
 	void MoveMouse(const struct FInputActionValue& Val);
 
 

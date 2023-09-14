@@ -5,6 +5,7 @@
 #include <BehaviorTree/BlackboardComponent.h>
 #include "Character_Base.h"
 #include "Monster_Enums.h"
+#include "Monster/Base_Monster.h"
 
 
 
@@ -14,7 +15,10 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Idle);
 
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"), nullptr);
-
+	
+	ABase_Monster* Monster = Cast<ABase_Monster>(GetBaseCharacter(OwnerComp));
+	
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("bisPatroling"), Monster->bisPatroling);
 
 
 	return EBTNodeResult::InProgress;
@@ -29,7 +33,17 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	DeathCheck(OwnerComp);
 
-	FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
+	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("bisPatroling")))
+	{
+		SetStateChange(OwnerComp,)
 
+	}
+	else
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
+
+	}
+
+	
 }
 

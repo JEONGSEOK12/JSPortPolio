@@ -14,6 +14,8 @@ enum class Monster_Enum : uint8
 	Idle,
 	Walk,
 	Run,
+	Patrol,
+	Return,
 	Scream,
 	GetHit,
 	Death

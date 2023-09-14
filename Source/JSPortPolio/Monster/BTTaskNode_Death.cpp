@@ -23,6 +23,7 @@ EBTNodeResult::Type UBTTaskNode_Death::ExecuteTask(UBehaviorTreeComponent& Owner
 
 void UBTTaskNode_Death::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
+	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
 
 	Curtime += DelataSeconds;
 
