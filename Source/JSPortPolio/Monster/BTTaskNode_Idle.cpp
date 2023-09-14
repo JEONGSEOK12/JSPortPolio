@@ -20,7 +20,6 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	
 	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("bCanPatrol")))
 	{
-
 		//ExecuteTask에서 FinishLatentTask 써도 되는지 나중에 확인
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Patrol);
 	}

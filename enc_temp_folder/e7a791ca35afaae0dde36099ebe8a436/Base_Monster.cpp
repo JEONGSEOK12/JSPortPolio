@@ -4,8 +4,6 @@
 #include "Monster/Base_Monster.h"
 #include <Datas/CharacterDatas.h>
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Components/SplineComponent.h"
-
 
 // Sets default values
 ABase_Monster::ABase_Monster()
@@ -20,17 +18,7 @@ void ABase_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	SplineComponent = Cast<USplineComponent>(GetComponentByClass(USplineComponent::StaticClass()));
-
-	if(SplineComponent)
-	{
-		GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), true);
-	}
-	else
-	{
-		GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), false);
-	}
+	GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), bCanPatrol);
 
 
 }

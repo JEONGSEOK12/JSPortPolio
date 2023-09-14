@@ -31,8 +31,6 @@ public:
 	
 	class ACharacter_Base* GetBaseCharacter(UBehaviorTreeComponent& OwnerComp);
 
-	class ABase_Monster* GetBaseMonster(UBehaviorTreeComponent& OwnerComp);
-
 	void SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State);
 
 	void DeathCheck(UBehaviorTreeComponent& OwnerComp);

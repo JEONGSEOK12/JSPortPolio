@@ -2,7 +2,7 @@
 
 
 #include "Monster/BTTaskNode_Base.h"
-#include "Monster/Base_Monster.h"
+#include "Character_Base.h"
 #include <BehaviorTree/BlackboardComponent.h>
 #include <Monster/Monster_AIController.h>
 #include "Monster_Enums.h"
@@ -42,26 +42,6 @@ ACharacter_Base* UBTTaskNode_Base::GetBaseCharacter(UBehaviorTreeComponent& Owne
 
 	return Character;
 
-}
-
-ABase_Monster* UBTTaskNode_Base::GetBaseMonster(UBehaviorTreeComponent& OwnerComp)
-{
-	AMonster_AIController* AiCon = OwnerComp.GetOwner<AMonster_AIController>();
-	if (nullptr == AiCon || false == AiCon->IsValidLowLevel())
-	{
-		UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == Chracter || false == Chracter->IsValidLowLevel())"), __FUNCTION__, __LINE__);
-		return nullptr;
-	}
-
-	ABase_Monster* Monster = AiCon->GetPawn<ABase_Monster>();
-
-	if (nullptr == Monster || false == Monster->IsValidLowLevel())
-	{
-		UE_LOG(LogTemp, Error, TEXT("%S(%u)> if (nullptr == Chracter || false == Chracter->IsValidLowLevel())"), __FUNCTION__, __LINE__);
-		return nullptr;
-	}
-
-	return Monster;
 }
 
 void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State)

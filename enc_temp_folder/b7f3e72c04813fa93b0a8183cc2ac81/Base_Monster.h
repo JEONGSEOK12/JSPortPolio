@@ -27,8 +27,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterInfo");
+	bool bCanPatrol = false;
 
 
-	class USplineComponent* SplineComponent;
 
 };
