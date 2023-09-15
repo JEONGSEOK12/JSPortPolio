@@ -121,8 +121,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn");
 	AActor* TestAc;
 
-	
+	void PlayerSimpleMove(FVector Dir, const float Val);
 	void PlayerMove(FVector Dir, float OwnParameter);
+
 
 	void GroundRotation(FVector Dir, const  float Speed);
 	void TurnAtRate(float Rate);
@@ -146,7 +147,7 @@ public:
 	
 	void HeadRotation(FVector Dir, const float Speed);
 	void CameraReset();
-	void PlayerSimpleMove(FVector Dir, const float Val);
+
 	void MoveMouse(const struct FInputActionValue& Val);
 
 

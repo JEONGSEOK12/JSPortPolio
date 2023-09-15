@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "MyGameInstance.h"
 #include "Character_Base.h"
+#include <Monster/Monster_Enums.h>
 
 
 AMonster_AIController::AMonster_AIController()
@@ -48,8 +49,20 @@ void AMonster_AIController::OnPossess(APawn* _InPawn)
 		  	return;
 		  }
 		  
+
+
+
 		  BlackboardComponent->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 		  
+		  BlackboardComponent->SetValueAsEnum(TEXT("Monster_Enum"), (uint8)Monster_Enum::Idle);
+
 		  BehaviorTreeComponent->StartTree(*BehaviorTree);
+
+
+
 	}
+
+
+
+
 }

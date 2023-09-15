@@ -23,6 +23,9 @@ void ABase_Monster::BeginPlay()
 
 	SplineComponent = Cast<USplineComponent>(GetComponentByClass(USplineComponent::StaticClass()));
 
+	MeshComponent = Cast<UMeshComponent>(GetComponentByClass(UMeshComponent::StaticClass()));
+
+
 	if(SplineComponent)
 	{
 		GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), true);
@@ -31,6 +34,9 @@ void ABase_Monster::BeginPlay()
 	{
 		GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), false);
 	}
+
+	WalkSpeed = 300;
+
 
 
 }

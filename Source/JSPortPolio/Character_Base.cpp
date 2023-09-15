@@ -40,10 +40,10 @@ void ACharacter_Base::BeginPlay()
 		CharacterData = Inst->GetCharacterData(DataName);
 	}
 
-	UAnimInstance* AnimInst = GetMesh()->GetAnimInstance();
+	// UAnimInstance* AnimInst = GetMesh()->GetAnimInstance();
 
 
-	UMonsterAnimInstance* MonsterAnimInstance = Cast<UMonsterAnimInstance>(AnimInst);
+	// UMonsterAnimInstance* MonsterAnimInstance = Cast<UMonsterAnimInstance>(AnimInst);
 
 	SetAllAnimation(CharacterData->AllAnimations);
 

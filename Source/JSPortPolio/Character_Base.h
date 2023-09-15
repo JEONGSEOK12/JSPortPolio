@@ -9,7 +9,7 @@
 
 
 UCLASS()
-class JSPORTPOLIO_API ACharacter_Base : public ACharacter
+class JSPORTPOLIO_API ACharacter_Base : public APawn
 {
 	GENERATED_BODY()
 

@@ -39,7 +39,7 @@ void ATest_Head::Tick(float DeltaTime)
 
 	if (HitPower >= 1.0f)
 	{
-		Rotation(RotVec, HitPower/100 * DeltaTime );
+		Rotation(RotVec, HitPower/300 * DeltaTime );
 		HitPower -= HitPower * DeltaTime + 100.f * DeltaTime;
 
 
@@ -74,7 +74,7 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	if (OtherActor->ActorHasTag(TEXT("Terrain")))
 	{
 
-		HitPower = PlayerPtr->TestD;
+		HitPower = PlayerPtr->GetMovementComponent()->Velocity.Size();
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("HeadHit Power is %f"), HitPower));
 

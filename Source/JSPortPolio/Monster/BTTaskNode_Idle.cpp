@@ -14,6 +14,7 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Idle);
 
+
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"), nullptr);
 	
 	ABase_Monster* Monster = Cast<ABase_Monster>(GetBaseCharacter(OwnerComp));

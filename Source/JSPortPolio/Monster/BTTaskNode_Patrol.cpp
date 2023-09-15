@@ -22,13 +22,17 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Owne
 
 void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
-	// GetBaseCharacter(OwnerComp)->GetBlackboardComponent()->GetValueAsFloat(TEXT("PatrolDistance")) += GetBaseCharacter(OwnerComp)->GetCharacterMovement()->MaxWalkSpeed * DelataSeconds;
-	// 
-	// 
-	// FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(Distance,ESplineCoordinateSpace::Local);
-	// 
-	// 
-	// GetBaseCharacter(OwnerComp)->SetActorRelativeTransform();
+	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
+
+	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
+
+	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseMonster(OwnerComp)->WalkSpeed * DelataSeconds);
+	
+	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance,ESplineCoordinateSpace::Local);
+
+
+
+	GetBaseMonster(OwnerComp)->MeshComponent->SetRelativeLocation(Transform.GetLocation());
 	
 
 
