@@ -26,10 +26,7 @@ class JSPORTPOLIO_API UMonsterAnimInstance : public UAnimInstance
 public:
 
 	Monster_Enum* MonsterAnim;
-	
-	//TMap<int, UAnimMontage*> MonsterAnimations;
 
-	//int AniState = 0;
 public:
 
 

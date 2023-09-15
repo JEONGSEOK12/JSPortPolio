@@ -22,20 +22,26 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Owne
 
 void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
+	DeathCheck(OwnerComp);
+
 	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
 
 	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
 
 	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseMonster(OwnerComp)->WalkSpeed * DelataSeconds);
-	
-	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance,ESplineCoordinateSpace::Local);
 
+	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
 
+	Transform.SetScale3D(GetBaseMonster(OwnerComp)->MeshComponent->GetComponentScale());
 
-	GetBaseMonster(OwnerComp)->MeshComponent->SetRelativeLocation(Transform.GetLocation());
-	
+	Transform.SetRotation(Transform.GetRotation() * FQuat(FVector(0, 0, 1), FMath::DegreesToRadians(-90)));
 
+	GetBaseMonster(OwnerComp)->MeshComponent->SetRelativeTransform(Transform);
 
+	if (GetBaseMonster(OwnerComp)->SplineComponent->IsClosedLoop() && GetBaseMonster(OwnerComp)->SplineComponent->GetSplineLength() <= PatrolDistance)
+	{
+		Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), 0);
+	}
 
 }
 

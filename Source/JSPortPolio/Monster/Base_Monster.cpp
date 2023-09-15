@@ -35,7 +35,7 @@ void ABase_Monster::BeginPlay()
 		GetBlackboardComponent()->SetValueAsBool(TEXT("bCanPatrol"), false);
 	}
 
-	WalkSpeed = 300;
+	// WalkSpeed = 300;
 
 
 

@@ -53,6 +53,11 @@ public:
 		}
 	}
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USkeletalMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* Scene;
+
 	struct FCharacterDatas* CharacterData;
 
 	int HP;

@@ -95,7 +95,7 @@ void ATest_Head::BodyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	{
 		BodyBounce(Hit);
 
-
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Hit By Monster")));
 
 	}
 
