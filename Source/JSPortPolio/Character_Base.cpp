@@ -22,10 +22,11 @@ ACharacter_Base::ACharacter_Base()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	RootComponent = Scene;
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BodyMesh"));
-	// RootComponent = Scene;
 
+	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 
