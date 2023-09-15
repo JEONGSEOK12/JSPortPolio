@@ -44,19 +44,7 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
-	//TArray<UActorComponent*> Findid3 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("RotVFX"));
-	//RotVFX = Cast<UNiagaraComponent>(Findid3[0]);
-	//
-	//
-	//RotVFX->SetVisibility(false);
-
-	//fJumpPower = 600.0f;
-	//fMaxJumpTime = 2.0f;
-	//RotMaxSpeed = 4.f;
-	//SpinCheck = 5.f;
-	//fBasicJumpPoawer = 600.f;
-	//Gravity.Set(0, 0, -200);
-
+	
 
 
 }

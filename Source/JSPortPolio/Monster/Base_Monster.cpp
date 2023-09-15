@@ -23,7 +23,7 @@ void ABase_Monster::BeginPlay()
 
 	SplineComponent = Cast<USplineComponent>(GetComponentByClass(USplineComponent::StaticClass()));
 
-	MeshComponent = Cast<UMeshComponent>(GetComponentByClass(UMeshComponent::StaticClass()));
+	MeshComponent = Cast<USkeletalMeshComponent>(GetComponentByClass(UMeshComponent::StaticClass()));
 
 
 	if(SplineComponent)

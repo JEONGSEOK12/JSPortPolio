@@ -1,18 +1,6 @@
 
 
-제자리 점프하고 공중에서 회전하고 내려오면 액터가 공중에 떠있음.
-블록처리를 하는 콜리전이 움직이지 않기때문에.
-
-
-velocity 쓰는 이유 -> 점프는 가속 움직임이 아닌 감속 움직임이라 처음에 빠르게 움직이는 표현이 안됨
-		     addmovementiput한계값 높혀도 원하는 만큼의 속도가 안나옴.
-
-
-bttask에서 getowner 후 onwer의 bttask 포인터에 이 객체 집어넣으면 델리게이션할  bttask 만들어질듯?
-애니메이션 할떄 델리게이트 안쓰는 이유?
-
-
 
 https://docs.google.com/spreadsheets/d/1Nr-0rMyyRzNCGVFgRkdBashbN8wBYgWTZmkYPRmIPd4/htmlview
 
-C++ pair 문법 알려주기
+C++ 에서 블루프린트 기본값 설정하는법?

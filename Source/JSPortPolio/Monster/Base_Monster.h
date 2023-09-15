@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float WalkSpeed;
 
-	UMeshComponent* MeshComponent;
+	class USkeletalMeshComponent* MeshComponent;
 
 	class USplineComponent* SplineComponent;
 
