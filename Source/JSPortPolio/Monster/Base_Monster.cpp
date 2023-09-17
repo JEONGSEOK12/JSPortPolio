@@ -36,7 +36,7 @@ void ABase_Monster::BeginPlay()
 	}
 
 	// WalkSpeed = 300;
-
+	// GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"),);
 
 
 }

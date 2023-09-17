@@ -22,6 +22,8 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Owne
 
 void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
+	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
+
 	DeathCheck(OwnerComp);
 
 	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();

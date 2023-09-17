@@ -26,12 +26,22 @@ struct JSPORTPOLIO_API FCharacterDatas : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	class UBehaviorTree* BehaviorTree;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	int HP;
+	TArray<FString> TagetTags;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float HP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float TrackRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float AttackRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float WalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float RunSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float MyValue1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int MyValue2;
-
-
-
 };
 
 

@@ -14,6 +14,9 @@ class JSPORTPOLIO_API UBTTaskNode_Run : public UBTTaskNode_Base
 {
 	GENERATED_BODY()
 	
+	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
+
+	void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds);
 
 
 };

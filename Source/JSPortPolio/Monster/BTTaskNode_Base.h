@@ -37,4 +37,6 @@ public:
 
 	void DeathCheck(UBehaviorTreeComponent& OwnerComp);
 
+	void TrackRangeCheck(UBehaviorTreeComponent& OwnerComp);
+
 };
