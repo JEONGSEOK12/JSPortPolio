@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Datas/TargetActorArrayDataAsset.h"
 #include "Character_Base.generated.h"
 
 
@@ -71,5 +72,9 @@ public:
 
 	class UBlackboardComponent* GetBlackboardComponent();
 
+	UTargetActorArrayDataAsset TargetActorArray;
+
+	// UTargetActorArrayClass Targets;
+	// UTargetActorArrayClass TargetActorArrayClass;
 
 };

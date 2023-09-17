@@ -10,7 +10,7 @@
 #include "Animation/AnimMontage.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
-
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -48,6 +48,35 @@ void ACharacter_Base::BeginPlay()
 	SetAllAnimation(CharacterData->AllAnimations);
 
 	HP = CharacterData->HP;
+
+	 // //기존에 있던 적들의 타겟클래스의 배열에 나를 넣는다
+	 // for (FString TargetTag : CharacterData->TagetTags)
+	 // {
+	 // 
+	 // 	TArray<AActor*> TargetActors;
+	 // 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), *TargetTag, TargetActors);
+	 // 
+	 // 	for (AActor* TargetActor : TargetActors)
+	 // 	{
+	 // 		ACharacter_Base* Target = Cast<ACharacter_Base>(TargetActor);
+	 // 		Target->TargetActorArrayClass.TargetActorArray.Add(this);
+	 // 	}
+	 // 
+	 // }
+	 // 
+	 // //기존에 있던 적들을 내 타겟클래스의 배열안에 넣는다
+	 // for (FString TargetTag : CharacterData->TagetTags)
+	 // {
+	 // 
+	 // 	TArray<AActor*> TargetActors;
+	 // 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), *TargetTag, TargetActors);
+	 // 
+	 // 	for (AActor* TargetActor : TargetActors)
+	 // 	{
+	 // 		TargetActorArrayClass.TargetActorArray.Add(TargetActor);
+	 // 	}
+	 // 
+	 // }
 
 
 }
