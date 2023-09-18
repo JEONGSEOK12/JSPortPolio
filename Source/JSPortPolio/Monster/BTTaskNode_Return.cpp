@@ -2,6 +2,10 @@
 
 
 #include "Monster/BTTaskNode_Return.h"
+#include <Monster/Base_Monster.h>
+#include "Components/SplineComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 EBTNodeResult::Type UBTTaskNode_Return::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -13,5 +17,17 @@ EBTNodeResult::Type UBTTaskNode_Return::ExecuteTask(UBehaviorTreeComponent& Owne
 void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DelataSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
+
+
+	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
+
+	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
+
+	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
+	
+	//네비 시스템으로 트랜스폼으로 이동
+
+
+
 
 }

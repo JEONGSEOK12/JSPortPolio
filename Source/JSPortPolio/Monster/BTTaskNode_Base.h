@@ -39,4 +39,11 @@ public:
 
 	AActor* TrackRangeCheck(UBehaviorTreeComponent& OwnerComp);
 
+	class UNavigationPath* NavPathFind(UBehaviorTreeComponent& OwnerComp, AActor* _Actor);
+
+	class UNavigationPath* NavPathFind(UBehaviorTreeComponent& _OwnerComp, FVector _EndPos);
+
+
+
+
 };

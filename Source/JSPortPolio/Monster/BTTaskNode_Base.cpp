@@ -7,7 +7,8 @@
 #include <Monster/Monster_AIController.h>
 #include "Monster_Enums.h"
 #include "Character_Base.h"
-
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
 
 UBTTaskNode_Base::UBTTaskNode_Base()
 {
@@ -82,11 +83,9 @@ void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _
 
 void UBTTaskNode_Base::DeathCheck(UBehaviorTreeComponent& OwnerComp)
 {
+
 	if (GetBaseCharacter(OwnerComp)->HP <= 0)
 	{
-
-	
-
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Death);
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
 	}
@@ -126,12 +125,26 @@ AActor* UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 
 	return ResultActor;
 
-
 }
 
 
 
+UNavigationPath* UBTTaskNode_Base::NavPathFind(UBehaviorTreeComponent& OwnerComp, AActor* _Actor)
+{
+	return NavPathFind(OwnerComp, _Actor->GetActorLocation());
+}
 
+UNavigationPath* UBTTaskNode_Base::NavPathFind(UBehaviorTreeComponent& _OwnerComp, FVector _EndPos)
+{
+
+	UNavigationPath* PathObject = nullptr;
+	FVector StartPos = GetBaseCharacter(_OwnerComp)->GetActorLocation();
+	FVector EndPos = _EndPos;
+
+	PathObject = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), StartPos, EndPos);
+
+	return PathObject;
+}
 
 
 

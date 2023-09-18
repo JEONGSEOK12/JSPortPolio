@@ -26,6 +26,9 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	}
 	else
 	{
+
+
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector(TEXT("IdleLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		return EBTNodeResult::InProgress;
 	}
 

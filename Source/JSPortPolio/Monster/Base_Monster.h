@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include <Datas/CharacterDatas.h>
 #include "Character_Base.h"
-
 #include "Base_Monster.generated.h"
 
 UCLASS()
