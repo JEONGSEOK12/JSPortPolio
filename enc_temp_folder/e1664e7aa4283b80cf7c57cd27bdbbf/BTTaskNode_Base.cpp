@@ -94,11 +94,12 @@ void UBTTaskNode_Base::DeathCheck(UBehaviorTreeComponent& OwnerComp)
 
 void UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 {
-	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
+	UBlackboardComponent* BlockBoard = OwnerComp.GetBlackboardComponent();
 
-	BlackBoard->GetValueAsFloat(TEXT("TrackRange"));
-	BlackBoard->SetValueAsObject(TEXT("TargetActorArrayClass"),GetBaseCharacter(OwnerComp)->TargetActorArrayClass);
-	
+	BlockBoard->GetValueAsFloat(TEXT("TrackRange"));
+	BlockBoard->GetValueAsObject(TEXT("TargetObject"));
+
+
 
 
 }

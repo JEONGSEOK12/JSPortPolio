@@ -14,6 +14,6 @@ class JSPORTPOLIO_API UTargetActorArrayClass : public UObject
 {
 public:
 	GENERATED_BODY()
-	
+
 	TArray<AActor*> TargetActorArray;
 };

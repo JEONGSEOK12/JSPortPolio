@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Datas/TargetActorArrayDataAsset.h"
+#include "Datas/TargetActorArrayClass.h"
 #include "Character_Base.generated.h"
 
 
@@ -12,17 +12,16 @@
 UCLASS()
 class JSPORTPOLIO_API ACharacter_Base : public APawn
 {
-	GENERATED_BODY()
 
 public:
+	GENERATED_BODY()
+
 	// Sets default values for this character's properties
 	ACharacter_Base();
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -72,7 +71,8 @@ public:
 
 	class UBlackboardComponent* GetBlackboardComponent();
 
-	UTargetActorArrayDataAsset TargetActorArray;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTargetActorArrayClass* TargetActorArrayClass;
 
 	// UTargetActorArrayClass Targets;
 	// UTargetActorArrayClass TargetActorArrayClass;
