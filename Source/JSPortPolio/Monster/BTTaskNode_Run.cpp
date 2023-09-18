@@ -20,8 +20,11 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	DeathCheck(OwnerComp);
 
-
-
+	AActor* Target = TrackRangeCheck(OwnerComp);
+	if (!Target)
+	{
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
+	}
 
 
 

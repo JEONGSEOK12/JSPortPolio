@@ -30,7 +30,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
 
-	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseMonster(OwnerComp)->WalkSpeed * DelataSeconds);
+	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + Blackboard->GetValueAsFloat(TEXT("WalkSpeed")) * DelataSeconds);
 
 	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
 
@@ -44,6 +44,14 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), 0);
 	}
+
+
+	AActor* Target = TrackRangeCheck(OwnerComp);
+	if (Target)
+	{
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);
+	}
+
 
 }
 

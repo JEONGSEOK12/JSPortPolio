@@ -6,6 +6,7 @@
 #include <BehaviorTree/BlackboardComponent.h>
 #include <Monster/Monster_AIController.h>
 #include "Monster_Enums.h"
+#include "Character_Base.h"
 
 
 UBTTaskNode_Base::UBTTaskNode_Base()
@@ -92,13 +93,38 @@ void UBTTaskNode_Base::DeathCheck(UBehaviorTreeComponent& OwnerComp)
 	
 }
 
-void UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
+AActor* UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 {
 	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
 
-	BlackBoard->GetValueAsFloat(TEXT("TrackRange"));
-	BlackBoard->SetValueAsObject(TEXT("TargetActorArrayClass"),GetBaseCharacter(OwnerComp)->TargetActorArrayClass);
-	
+	TArray<AActor*> TargetActors;
+	TargetActors = GetBaseCharacter(OwnerComp)->TargetArray;
+
+	float SearchRange = BlackBoard->GetValueAsFloat(TEXT("TrackRange"));
+	AActor* ResultActor = nullptr;
+
+	if (0 != TargetActors.Num())
+	{
+		float Range = TNumericLimits<float>::Max();
+
+		for (AActor* Target :TargetActors)
+		{
+			float Dis = (GetBaseCharacter(OwnerComp)->GetActorLocation() - Target->GetActorLocation()).Size();
+
+			if (SearchRange <= Dis)
+			{
+				continue;
+			}
+
+			if (Range > Dis)
+			{
+				Range = Dis;
+				ResultActor = Target;
+			}
+		}
+	}
+
+	return ResultActor;
 
 
 }

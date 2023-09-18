@@ -74,6 +74,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTargetActorArrayClass* TargetActorArrayClass;
 
+	TArray<AActor*> TargetArray;
+
 	// UTargetActorArrayClass Targets;
 	// UTargetActorArrayClass TargetActorArrayClass;
 

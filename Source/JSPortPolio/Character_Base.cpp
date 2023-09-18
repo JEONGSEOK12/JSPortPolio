@@ -66,7 +66,7 @@ void ACharacter_Base::BeginPlay()
 				ACharacter_Base* Target = Cast<ACharacter_Base>(TargetActor);
 				if(Target!=nullptr)
 				{
-					Target->TargetActorArrayClass->TargetActorArray.Add(this);
+					Target->TargetArray.Add(this);
 				}
 			}
 
@@ -87,7 +87,7 @@ void ACharacter_Base::BeginPlay()
 			{
 				if (TargetActor != nullptr)
 				{
-					TargetActorArrayClass->TargetActorArray.Add(TargetActor);
+					TargetArray.Add(TargetActor);
 				}
 			}
 
