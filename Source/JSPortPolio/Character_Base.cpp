@@ -11,6 +11,10 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
+
+
 
 
 
@@ -24,11 +28,16 @@ ACharacter_Base::ACharacter_Base()
 
 	Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
 	RootComponent = Scene;
+
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BodyMesh"));
 
 	TargetActorArrayClass = CreateDefaultSubobject<UTargetActorArrayClass>(TEXT("TargetActorArray"));
 
 	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	PawnMoveCom = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("PawnMovementComponent"));
+
+	
 }
 
 
@@ -41,6 +50,12 @@ void ACharacter_Base::BeginPlay()
 
 	UMyGameInstance* Inst = GetWorld()->GetGameInstance<UMyGameInstance>();
 
+	if (nullptr == CharacterData)
+	{
+		return;
+	}
+
+
 
 	if (nullptr != Inst)
 	{
@@ -48,9 +63,8 @@ void ACharacter_Base::BeginPlay()
 	}
 
 	SetAllAnimation(CharacterData->AllAnimations);
-
+	
 	HP = CharacterData->HP;
-
 	 //기존에 있던 적들의 타겟클래스의 배열에 나를 넣는다
 	 for (FString TargetTag : CharacterData->TagetTags)
 	 {

@@ -20,7 +20,7 @@ UBTTaskNode_Base::UBTTaskNode_Base()
 
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
-	UNavMovementComponent
+	
 
 }
 
@@ -89,7 +89,7 @@ void UBTTaskNode_Base::DeathCheck(UBehaviorTreeComponent& OwnerComp)
 	if (GetBaseCharacter(OwnerComp)->HP <= 0)
 	{
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Death);
-		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Failed);
+		return;
 	}
 	
 }
@@ -157,6 +157,9 @@ void UBTTaskNode_Base::CharacterMove(UBehaviorTreeComponent& OwnerComp, FVector 
 	FVector OtherForward = GetBaseCharacter(OwnerComp)->GetActorForwardVector();
 	OtherForward.Normalize();
 
+	Dir.Z = 0;
+	OtherForward.Z = 0;
+
 	FVector Cross = FVector::CrossProduct(OtherForward, Dir);
 
 	float Angle0 = Dir.Rotation().Yaw;
@@ -167,13 +170,14 @@ void UBTTaskNode_Base::CharacterMove(UBehaviorTreeComponent& OwnerComp, FVector 
 		FRotator Rot = FRotator::MakeFromEuler({ 0, 0, Cross.Z * 500.0f * DeltaSeconds });
 		GetBaseCharacter(OwnerComp)->AddActorWorldRotation(Rot);
 	}
-	else {
+	else 
+	{
 		FRotator Rot = Dir.Rotation();
 		GetBaseCharacter(OwnerComp)->SetActorRotation(Rot);
 	}
 
-	Dir = Dir * Speed;
-	GetBaseCharacter(OwnerComp)->AddMovementInput(Dir);
+	FVector MoveDir = Dir * Speed;
+	GetBaseCharacter(OwnerComp)->AddMovementInput(MoveDir);
 
 
 

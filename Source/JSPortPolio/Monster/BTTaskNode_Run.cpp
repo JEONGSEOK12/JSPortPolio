@@ -32,9 +32,10 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	AActor* Target = TrackRangeCheck(OwnerComp);
 	//타겟이 없으면 리턴
-	if (!Target)
+	if (Target==nullptr)
 	{
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
+		return;
 	}
 	
 	FVector TargetLocation = Target->GetActorLocation();
@@ -44,7 +45,7 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	if(TargetLocation != LastLocation)
 	{
-	
+		
 		UNavigationPath* NewPath = FindNavPath(OwnerComp, TargetLocation);
 		BlackBoard->SetValueAsVector(TEXT("TargetLastLocation"), TargetLocation);
 		BlackBoard->SetValueAsObject(TEXT("NavPath"), NewPath);

@@ -14,6 +14,7 @@
 
 EBTNodeResult::Type UBTTaskNode_Return::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Walk);
 
 	return EBTNodeResult::InProgress;
 }
@@ -46,6 +47,7 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	if (Dis.Size() <= 30.f)
 	{
 		SetStateChange(OwnerComp, Monster_Enum::Idle);
+		return;
 	}
 
 }

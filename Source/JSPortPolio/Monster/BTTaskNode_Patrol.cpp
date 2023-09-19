@@ -53,6 +53,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		Blackboard->SetValueAsVector(TEXT("RunLastLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);
+		return;
 	}
 
 

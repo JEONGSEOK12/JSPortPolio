@@ -57,6 +57,8 @@ public:
 	USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* Scene;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UCharacterMovementComponent* PawnMoveCom;
 
 	struct FCharacterDatas* CharacterData;
 
