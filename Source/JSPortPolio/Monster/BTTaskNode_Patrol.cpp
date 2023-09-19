@@ -8,7 +8,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SplineComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
-
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
+#include <Monster/Base_Monster.h>
 
 
 
@@ -30,7 +32,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
 
-	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + Blackboard->GetValueAsFloat(TEXT("WalkSpeed")) * DelataSeconds);
+	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed * DelataSeconds);
 
 	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
 
@@ -49,6 +51,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	AActor* Target = TrackRangeCheck(OwnerComp);
 	if (Target)
 	{
+		Blackboard->SetValueAsVector(TEXT("RunLastLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);
 	}
 

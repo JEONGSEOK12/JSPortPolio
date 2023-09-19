@@ -20,7 +20,7 @@ UBTTaskNode_Base::UBTTaskNode_Base()
 
 void UBTTaskNode_Base::OnGameplayTaskActivated(class UGameplayTask& Task)
 {
-	
+	UNavMovementComponent
 
 }
 
@@ -66,6 +66,8 @@ ABase_Monster* UBTTaskNode_Base::GetBaseMonster(UBehaviorTreeComponent& OwnerCom
 	return Monster;
 }
 
+
+
 void UBTTaskNode_Base::SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State)
 {
 	UBlackboardComponent* BlockBoard = OwnerComp.GetBlackboardComponent();
@@ -99,7 +101,7 @@ AActor* UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 	TArray<AActor*> TargetActors;
 	TargetActors = GetBaseCharacter(OwnerComp)->TargetArray;
 
-	float SearchRange = BlackBoard->GetValueAsFloat(TEXT("TrackRange"));
+	float SearchRange = GetBaseCharacter(OwnerComp)->CharacterData->TrackRange;
 	AActor* ResultActor = nullptr;
 
 	if (0 != TargetActors.Num())
@@ -129,24 +131,53 @@ AActor* UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 
 
 
-UNavigationPath* UBTTaskNode_Base::NavPathFind(UBehaviorTreeComponent& OwnerComp, AActor* _Actor)
+UNavigationPath* UBTTaskNode_Base::FindNavPath(UBehaviorTreeComponent& OwnerComp, AActor* Actor)
 {
-	return NavPathFind(OwnerComp, _Actor->GetActorLocation());
+	return FindNavPath(OwnerComp, Actor->GetActorLocation());
 }
 
-UNavigationPath* UBTTaskNode_Base::NavPathFind(UBehaviorTreeComponent& _OwnerComp, FVector _EndPos)
+UNavigationPath* UBTTaskNode_Base::FindNavPath(UBehaviorTreeComponent& OwnerComp, FVector EndPos)
 {
 
 	UNavigationPath* PathObject = nullptr;
-	FVector StartPos = GetBaseCharacter(_OwnerComp)->GetActorLocation();
-	FVector EndPos = _EndPos;
+	FVector StartPos = GetBaseCharacter(OwnerComp)->GetActorLocation();
 
 	PathObject = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), StartPos, EndPos);
 
 	return PathObject;
 }
 
+void UBTTaskNode_Base::CharacterMove(UBehaviorTreeComponent& OwnerComp, FVector TargetLocation, float DeltaSeconds ,float Speed)
+{
 
+	FVector MyLocation = GetBaseCharacter(OwnerComp)->GetActorLocation();
+	FVector Dir = TargetLocation - MyLocation;
+	Dir.Normalize();
+
+	FVector OtherForward = GetBaseCharacter(OwnerComp)->GetActorForwardVector();
+	OtherForward.Normalize();
+
+	FVector Cross = FVector::CrossProduct(OtherForward, Dir);
+
+	float Angle0 = Dir.Rotation().Yaw;
+	float Angle1 = OtherForward.Rotation().Yaw;
+
+	if (FMath::Abs(Angle0 - Angle1) >= 10.0f)
+	{
+		FRotator Rot = FRotator::MakeFromEuler({ 0, 0, Cross.Z * 500.0f * DeltaSeconds });
+		GetBaseCharacter(OwnerComp)->AddActorWorldRotation(Rot);
+	}
+	else {
+		FRotator Rot = Dir.Rotation();
+		GetBaseCharacter(OwnerComp)->SetActorRotation(Rot);
+	}
+
+	Dir = Dir * Speed;
+	GetBaseCharacter(OwnerComp)->AddMovementInput(Dir);
+
+
+
+}
 
 
 

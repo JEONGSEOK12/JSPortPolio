@@ -35,13 +35,21 @@ public:
 
 	void SetStateChange(UBehaviorTreeComponent& OwnerComp, uint8 _State);
 
+	template<typename EnumType>
+	void SetStateChange(UBehaviorTreeComponent& OwnerComp, EnumType _State)
+	{
+		SetStateChange(OwnerComp, static_cast<uint8>(_State));
+	}
+
+	void CharacterMove(UBehaviorTreeComponent& _OwnerComp, FVector _TargetLocation, float DeltaSeconds, float Speed);
+
 	void DeathCheck(UBehaviorTreeComponent& OwnerComp);
 
 	AActor* TrackRangeCheck(UBehaviorTreeComponent& OwnerComp);
 
-	class UNavigationPath* NavPathFind(UBehaviorTreeComponent& OwnerComp, AActor* _Actor);
+	class UNavigationPath* FindNavPath(UBehaviorTreeComponent& OwnerComp, AActor* _Actor);
 
-	class UNavigationPath* NavPathFind(UBehaviorTreeComponent& _OwnerComp, FVector _EndPos);
+	class UNavigationPath* FindNavPath(UBehaviorTreeComponent& _OwnerComp, FVector _EndPos);
 
 
 

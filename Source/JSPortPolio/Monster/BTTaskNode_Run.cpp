@@ -3,7 +3,15 @@
 
 #include "Monster/BTTaskNode_Run.h"
 #include "Character_Base.h"
+#include <Datas/CharacterDatas.h>
 #include <Monster/Monster_Enums.h>
+#include "BehaviorTree/BlackboardComponent.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
+
+
+
+
 
 EBTNodeResult::Type UBTTaskNode_Run::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -20,14 +28,56 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	DeathCheck(OwnerComp);
 
+	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
+
 	AActor* Target = TrackRangeCheck(OwnerComp);
+	//타겟이 없으면 리턴
 	if (!Target)
 	{
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
 	}
+	
+	FVector TargetLocation = Target->GetActorLocation();
+
+	FVector LastLocation = BlackBoard->GetValueAsVector(TEXT("TargetLastLocation"));
 
 
+	if(TargetLocation != LastLocation)
+	{
+	
+		UNavigationPath* NewPath = FindNavPath(OwnerComp, TargetLocation);
+		BlackBoard->SetValueAsVector(TEXT("TargetLastLocation"), TargetLocation);
+		BlackBoard->SetValueAsObject(TEXT("NavPath"), NewPath);
 
+	}
+
+	UObject* NavObject = BlackBoard->GetValueAsObject(TEXT("NavPath"));
+	UNavigationPath* NavPath = Cast<UNavigationPath>(NavObject);
+	
+	//길못찾음
+	if (nullptr == NavPath)
+	{
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
+		return;
+	}
+
+	//길못찾음2
+	if (nullptr != NavPath && true == NavPath->PathPoints.IsEmpty())
+	{
+		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
+		return;
+	}
+
+
+	FVector FowardLocation;
+	if (nullptr != NavPath)
+	{
+		FowardLocation = NavPath->PathPoints[1];
+	}
+
+	
+
+	CharacterMove(OwnerComp, FowardLocation, DelataSeconds, GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed);
 
 
 }

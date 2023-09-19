@@ -5,6 +5,11 @@
 #include <Monster/Base_Monster.h>
 #include "Components/SplineComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
+#include "Character_Base.h"
+#include <Datas/CharacterDatas.h>
+
 
 
 EBTNodeResult::Type UBTTaskNode_Return::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -27,7 +32,20 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	
 	//네비 시스템으로 트랜스폼으로 이동
 
+	FVector ReturnLocation = Blackboard->GetValueAsVector(TEXT("RunLastLocation"));
+
+	UNavigationPath* NewPath = FindNavPath(OwnerComp, ReturnLocation);
+	
+	if (!NewPath)
+	{
+		CharacterMove(OwnerComp, NewPath->PathPoints[1], DelataSeconds,GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed);
+	}
 
 
+	FVector Dis = GetBaseCharacter(OwnerComp)->GetActorLocation() - ReturnLocation;
+	if (Dis.Size() <= 30.f)
+	{
+		SetStateChange(OwnerComp, Monster_Enum::Idle);
+	}
 
 }
