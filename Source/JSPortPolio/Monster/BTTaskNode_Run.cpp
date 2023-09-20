@@ -78,7 +78,7 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	
 
-	CharacterMove(OwnerComp, FowardLocation, DelataSeconds, GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed);
+	// CharacterMove(OwnerComp, FowardLocation, DelataSeconds, GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed);
 
 
 }

@@ -31,6 +31,8 @@ public:
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAcdasdasdcess = "true"))
 	FName DataName = "NONE";
 
+
+
 	int AniState = 0;
 
 	int GetAniState()
@@ -57,8 +59,8 @@ public:
 	USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* Scene;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UCharacterMovementComponent* PawnMoveCom;
+
+
 
 	struct FCharacterDatas* CharacterData;
 

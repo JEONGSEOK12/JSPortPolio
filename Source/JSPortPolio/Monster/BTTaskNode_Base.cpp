@@ -110,7 +110,7 @@ AActor* UBTTaskNode_Base::TrackRangeCheck(UBehaviorTreeComponent& OwnerComp)
 
 		for (AActor* Target :TargetActors)
 		{
-			float Dis = (GetBaseCharacter(OwnerComp)->GetActorLocation() - Target->GetActorLocation()).Size();
+			float Dis = (GetBaseCharacter(OwnerComp)->Mesh->GetComponentLocation() - Target->GetActorLocation()).Size();
 
 			if (SearchRange <= Dis)
 			{
@@ -177,7 +177,7 @@ void UBTTaskNode_Base::CharacterMove(UBehaviorTreeComponent& OwnerComp, FVector 
 	}
 
 	FVector MoveDir = Dir * Speed;
-	GetBaseCharacter(OwnerComp)->AddMovementInput(MoveDir);
+	// GetBaseCharacter(OwnerComp)->AddMovementInput(MoveDir);
 
 
 

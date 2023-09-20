@@ -14,24 +14,25 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Idle);
 
+	if(!OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("BaseLocationCheck")))
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector(TEXT("BaseLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("BaseLocationCheck"), true);
+	}
 
+	
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(TEXT("TargetObject"), nullptr);
 	
 	ABase_Monster* Monster = Cast<ABase_Monster>(GetBaseCharacter(OwnerComp));
 	
-	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(TEXT("bCanPatrol")))
+	if (GetBaseMonster(OwnerComp)->bPatrol)
 	{
+
 		//ExecuteTask에서 FinishLatentTask 써도 되는지 나중에 확인
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Patrol);
 		return EBTNodeResult::Failed;
 	}
-	else
-	{
 
-
-		OwnerComp.GetBlackboardComponent()->SetValueAsVector(TEXT("IdleLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
-		return EBTNodeResult::InProgress;
-	}
 
 
 

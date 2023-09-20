@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include <Datas/CharacterDatas.h>
 #include "Character_Base.h"
+#include "Components/SplineComponent.h"
 #include "Base_Monster.generated.h"
 
 UCLASS()
@@ -27,9 +28,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	class USkeletalMeshComponent* MeshComponent;
 
-	class USplineComponent* SplineComponent;
+	USplineComponent* SplineComponent;
 
+	bool bPatrol;
 
 };

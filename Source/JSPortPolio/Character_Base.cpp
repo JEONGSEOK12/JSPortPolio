@@ -11,7 +11,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/CharacterMovementComponent.h"
+
 
 
 
@@ -35,7 +35,8 @@ ACharacter_Base::ACharacter_Base()
 
 	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	PawnMoveCom = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("PawnMovementComponent"));
+
+
 
 	
 }

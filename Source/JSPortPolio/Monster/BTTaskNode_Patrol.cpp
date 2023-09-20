@@ -28,21 +28,27 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 	DeathCheck(OwnerComp);
 
-	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
+	ABase_Monster* Monster = GetBaseMonster(OwnerComp);
+
+	UBlackboardComponent* Blackboard = Monster->GetBlackboardComponent();
+
+	USkeletalMeshComponent* Mesh = Monster->Mesh;
+
+	USplineComponent* SplineComponent = Monster->SplineComponent;
 
 	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
 
 	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed * DelataSeconds);
 
-	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
+	FTransform Transform = SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
 
-	Transform.SetScale3D(GetBaseMonster(OwnerComp)->MeshComponent->GetComponentScale());
+	Transform.SetScale3D(Mesh->GetComponentScale());
 
 	Transform.SetRotation(Transform.GetRotation() * FQuat(FVector(0, 0, 1), FMath::DegreesToRadians(-90)));
 
-	GetBaseMonster(OwnerComp)->MeshComponent->SetRelativeTransform(Transform);
+	Mesh->SetRelativeTransform(Transform);
 
-	if (GetBaseMonster(OwnerComp)->SplineComponent->IsClosedLoop() && GetBaseMonster(OwnerComp)->SplineComponent->GetSplineLength() <= PatrolDistance)
+	if (SplineComponent->IsClosedLoop() && SplineComponent->GetSplineLength() <= PatrolDistance)
 	{
 		Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), 0);
 	}
@@ -51,6 +57,12 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	AActor* Target = TrackRangeCheck(OwnerComp);
 	if (Target)
 	{
+
+		Monster->SetActorLocation(Mesh->GetComponentLocation());
+		FTransform ZeroTransform = SplineComponent->GetTransformAtDistanceAlongSpline(0, ESplineCoordinateSpace::Local);
+		Mesh->SetRelativeLocation(ZeroTransform.GetLocation());
+
+
 		Blackboard->SetValueAsVector(TEXT("RunLastLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);
 		return;
