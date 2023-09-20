@@ -83,4 +83,6 @@ public:
 	// UTargetActorArrayClass Targets;
 	// UTargetActorArrayClass TargetActorArrayClass;
 
+	void MoveCharacter(FVector Dir, float Speed);
+
 };

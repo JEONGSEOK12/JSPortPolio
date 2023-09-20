@@ -43,7 +43,7 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	FVector LastLocation = BlackBoard->GetValueAsVector(TEXT("TargetLastLocation"));
 
 
-	if(TargetLocation != LastLocation)
+	if (abs(TargetLocation.X - LastLocation.X) >= 10 || abs(TargetLocation.Y != LastLocation.Y) >= 10)
 	{
 		
 		UNavigationPath* NewPath = FindNavPath(OwnerComp, TargetLocation);
@@ -76,9 +76,14 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 		FowardLocation = NavPath->PathPoints[1];
 	}
 
-	
+	FVector TargetDir = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+	float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
 
-	// CharacterMove(OwnerComp, FowardLocation, DelataSeconds, GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed);
+	// FVector TestVec(0, 0, 1);
+	// FQuat TestQuat(TestVec, 0.1f);
+	// 
+	// GetBaseCharacter(OwnerComp)->SetActorRotation(GetBaseCharacter(OwnerComp)->GetActorQuat() * TestQuat);
 
+	GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
 
 }

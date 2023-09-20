@@ -149,3 +149,17 @@ UBlackboardComponent* ACharacter_Base::GetBlackboardComponent()
 	return BlackboardComponent;
 }
 
+
+
+void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
+{
+	FQuat MyQuat = GetActorQuat();
+	FVector MyVec = GetActorForwardVector();
+	Dir.Normalize();
+
+	if(abs((MyVec - Dir).Size() >= 10.f))
+	{
+		FQuat RotQuat = FQuat(FVector::CrossProduct(MyVec, Dir), 0.1f);
+		SetActorRotation(MyQuat*RotQuat);
+	}
+}
