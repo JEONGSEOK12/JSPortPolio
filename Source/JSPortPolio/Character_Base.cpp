@@ -157,17 +157,17 @@ void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 	Dir.Z = 0;
 
 	FVector MyFoward = GetActorForwardVector();
+	MyFoward.Normalize();
 	MyFoward.Z = 0;
 
 	FVector Cross = FVector::CrossProduct(Dir, MyFoward);
 	Cross.Normalize();
 
-	Dir.Rotation().Yaw;
-	MyFoward.Rotation().Yaw;
 
-	if (abs(Dir.Rotation().Yaw - MyFoward.Rotation().Yaw) >= 50.0f)
+
+	if ((Dir - MyFoward).Size() >= 1.0f)
 	{
-		SetActorRotation(FRotator(0, Cross.Z, 0) + GetActorRotation());
+		SetActorRotation(FRotator(0, Cross.Z , 0) + GetActorRotation());
 	}
 	else
 	{

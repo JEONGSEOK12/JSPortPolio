@@ -6,13 +6,9 @@
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
 #include "BTTaskNode_Base.generated.h"
 
-
-
 /**
  * 
  */
-
-
 
 
 UCLASS()
@@ -40,8 +36,6 @@ public:
 	{
 		SetStateChange(OwnerComp, static_cast<uint8>(_State));
 	}
-
-	void CharacterMove(UBehaviorTreeComponent& _OwnerComp, FVector _TargetLocation, float DeltaSeconds, float Speed);
 
 	void DeathCheck(UBehaviorTreeComponent& OwnerComp);
 

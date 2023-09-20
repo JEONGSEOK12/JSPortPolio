@@ -24,23 +24,35 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 {
 	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
 
+	AActor* Target = TrackRangeCheck(OwnerComp);
+	if (Target)
+	{
+		SetStateChange(OwnerComp, Monster_Enum::Run);
+	}
+
 
 	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
 
-	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
-
-	FTransform Transform = GetBaseMonster(OwnerComp)->SplineComponent->GetTransformAtDistanceAlongSpline(PatrolDistance, ESplineCoordinateSpace::Local);
 	
 	//네비 시스템으로 트랜스폼으로 이동
 
 	FVector ReturnLocation = Blackboard->GetValueAsVector(TEXT("RunLastLocation"));
 
 	UNavigationPath* NewPath = FindNavPath(OwnerComp, ReturnLocation);
-	
+
 	if (!NewPath)
 	{
-		CharacterMove(OwnerComp, NewPath->PathPoints[1], DelataSeconds,GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed);
+		return;
 	}
+
+	FVector TestVec = GetBaseCharacter(OwnerComp)->GetActorLocation();
+
+	FVector TargetLocation = NewPath->PathPoints[1];
+
+	FVector DIr = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+	
+	GetBaseCharacter(OwnerComp)->MoveCharacter(DIr, GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed);
+	
 
 
 	FVector Dis = GetBaseCharacter(OwnerComp)->GetActorLocation() - ReturnLocation;
