@@ -45,9 +45,14 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		return;
 	}
 
+	if (NewPath->PathPoints.IsEmpty())
+	{
+		return;
+	}
+
 	FVector TestVec = GetBaseCharacter(OwnerComp)->GetActorLocation();
 
-	FVector TargetLocation = NewPath->PathPoints[1];
+	FVector TargetLocation = NewPath->PathPoints[0];
 
 	FVector DIr = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
 	

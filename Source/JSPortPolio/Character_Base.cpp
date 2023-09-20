@@ -165,7 +165,7 @@ void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 
 
 
-	if ((Dir - MyFoward).Size() >= 1.0f)
+	if ((Dir - MyFoward).Size() >= 10.f)
 	{
 		SetActorRotation(FRotator(0, Cross.Z , 0) + GetActorRotation());
 	}
