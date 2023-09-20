@@ -153,13 +153,27 @@ UBlackboardComponent* ACharacter_Base::GetBlackboardComponent()
 
 void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 {
-	FQuat MyQuat = GetActorQuat();
-	FVector MyVec = GetActorForwardVector();
 	Dir.Normalize();
+	Dir.Z = 0;
 
-	if(abs((MyVec - Dir).Size() >= 10.f))
+	FVector MyFoward = GetActorForwardVector();
+	MyFoward.Z = 0;
+
+	FVector Cross = FVector::CrossProduct(Dir, MyFoward);
+	Cross.Normalize();
+
+	Dir.Rotation().Yaw;
+	MyFoward.Rotation().Yaw;
+
+	if (abs(Dir.Rotation().Yaw - MyFoward.Rotation().Yaw) >= 50.0f)
 	{
-		FQuat RotQuat = FQuat(FVector::CrossProduct(MyVec, Dir), 0.1f);
-		SetActorRotation(MyQuat*RotQuat);
+		SetActorRotation(FRotator(0, Cross.Z, 0) + GetActorRotation());
 	}
+	else
+	{
+		SetActorRotation(Dir.Rotation());
+	}
+
+
+	
 }

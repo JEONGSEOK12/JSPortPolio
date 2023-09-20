@@ -4,7 +4,6 @@
 #include "Monster/BTTaskNode_Patrol.h"
 #include "Monster_Enums.h"
 #include "Monster/Base_Monster.h"
-#include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SplineComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -61,7 +60,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		Monster->SetActorLocation(Mesh->GetComponentLocation());
 		FTransform ZeroTransform = SplineComponent->GetTransformAtDistanceAlongSpline(0, ESplineCoordinateSpace::Local);
 		Mesh->SetRelativeLocation(ZeroTransform.GetLocation());
-
+		Mesh->SetRelativeRotation(FRotator(0, 90, 0));
 
 		Blackboard->SetValueAsVector(TEXT("RunLastLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);

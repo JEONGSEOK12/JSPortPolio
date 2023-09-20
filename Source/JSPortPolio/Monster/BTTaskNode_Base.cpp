@@ -147,54 +147,6 @@ UNavigationPath* UBTTaskNode_Base::FindNavPath(UBehaviorTreeComponent& OwnerComp
 	return PathObject;
 }
 
-void UBTTaskNode_Base::CharacterMove(UBehaviorTreeComponent& OwnerComp, FVector TargetLocation, float DeltaSeconds ,float Speed)
-{
-
-	FVector MyLocation = GetBaseCharacter(OwnerComp)->GetActorLocation();
-	// FVector Dir = TargetLocation - MyLocation;
-	// Dir.Normalize();
-	// 
-	// FVector OtherForward = GetBaseCharacter(OwnerComp)->GetActorForwardVector();
-	// OtherForward.Normalize();
-	// 
-	// Dir.Z = 0;
-	// OtherForward.Z = 0;
-	// 
-	// FVector Cross = FVector::CrossProduct(OtherForward, Dir);
-	// 
-	// float Angle0 = Dir.Rotation().Yaw;
-	// float Angle1 = OtherForward.Rotation().Yaw;
-	// 
-	// if (FMath::Abs(Angle0 - Angle1) >= 10.0f)
-	// {
-	// 	FRotator Rot = FRotator::MakeFromEuler({ 0, 0, Cross.Z * 500.0f * DeltaSeconds });
-	// 	GetBaseCharacter(OwnerComp)->AddActorWorldRotation(Rot);
-	// }
-	// else 
-	// {
-	// 	FRotator Rot = Dir.Rotation();
-	// 	GetBaseCharacter(OwnerComp)->SetActorRotation(Rot);
-	// }
-	// 
-	// FVector MoveDir = Dir * Speed;
-
-
-
-
-
-
-	FQuat MyQuat = GetBaseCharacter(OwnerComp)->GetActorQuat();
-	FVector Dir = TargetLocation - MyLocation;
-	Dir.Normalize();
-	FQuat RotQuat(Dir, 0);
-	GetBaseCharacter(OwnerComp)->SetActorRotation(RotQuat);
-
-
-	// GetBaseCharacter(OwnerComp)->AddMovementInput(MoveDir);
-
-
-
-}
 
 
 
