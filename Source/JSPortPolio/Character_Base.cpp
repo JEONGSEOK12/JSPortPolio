@@ -171,7 +171,7 @@ void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 
 	if (abs(YawDiff) >= 180)
 	{
-		YawDiff -= 360;
+		YawDiff -= 180;
 	}
 
 	if (abs(YawDiff)>=3)
