@@ -76,7 +76,7 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 		FowardLocation = NavPath->PathPoints[1];
 	}
 
-	FVector TargetDir = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+	FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
 	float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
 
 	// FVector TestVec(0, 0, 1);

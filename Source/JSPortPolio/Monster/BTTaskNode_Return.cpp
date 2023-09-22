@@ -45,22 +45,19 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		return;
 	}
 
-	if (NewPath->PathPoints.IsEmpty())
+	if (NewPath->PathPoints.Num()>=2)
 	{
-		return;
+		FVector TargetLocation = NewPath->PathPoints[1];
+
+		FVector DIr = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+
+		GetBaseCharacter(OwnerComp)->MoveCharacter(DIr, GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed);
+
 	}
 
-	FVector TestVec = GetBaseCharacter(OwnerComp)->GetActorLocation();
-
-	FVector TargetLocation = NewPath->PathPoints[0];
-
-	FVector DIr = TargetLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
 	
-	GetBaseCharacter(OwnerComp)->MoveCharacter(DIr, GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed);
-	
-
-
 	FVector Dis = GetBaseCharacter(OwnerComp)->GetActorLocation() - ReturnLocation;
+
 	if (Dis.Size() <= 30.f)
 	{
 		SetStateChange(OwnerComp, Monster_Enum::Idle);
