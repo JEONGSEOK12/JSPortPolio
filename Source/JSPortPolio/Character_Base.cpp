@@ -154,26 +154,43 @@ UBlackboardComponent* ACharacter_Base::GetBlackboardComponent()
 void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 {
 	Dir.Normalize();
-	Dir.Z = 0;
+	FVector MyDir = Dir;
+	MyDir.Z = 0;
 
 	FVector MyFoward = GetActorForwardVector();
 	MyFoward.Normalize();
 	MyFoward.Z = 0;
 
-	FVector Cross = FVector::CrossProduct(Dir, MyFoward);
+	FVector Cross = FVector::CrossProduct(MyDir, MyFoward);
 	Cross.Normalize();
 
+	float DirYaw = Dir.Rotation().Yaw;
+	float MyYaw = MyFoward.Rotation().Yaw;
+	float YawDiff = DirYaw - MyYaw;
+	float DeltaSec = GetWorld()->GetDeltaSeconds();
 
-
-	if ((Dir - MyFoward).Size() >= 10.f)
+	if (abs(YawDiff) >= 180)
 	{
-		SetActorRotation(FRotator(0, Cross.Z , 0) + GetActorRotation());
+		YawDiff -= 360;
 	}
-	else
+
+	if (abs(YawDiff)>=3)
 	{
-		SetActorRotation(Dir.Rotation());
+		if (YawDiff >= 0)
+		{
+			MyYaw += DeltaSec * 50.f;
+		}
+		else
+		{
+			MyYaw -= DeltaSec * 50.f;
+		}
+
+		SetActorRotation(FRotator(0, MyYaw, 0));
+
 	}
-
-
+	if (abs(YawDiff) <= 10)
+	{
+		SetActorLocation(GetActorLocation() + Dir * Speed * DeltaSec);
+	}
 	
 }
