@@ -55,15 +55,9 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	UObject* NavObject = BlackBoard->GetValueAsObject(TEXT("NavPath"));
 	UNavigationPath* NavPath = Cast<UNavigationPath>(NavObject);
 	
-	//길못찾음
-	if (nullptr == NavPath)
-	{
-		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
-		return;
-	}
 
-	//길못찾음2
-	if (nullptr != NavPath && true == NavPath->PathPoints.IsEmpty())
+	//길못찾음
+	if (nullptr == NavPath || true == NavPath->PathPoints.IsEmpty())
 	{
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Return);
 		return;
@@ -71,18 +65,11 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 
 	FVector FowardLocation;
-	if (nullptr != NavPath)
-	{
-		FowardLocation = NavPath->PathPoints[1];
-	}
+	FowardLocation = NavPath->PathPoints[1];
+	
 
 	FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
 	float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
-
-	// FVector TestVec(0, 0, 1);
-	// FQuat TestQuat(TestVec, 0.1f);
-	// 
-	// GetBaseCharacter(OwnerComp)->SetActorRotation(GetBaseCharacter(OwnerComp)->GetActorQuat() * TestQuat);
 
 	GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
 

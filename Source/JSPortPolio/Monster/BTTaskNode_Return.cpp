@@ -16,6 +16,10 @@ EBTNodeResult::Type UBTTaskNode_Return::ExecuteTask(UBehaviorTreeComponent& Owne
 {
 	GetBaseCharacter(OwnerComp)->SetAniState(Monster_Enum::Walk);
 
+	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
+
+	BlackBoard->SetValueAsFloat(TEXT("ReturnDelayTime"), 0);
+
 	return EBTNodeResult::InProgress;
 }
 
@@ -24,11 +28,41 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 {
 	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
 
+	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
+
 	AActor* Target = TrackRangeCheck(OwnerComp);
 	if (Target)
 	{
 		SetStateChange(OwnerComp, Monster_Enum::Run);
 	}
+
+
+	float DelayTime = BlackBoard->GetValueAsFloat(TEXT("ReturnDelayTime"));
+
+	if (DelayTime <= 5)
+	{
+
+		UObject* NavObject = BlackBoard->GetValueAsObject(TEXT("NavPath"));
+		UNavigationPath* NavPath = Cast<UNavigationPath>(NavObject);
+		
+		if (NavPath->PathPoints.Num() >= 2)
+		{
+			FVector FowardLocation;
+			FowardLocation = NavPath->PathPoints[1];
+
+
+			FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+			float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
+
+			GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
+		}
+
+		BlackBoard->SetValueAsFloat(TEXT("ReturnDelayTime"), DelayTime += GetWorld()->GetDeltaSeconds());
+		
+		return;
+
+	}
+
 
 
 	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
