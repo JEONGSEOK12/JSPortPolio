@@ -28,6 +28,8 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 {
 	Super::TickTask(OwnerComp, NodeMemory, DelataSeconds);
 
+	DeathCheck(OwnerComp);
+
 	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
 
 	AActor* Target = TrackRangeCheck(OwnerComp);
