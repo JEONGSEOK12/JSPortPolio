@@ -196,6 +196,8 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 
 	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered %f"), fFowardAccel));
+
 	PlayerMove(ForVec, fFowardAccel);
 
 }
