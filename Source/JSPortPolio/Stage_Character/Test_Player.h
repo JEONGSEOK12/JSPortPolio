@@ -110,6 +110,7 @@ public:
 	FVector LandVec;
 
 	float DebugTime;
+	float DebugTime2;
 
 	double TestD;
 

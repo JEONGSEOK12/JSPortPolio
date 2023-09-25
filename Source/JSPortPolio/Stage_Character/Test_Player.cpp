@@ -99,6 +99,7 @@ void ATest_Player::Tick(float DeltaTime)
 		SetActorRotation(HeadPtr->GetActorQuat());
 	}
 
+	DebugTime2+= DeltaTime;
 
 }
 
@@ -296,7 +297,7 @@ void ATest_Player::PlayerJumpEnd()
 
 	
 	
-	if (bisGround)
+	if (bisGround && DebugTime2 > 0.1f)
 	{
 
 		if (bisSpined)
@@ -304,14 +305,14 @@ void ATest_Player::PlayerJumpEnd()
 			
 			if(LandVec.Size()>= BaseJump.Size()+ SpinBonus)
 			{
-				HeadVel = HeadUpVec * (LandVec.Size() + SpinBonus);
+				HeadPtr->GetMovementComponent()->Velocity = HeadUpVec * (LandVec.Size() + SpinBonus);
 			}
 			else
 			{
-				HeadVel = BaseJump + HeadUpVec * SpinBonus;
+				HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadUpVec * SpinBonus;
 			}
 			
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadVel.Size()));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadPtr->GetMovementComponent()->Velocity.Size()));
 		}
 		else
 		{
@@ -330,6 +331,7 @@ void ATest_Player::PlayerJumpEnd()
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;
+		DebugTime2 = 0.f;
 	}
 
 }
