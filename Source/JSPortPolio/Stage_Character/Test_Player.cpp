@@ -70,6 +70,8 @@ void ATest_Player::Tick(float DeltaTime)
 	{
 		bisSpined = true;
 		Niagara->Activate();
+		RotCheckX = 0;
+		RotCheckY = 0;
 	}
 
 
@@ -297,7 +299,7 @@ void ATest_Player::PlayerJumpEnd()
 
 	
 	
-	if (bisGround && DebugTime2 > 0.1f)
+	if (bisGround && DebugTime2 > 0.1f && bJumpPressed)
 	{
 
 		if (bisSpined)
@@ -305,11 +307,11 @@ void ATest_Player::PlayerJumpEnd()
 			
 			if(LandVec.Size()>= BaseJump.Size()+ SpinBonus)
 			{
-				HeadPtr->GetMovementComponent()->Velocity = HeadUpVec * (LandVec.Size() + SpinBonus);
+				HeadPtr->GetMovementComponent()->Velocity = HeadUpVec * LandVec.Size();
 			}
 			else
 			{
-				HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadUpVec * SpinBonus;
+				HeadPtr->GetMovementComponent()->Velocity = BaseJump + HeadUpVec * SpinBonus;
 			}
 			
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadPtr->GetMovementComponent()->Velocity.Size()));
@@ -326,13 +328,20 @@ void ATest_Player::PlayerJumpEnd()
 
 		
 
-		bisSpined = false;
-		Niagara->Deactivate();
-		fJumpTime = 0.f;
-		bJumpPressed = false;
-		bisGround = false;
-		DebugTime2 = 0.f;
+
 	}
+	else
+	{
+		HeadPtr->GetMovementComponent()->Velocity = BaseJump;
+
+	}
+
+	bisSpined = false;
+	Niagara->Deactivate();
+	fJumpTime = 0.f;
+	bJumpPressed = false;
+	bisGround = false;
+	DebugTime2 = 0.f;
 
 }
 
@@ -345,6 +354,8 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		if (!bJumpPressed)
 		{
+
+			
 			bisGround = true;
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
