@@ -409,6 +409,8 @@ void ATest_Player::MyRestart()
 
 	PlayerJumpEnd();
 
+	Niagara->Deactivate();
+	bisSpined = false;
 }
 
 
