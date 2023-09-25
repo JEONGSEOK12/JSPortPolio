@@ -31,6 +31,7 @@ public:
 	UPROPERTY(Category = "CharacterData", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAcdasdasdcess = "true"))
 	FName DataName = "NONE";
 
+	float DeltaSec;
 
 
 	int AniState = 0;
@@ -85,4 +86,5 @@ public:
 
 	void MoveCharacter(FVector Dir, float Speed);
 
+	float fTest;
 };

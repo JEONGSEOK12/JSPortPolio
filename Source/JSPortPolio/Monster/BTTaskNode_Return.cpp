@@ -47,16 +47,19 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		UObject* NavObject = BlackBoard->GetValueAsObject(TEXT("NavPath"));
 		UNavigationPath* NavPath = Cast<UNavigationPath>(NavObject);
 		
-		if (NavPath->PathPoints.Num() >= 2)
+		if(NavPath)
 		{
-			FVector FowardLocation;
-			FowardLocation = NavPath->PathPoints[1];
+			if (NavPath->PathPoints.Num() >= 2)
+			{
+				FVector FowardLocation;
+				FowardLocation = NavPath->PathPoints[1];
 
 
-			FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
-			float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
+				FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+				float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
 
-			GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
+				GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
+			}
 		}
 
 		BlackBoard->SetValueAsFloat(TEXT("ReturnDelayTime"), DelayTime += GetWorld()->GetDeltaSeconds());
@@ -67,12 +70,10 @@ void UBTTaskNode_Return::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 
 
-	UBlackboardComponent* Blackboard = GetBaseCharacter(OwnerComp)->GetBlackboardComponent();
-
 	
 	//네비 시스템으로 트랜스폼으로 이동
 
-	FVector ReturnLocation = Blackboard->GetValueAsVector(TEXT("RunLastLocation"));
+	FVector ReturnLocation = BlackBoard->GetValueAsVector(TEXT("RunLastLocation"));
 
 	UNavigationPath* NewPath = FindNavPath(OwnerComp, ReturnLocation);
 

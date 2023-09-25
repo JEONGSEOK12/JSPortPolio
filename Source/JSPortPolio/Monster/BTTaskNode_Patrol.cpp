@@ -67,15 +67,14 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	if (Target)
 	{
 		FRotator MeshRot = Mesh->GetComponentRotation();
-		MeshRot.Yaw += 90;
 
 		Monster->SetActorLocation(Mesh->GetComponentLocation());
 		Monster->SetActorRotation(MeshRot);
 
-		FTransform ZeroTransform = SplineComponent->GetTransformAtDistanceAlongSpline(0, ESplineCoordinateSpace::Local);
-		Mesh->SetRelativeLocation(ZeroTransform.GetLocation());
-		
+		// FTransform ZeroTransform = SplineComponent->GetTransformAtDistanceAlongSpline(0, ESplineCoordinateSpace::Local);
+		Mesh->SetRelativeLocation(FVector(0,0,0));
 		Mesh->SetRelativeRotation(FRotator(0, -90, 0));
+
 
 		Blackboard->SetValueAsVector(TEXT("RunLastLocation"), GetBaseCharacter(OwnerComp)->GetActorLocation());
 		SetStateChange(OwnerComp, (uint8)Monster_Enum::Run);
