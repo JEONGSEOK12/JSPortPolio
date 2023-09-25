@@ -14,6 +14,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include <Datas/InputDataAsset.h>
+#include "NiagaraComponent.h"
+
+
 
 
 
@@ -22,6 +25,8 @@ ATest_Player::ATest_Player()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+
 
 }
 
@@ -46,6 +51,11 @@ void ATest_Player::BeginPlay()
 
 	
 
+	// FSoftClassPath ClassPath(TEXT("/Script/Niagara.NiagaraSystem'/Game/Assets/Custom/SpinEffect.SpinEffect'"));
+	// TSubclassOf<UNiagaraComponent> MyNiagara= ClassPath.TryLoadClass<UNiagaraComponent>();
+	// 
+	// Niagara = Cast<UNiagaraComponent>(MyNiagara);
+
 
 }
 
@@ -60,7 +70,7 @@ void ATest_Player::Tick(float DeltaTime)
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
-		//RotVFX->SetVisibility(true);
+		// Niagara->SetVisibility(true);
 	}
 
 
@@ -305,7 +315,7 @@ void ATest_Player::PlayerJumpEnd()
 		}
 
 		bisSpined = false;
-		//RotVFX->SetVisibility(false);
+		// Niagara->SetVisibility(false);
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;
