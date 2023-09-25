@@ -308,7 +308,7 @@ void ATest_Player::PlayerJumpEnd()
 			}
 			else
 			{
-				HeadVel = BaseJump + HeadUpVec*SpinBonus;
+				HeadVel = BaseJump + HeadUpVec * SpinBonus;
 			}
 			
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadVel.Size()));
