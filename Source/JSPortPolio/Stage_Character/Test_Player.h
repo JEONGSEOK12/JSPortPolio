@@ -78,6 +78,9 @@ public:
 
 	float fJumpTime;
 
+	FVector RestartLocation;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float fBasicJumpPoawer;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
@@ -155,5 +158,5 @@ public:
 
 	void MoveMouse(const struct FInputActionValue& Val);
 
-
+	void MyRestart();
 };

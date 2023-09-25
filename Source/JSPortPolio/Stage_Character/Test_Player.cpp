@@ -54,7 +54,7 @@ void ATest_Player::BeginPlay()
 
 	Niagara->Deactivate();
 
-
+	RestartLocation = GetActorLocation();
 
 
 }
@@ -65,6 +65,11 @@ void ATest_Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	fDeltaSec = DeltaTime;
+
+	if (GetActorLocation().Z < -1000)
+	{
+		MyRestart();
+	}
 
 
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
@@ -393,6 +398,22 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	}
 
 }
+
+
+void ATest_Player::MyRestart()
+{
+	HeadPtr->SetActorLocation(RestartLocation);
+	SetActorLocation(RestartLocation);
+	HeadPtr->SetActorRotation(FRotator(0, 0, 0));
+	SetActorRotation(FRotator(0, 0, 0));
+
+	PlayerJumpEnd();
+
+}
+
+
+
+
 
 
 
