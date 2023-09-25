@@ -56,7 +56,7 @@ void ATest_Player::BeginPlay()
 
 
 
-	
+
 }
 
 // Called every frame
@@ -102,7 +102,7 @@ void ATest_Player::Tick(float DeltaTime)
 		SetActorRotation(HeadPtr->GetActorQuat());
 	}
 
-	DebugTime2+= DeltaTime;
+	DebugTime2 += DeltaTime;
 
 }
 
@@ -293,56 +293,47 @@ void ATest_Player::PlayerJumpTriggered()
 
 void ATest_Player::PlayerJumpEnd()
 {
-	FVector HeadVel = HeadPtr->GetMovementComponent()->Velocity;
-	FVector HeadUpVec = HeadPtr->GetActorUpVector();
-	FVector JumpVec = HeadUpVec * fJumpTime * fJumpPower;
-	FVector BaseJump = JumpVec + HeadUpVec * fBasicJumpPoawer;
 
-	
-	
-	if (bisGround && DebugTime2 > 0.1f && bJumpPressed)
+	if (bisGround && DebugTime2 > 0.1f)
 	{
 
-		if (bisSpined)
+		FVector HeadVel = HeadPtr->GetMovementComponent()->Velocity;
+		FVector HeadUpVec = HeadPtr->GetActorUpVector();
+		FVector JumpVec = HeadUpVec * fJumpTime * fJumpPower;
+		FVector BaseJump = JumpVec + HeadUpVec * fBasicJumpPoawer;
+
+
+		if (bJumpPressed && bisSpined &&  LandVec.Size() >= BaseJump.Size() + SpinBonus)
 		{
-			
-			if(LandVec.Size()>= BaseJump.Size()+ SpinBonus)
-			{
-				HeadPtr->GetMovementComponent()->Velocity = HeadUpVec * LandVec.Size();
-			}
-			else
-			{
-				HeadPtr->GetMovementComponent()->Velocity = BaseJump + HeadUpVec * SpinBonus;
-			}
-			
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadPtr->GetMovementComponent()->Velocity.Size()));
+			HeadPtr->GetMovementComponent()->Velocity = HeadUpVec * LandVec.Size();
 		}
 		else
+		{
+			HeadPtr->GetMovementComponent()->Velocity = BaseJump + HeadUpVec * SpinBonus;
+		}
+
+		if (bJumpPressed && !bisSpined)
 		{
 			HeadPtr->GetMovementComponent()->Velocity = BaseJump;
 
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded %f"), Tes));
 		}
 
-		
+		if (!bJumpPressed)
+		{
+			HeadPtr->GetMovementComponent()->Velocity = BaseJump;
 
+		}
+
+		bisSpined = false;
+		Niagara->Deactivate();
+		fJumpTime = 0.f;
+		bJumpPressed = false;
+		bisGround = false;
+		DebugTime2 = 0.f;
 
 	}
-	else
-	{
-		HeadPtr->GetMovementComponent()->Velocity = BaseJump;
-
-	}
-
-	bisSpined = false;
-	Niagara->Deactivate();
-	fJumpTime = 0.f;
-	bJumpPressed = false;
-	bisGround = false;
-	DebugTime2 = 0.f;
 
 }
 
@@ -356,7 +347,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		if (!bJumpPressed)
 		{
 
-			
+
 			bisGround = true;
 
 			HeadPtr->GetMovementComponent()->Velocity.Set(0, 0, 0);
@@ -388,7 +379,7 @@ void ATest_Player::LandGround(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * fBasicJumpPoawer * 1.5f;
 
 		ACharacter_Base* Monster = Cast<ACharacter_Base>(OtherActor);
-		
+
 		// 나중에 바꿀것
 		Monster->HP -= 100;
 
