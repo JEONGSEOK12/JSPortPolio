@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputDatas");
 	class UInputDataAsset* InputDatas;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputDatas");
+
 	class UNiagaraComponent* Niagara;
 
 	class USpringArmComponent* MySpringArm;

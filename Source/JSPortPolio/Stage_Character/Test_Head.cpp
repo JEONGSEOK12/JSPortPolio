@@ -119,7 +119,7 @@ void ATest_Head::BodyBounce(const FHitResult& Hit)
 	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + Vec * 0.5f;
 
 	PlayerPtr->bisSpined = false;
-	// PlayerPtr->Niagara->SetVisibility(false);
+	PlayerPtr->Niagara->SetVisibility(false);
 	PlayerPtr->RotCheckX = 0.f;
 	PlayerPtr->RotCheckY = 0.f;
 

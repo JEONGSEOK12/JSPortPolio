@@ -49,14 +49,11 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("Niagara"));
+	Niagara = Cast<UNiagaraComponent>(Findid2[0]);
+
+
 	
-
-	// FSoftClassPath ClassPath(TEXT("/Script/Niagara.NiagaraSystem'/Game/Assets/Custom/SpinEffect.SpinEffect'"));
-	// TSubclassOf<UNiagaraComponent> MyNiagara= ClassPath.TryLoadClass<UNiagaraComponent>();
-	// 
-	// Niagara = Cast<UNiagaraComponent>(MyNiagara);
-
-
 }
 
 // Called every frame
@@ -70,7 +67,7 @@ void ATest_Player::Tick(float DeltaTime)
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
-		// Niagara->SetVisibility(true);
+		Niagara->SetVisibility(true);
 	}
 
 
@@ -315,7 +312,7 @@ void ATest_Player::PlayerJumpEnd()
 		}
 
 		bisSpined = false;
-		// Niagara->SetVisibility(false);
+		Niagara->SetVisibility(false);
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;
