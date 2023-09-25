@@ -38,14 +38,11 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	DeathCheck(OwnerComp);
 
 	ABase_Monster* Monster = GetBaseMonster(OwnerComp);
-
 	UBlackboardComponent* Blackboard = Monster->GetBlackboardComponent();
-
 	USkeletalMeshComponent* Mesh = Monster->Mesh;
-
 	USplineComponent* SplineComponent = Monster->SplineComponent;
-
 	float PatrolDistance = Blackboard->GetValueAsFloat(TEXT("PatrolDistance"));
+
 
 	Blackboard->SetValueAsFloat(TEXT("PatrolDistance"), PatrolDistance + GetBaseCharacter(OwnerComp)->CharacterData->WalkSpeed * DelataSeconds);
 
@@ -71,7 +68,6 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		Monster->SetActorLocation(Mesh->GetComponentLocation());
 		Monster->SetActorRotation(MeshRot);
 
-		// FTransform ZeroTransform = SplineComponent->GetTransformAtDistanceAlongSpline(0, ESplineCoordinateSpace::Local);
 		Mesh->SetRelativeLocation(FVector(0,0,0));
 		Mesh->SetRelativeRotation(FRotator(0, -90, 0));
 
