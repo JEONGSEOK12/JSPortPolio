@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "NiagaraComponent.h"
 #include "Test_Player.generated.h"
 
 UCLASS()
@@ -42,6 +41,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputDatas");
 	class UInputDataAsset* InputDatas;
+
+
+	class UNiagaraComponent* Niagara;
 
 	class USpringArmComponent* MySpringArm;
 
@@ -97,7 +99,7 @@ public:
 
 	bool bisSpined;
 
-	UNiagaraComponent* RotVFX;
+	
 
 	float RotCheckX;
 	float RotCheckY;

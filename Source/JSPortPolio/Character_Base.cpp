@@ -117,6 +117,7 @@ void ACharacter_Base::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	DeltaSec = DeltaTime;
 }
 
 // Called to bind functionality to input
@@ -161,36 +162,36 @@ void ACharacter_Base::MoveCharacter(FVector Dir,float Speed)
 	MyFoward.Normalize();
 	MyFoward.Z = 0;
 
-	FVector Cross = FVector::CrossProduct(MyDir, MyFoward);
+	FVector Cross = FVector::CrossProduct(MyFoward, MyDir);
 	Cross.Normalize();
 
-	float DirYaw = Dir.Rotation().Yaw;
-	float MyYaw = MyFoward.Rotation().Yaw;
-	float YawDiff = DirYaw - MyYaw;
-	float DeltaSec = GetWorld()->GetDeltaSeconds();
+	float MyDirYaw = MyDir.Rotation().Yaw;
+	float MyFowardYaw = MyFoward.Rotation().Yaw;
 
-	if (abs(YawDiff) >= 180)
-	{
-		YawDiff -= 180;
-	}
+	
 
-	if (abs(YawDiff)>=3)
+
+
+	if (abs(MyDirYaw - MyFowardYaw)>=10.f)
 	{
-		if (YawDiff >= 0)
+		if (Cross.Z >= 0)
 		{
-			MyYaw += DeltaSec * 50.f;
+
+			SetActorRotation(GetActorRotation().Add(0, 50*DeltaSec, 0));
 		}
 		else
 		{
-			MyYaw -= DeltaSec * 50.f;
+
+			SetActorRotation(GetActorRotation().Add(0, -50*DeltaSec, 0));
 		}
-
-		SetActorRotation(FRotator(0, MyYaw, 0));
-
 	}
-	if (abs(YawDiff) <= 10)
+
+	
+
+	if (abs(MyDirYaw - MyFowardYaw) < 30.f)
 	{
-		SetActorLocation(GetActorLocation() + Dir * Speed * DeltaSec);
+		AddActorWorldOffset(Dir * Speed * DeltaSec);
 	}
+
 	
 }

@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Stage_Character/Test_Player.h"
+#include "NiagaraComponent.h"
 
 
 
@@ -118,7 +119,7 @@ void ATest_Head::BodyBounce(const FHitResult& Hit)
 	GetMovementComponent()->Velocity = PlayerPtr->TestVec1 * 1000.0f + Vec * 0.5f;
 
 	PlayerPtr->bisSpined = false;
-	//PlayerPtr->RotVFX->SetVisibility(false);
+	PlayerPtr->Niagara->SetVisibility(false);
 	PlayerPtr->RotCheckX = 0.f;
 	PlayerPtr->RotCheckY = 0.f;
 

@@ -14,6 +14,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include <Datas/InputDataAsset.h>
+#include "NiagaraComponent.h"
+
+
 
 
 
@@ -22,6 +25,8 @@ ATest_Player::ATest_Player()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+
 
 }
 
@@ -44,9 +49,11 @@ void ATest_Player::BeginPlay()
 	UCapsuleComponent* FindScene1 = Cast<UCapsuleComponent>(Findid1[0]);
 	FindScene1->OnComponentHit.AddDynamic(this, &ATest_Player::LandGround);
 
+	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("Niagara"));
+	Niagara = Cast<UNiagaraComponent>(Findid2[0]);
+
+
 	
-
-
 }
 
 // Called every frame
@@ -60,7 +67,7 @@ void ATest_Player::Tick(float DeltaTime)
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
-		//RotVFX->SetVisibility(true);
+		Niagara->SetVisibility(true);
 	}
 
 
@@ -307,7 +314,7 @@ void ATest_Player::PlayerJumpEnd()
 		}
 
 		bisSpined = false;
-		//RotVFX->SetVisibility(false);
+		Niagara->SetVisibility(false);
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;

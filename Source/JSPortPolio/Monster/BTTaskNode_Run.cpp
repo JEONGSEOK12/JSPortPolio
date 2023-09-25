@@ -30,6 +30,8 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	UBlackboardComponent* BlackBoard = OwnerComp.GetBlackboardComponent();
 
+	// ACharacter_Base* CharacterBase = GetBaseCharacter(OwnerComp);
+
 	AActor* Target = TrackRangeCheck(OwnerComp);
 	//타겟이 없으면 리턴
 	if (Target==nullptr)
@@ -46,6 +48,8 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	if (abs(TargetLocation.X - LastLocation.X) >= 10 || abs(TargetLocation.Y != LastLocation.Y) >= 10)
 	{
 		
+		// UNavigationPath* TestPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), CharacterBase->GetActorLocation(), TargetLocation);
+
 		UNavigationPath* NewPath = FindNavPath(OwnerComp, TargetLocation);
 		BlackBoard->SetValueAsVector(TEXT("TargetLastLocation"), TargetLocation);
 		BlackBoard->SetValueAsObject(TEXT("NavPath"), NewPath);
@@ -67,9 +71,40 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	FVector FowardLocation;
 	FowardLocation = NavPath->PathPoints[1];
 	
+	FVector MyLocation = GetBaseCharacter(OwnerComp)->GetActorLocation();
 
-	FVector TargetDir = FowardLocation - GetBaseCharacter(OwnerComp)->GetActorLocation();
+	FowardLocation.Z = 0;
+	MyLocation.Z = 0;
+
+	FVector TargetDir = FowardLocation - MyLocation;
+	TargetDir.Normalize();
+
 	float RunSpeed = GetBaseCharacter(OwnerComp)->CharacterData->RunSpeed;
+
+	float ForX = FowardLocation.X;
+	float ForY = FowardLocation.Y;
+
+	float MyX = MyLocation.X;
+	float MyY = MyLocation.Y;
+
+	float TarX = TargetDir.X;
+	float TarY = TargetDir.Y;
+
+	float Tett = GetBaseCharacter(OwnerComp)->fTest;
+
+	if(Tett>1)
+	{
+		// GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("For X : %f , Y :%f "), ForX,ForY));
+		// GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("My X : %f , Y : %f"), MyX, MyY));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("TarX : %f,TarY : %f"), TargetDir.X, TargetDir.Y));
+		
+		
+		GetBaseCharacter(OwnerComp)->fTest = 0;
+	}
+	else
+	{
+		GetBaseCharacter(OwnerComp)->fTest += DelataSeconds;
+	}
 
 	GetBaseCharacter(OwnerComp)->MoveCharacter(TargetDir, RunSpeed);
 
