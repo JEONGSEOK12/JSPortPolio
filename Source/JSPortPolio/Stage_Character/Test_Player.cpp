@@ -53,6 +53,8 @@ void ATest_Player::BeginPlay()
 	Niagara = Cast<UNiagaraComponent>(Findid2[0]);
 
 
+
+
 	
 }
 
@@ -67,7 +69,7 @@ void ATest_Player::Tick(float DeltaTime)
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
-		Niagara->SetVisibility(true);
+		Niagara->Activate();
 	}
 
 
@@ -203,8 +205,6 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 
 	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered %f"), fFowardAccel));
-
 	PlayerMove(ForVec, fFowardAccel);
 
 }
@@ -289,23 +289,33 @@ void ATest_Player::PlayerJumpTriggered()
 
 void ATest_Player::PlayerJumpEnd()
 {
+	FVector HeadVel = HeadPtr->GetMovementComponent()->Velocity;
+	FVector HeadUpVec = HeadPtr->GetActorUpVector();
+	FVector JumpVec = HeadUpVec * fJumpTime * fJumpPower;
+	FVector BaseJump = JumpVec + HeadUpVec * fBasicJumpPoawer;
+
+	
+	
 	if (bisGround)
 	{
-		FVector JumpVec;
-		JumpVec = HeadPtr->GetActorUpVector() * fJumpTime * fJumpPower;
 
 		if (bisSpined)
 		{
-			HeadPtr->GetMovementComponent()->Velocity = HeadPtr->GetActorUpVector() * LandVec.Size();
-
-			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
-			double Tes = TTT.Size();
-
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), Tes));
+			
+			if(LandVec.Size()>= BaseJump.Size()+ SpinBonus)
+			{
+				HeadVel = HeadUpVec * (LandVec.Size() + SpinBonus);
+			}
+			else
+			{
+				HeadVel = BaseJump + HeadUpVec*SpinBonus;
+			}
+			
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Spined %f"), HeadVel.Size()));
 		}
 		else
 		{
-			HeadPtr->GetMovementComponent()->Velocity = JumpVec + HeadPtr->GetActorUpVector() * fBasicJumpPoawer;
+			HeadPtr->GetMovementComponent()->Velocity = BaseJump;
 
 			FVector TTT = HeadPtr->GetMovementComponent()->Velocity;
 			double Tes = TTT.Size();
@@ -313,8 +323,10 @@ void ATest_Player::PlayerJumpEnd()
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("JumpEnded %f"), Tes));
 		}
 
+		
+
 		bisSpined = false;
-		Niagara->SetVisibility(false);
+		Niagara->Deactivate();
 		fJumpTime = 0.f;
 		bJumpPressed = false;
 		bisGround = false;

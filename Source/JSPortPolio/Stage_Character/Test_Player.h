@@ -94,6 +94,8 @@ public:
 	FVector Gravity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	float SpinCheck;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
+	float SpinBonus;
 
 	bool bisGround = false;
 
