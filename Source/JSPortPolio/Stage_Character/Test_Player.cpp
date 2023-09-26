@@ -67,14 +67,13 @@ void ATest_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	fDeltaSec = DeltaTime;
 
 	if (GetActorLocation().Z < -1000)
 	{
 		MyRestart();
 	}
 
-
+	
 	if (RotCheckX >= SpinCheck || RotCheckY >= SpinCheck)
 	{
 		bisSpined = true;
@@ -215,7 +214,7 @@ void ATest_Player::MoveForward(const FInputActionValue& Val)
 	FVector ForVec;
 	ForVec.Set(0, 1, 0);
 
-	fFowardAccel += fDeltaSec * 0.1f * Val.Get<float>();
+	fFowardAccel += GetWorld()->GetDeltaSeconds() * 0.1f * Val.Get<float>();
 
 	PlayerMove(ForVec, fFowardAccel);
 
@@ -231,7 +230,7 @@ void ATest_Player::MoveRight(const FInputActionValue& Val)
 	FVector RitVec;
 	RitVec.Set(-1, 0, 0);
 
-	fRightAccel += fDeltaSec * 0.1f * Val.Get<float>();
+	fRightAccel += GetWorld()->GetDeltaSeconds() * 0.1f * Val.Get<float>();
 
 	PlayerMove(RitVec, fRightAccel);
 }
@@ -246,7 +245,7 @@ void ATest_Player::MoveTurn(const FInputActionValue& Val)
 	FVector TurnVec;
 	TurnVec.Set(0, 0, 1);
 
-	fTurnAccel += fDeltaSec * 0.1f * Val.Get<float>();
+	fTurnAccel += GetWorld()->GetDeltaSeconds() * 0.1f * Val.Get<float>();
 
 	PlayerMove(TurnVec, fTurnAccel);
 }
@@ -291,7 +290,7 @@ void ATest_Player::PlayerJumpTriggered()
 {
 	if (fJumpTime <= fMaxJumpTime)
 	{
-		fJumpTime += fDeltaSec;
+		fJumpTime += GetWorld()->GetDeltaSeconds();;
 	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Jump Triggered")));
