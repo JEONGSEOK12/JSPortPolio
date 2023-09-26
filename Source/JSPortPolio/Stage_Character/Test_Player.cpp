@@ -52,6 +52,9 @@ void ATest_Player::BeginPlay()
 	TArray<UActorComponent*> Findid2 = GetComponentsByTag(UNiagaraComponent::StaticClass(), TEXT("Niagara"));
 	Niagara = Cast<UNiagaraComponent>(Findid2[0]);
 
+
+
+	Niagara->Activate();
 	Niagara->Deactivate();
 
 	RestartLocation = GetActorLocation();
