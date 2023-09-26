@@ -78,6 +78,8 @@ public:
 
 	float fJumpTime;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters");
 	FVector RestartLocation;
 
 
